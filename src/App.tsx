@@ -432,6 +432,9 @@ function ResultPanel({
         <ResultSection title="상담 예시" tone="plain">
           {evaluation.sample_answer}
         </ResultSection>
+        <ResultSection title="모범 답안 예시" tone="good">
+          {evaluation.model_answer}
+        </ResultSection>
         <details className="rounded-md border border-night/15 bg-night/5 p-4">
           <summary className="cursor-pointer text-sm font-semibold text-night">채점 요약 보기</summary>
           <div className="mt-4 grid gap-4">

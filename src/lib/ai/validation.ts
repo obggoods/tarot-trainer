@@ -31,6 +31,7 @@ export function normalizeEvaluationResult(value: unknown): EvaluationResult | nu
     missing_points: candidate.missing_points,
     traditional_correction: candidate.traditional_correction,
     sample_answer: candidate.sample_answer,
+    model_answer: isString(candidate.model_answer) ? candidate.model_answer : candidate.sample_answer,
     differences: Array.isArray(candidate.differences) && candidate.differences.every(isString) ? candidate.differences : [],
     wrong_note: candidate.wrong_note,
     next_reading_tip: isString(candidate.next_reading_tip) ? candidate.next_reading_tip : "",

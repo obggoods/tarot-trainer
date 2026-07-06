@@ -53,6 +53,7 @@ export function evaluateWithMock({ card, meaning, question, userAnswer }: Evalua
     missing_points: [],
     traditional_correction: buildTraditionalCorrection(card.meta.name_ko, question, meaning, contextText),
     sample_answer: buildSampleAnswer(question, meaning, contextText),
+    model_answer: buildModelAnswer(card.meta.name_ko, question, meaning, contextText),
     differences: buildDifferences(missingKeywords, questionApplicationRatio, question),
     wrong_note: buildWrongNote(card.meta.name_ko, question, meaning),
     next_reading_tip: "",
@@ -223,12 +224,12 @@ function buildDifferences(missingKeywords: string[], questionApplicationRatio: n
 
 function buildStrengths(question: TarotQuestion, cardName: string, matchedKeywords: string[], questionApplicationRatio: number) {
   if (matchedKeywords.length === 0) {
-    return [`${cardName}의 의미를 ${categoryLabel[question.category]} 질문에 연결하려는 방향은 확인됩니다.`];
+    return [`답변이 ${categoryLabel[question.category]}의 실제 고민을 중심에 두고 있어, 카드 의미를 상담 상황과 분리하지 않은 점은 확인됩니다.`];
   }
 
   const applicationComment =
     questionApplicationRatio >= 0.6
-      ? `${categoryLabel[question.category]}의 실제 질문 흐름에 연결하려는 방향도 적절했습니다.`
+      ? `${question.position}에서 내담자가 무엇을 확인해야 하는지까지 이어가려 한 점이 답변의 강점입니다.`
       : `${question.position}과 연결하려는 시도는 보였지만, 실제 상황 묘사는 아직 짧게 처리되었습니다.`;
 
   return [
@@ -252,6 +253,16 @@ function buildSampleAnswer(question: TarotQuestion, meaning: EvaluationInput["me
   const cautionSentence = meaning.warning || "지금 보이는 흐름을 한쪽으로만 단정하지 않는 편이 좋습니다.";
 
   return [contextSentence, actionSentence, cautionSentence].join(" ");
+}
+
+function buildModelAnswer(cardName: string, question: TarotQuestion, meaning: EvaluationInput["meaning"], contextText: string) {
+  const positionApplication = contextText || `${question.persona.concern}라는 고민에서는 ${meaning.must_include.slice(0, 3).join(", ")}의 흐름이 실제 판단 지점으로 드러납니다.`;
+
+  return [
+    `${cardName} ${orientationText(question)}은 ${meaning.traditional_meaning}`,
+    `${question.position}에서 보면 ${positionApplication}`,
+    `따라서 "${question.question}"에 대한 답변은 카드 키워드를 단순히 말하는 데서 멈추지 않고, 내담자의 상황에서 무엇이 끝나거나 흔들리고 있는지, 어떤 부분을 확인해야 하는지까지 연결하는 것이 정통 해석에 가깝습니다.`,
+  ].join(" ");
 }
 
 function buildWrongNote(cardName: string, question: TarotQuestion, meaning: EvaluationInput["meaning"]) {

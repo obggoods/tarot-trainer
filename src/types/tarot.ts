@@ -108,6 +108,7 @@ export type EvaluationResult = {
   missing_points: string[];
   traditional_correction: string;
   sample_answer: string;
+  model_answer: string;
   differences: string[];
   wrong_note: string;
   next_reading_tip: string;
