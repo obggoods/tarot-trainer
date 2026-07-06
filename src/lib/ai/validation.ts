@@ -63,11 +63,13 @@ function normalizeAnalysisResult(value: unknown): AnalysisResult | null {
   if (!Array.isArray(candidate.incorrect_points) || !candidate.incorrect_points.every(isString)) return null;
   if (!Array.isArray(candidate.feedback_focus) || !candidate.feedback_focus.every(isString)) return null;
   if (!Array.isArray(candidate.must_include) || !candidate.must_include.every(isString)) return null;
+  if (!Array.isArray(candidate.avoid_topics) || !candidate.avoid_topics.every(isString)) return null;
   if (!candidate.traditional_summary || typeof candidate.traditional_summary !== "object") return null;
 
   const summary = candidate.traditional_summary as Partial<AnalysisResult["traditional_summary"]>;
   if (!isString(summary.core_meaning)) return null;
   if (!isString(summary.question_position_meaning)) return null;
+  if (!isString(summary.contextual_meaning)) return null;
   if (!Array.isArray(summary.important_symbols) || !summary.important_symbols.every(isString)) return null;
 
   return {
@@ -79,10 +81,12 @@ function normalizeAnalysisResult(value: unknown): AnalysisResult | null {
     traditional_summary: {
       core_meaning: summary.core_meaning,
       question_position_meaning: summary.question_position_meaning,
+      contextual_meaning: summary.contextual_meaning,
       important_symbols: summary.important_symbols,
     },
     feedback_focus: candidate.feedback_focus,
     must_include: candidate.must_include,
+    avoid_topics: candidate.avoid_topics,
   };
 }
 

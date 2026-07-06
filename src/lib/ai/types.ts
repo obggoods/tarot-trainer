@@ -16,10 +16,12 @@ export type AnalysisResult = {
   traditional_summary: {
     core_meaning: string;
     question_position_meaning: string;
+    contextual_meaning: string;
     important_symbols: string[];
   };
   feedback_focus: string[];
   must_include: string[];
+  avoid_topics: string[];
 };
 
 export type Evaluator = (input: EvaluationInput) => Promise<EvaluationResult> | EvaluationResult;
