@@ -16,6 +16,9 @@ export type AnalysisResult = {
     symbolAwareness: number;
     overstatementControl: number;
   };
+  question_category: string;
+  question_goal: string;
+  card_primary_meaning: string;
   specific_strengths: string[];
   specific_improvements: string[];
   missed_core_points: string[];

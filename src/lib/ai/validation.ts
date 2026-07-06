@@ -59,6 +59,9 @@ function normalizeAnalysisResult(value: unknown): AnalysisResult | null {
   if (!Number.isFinite(score)) return null;
   if (candidate.grade !== "correct" && candidate.grade !== "partial" && candidate.grade !== "incorrect") return null;
   if (!candidate.rubric || typeof candidate.rubric !== "object") return null;
+  if (!isString(candidate.question_category)) return null;
+  if (!isString(candidate.question_goal)) return null;
+  if (!isString(candidate.card_primary_meaning)) return null;
   if (!Array.isArray(candidate.specific_strengths) || !candidate.specific_strengths.every(isString)) return null;
   if (!Array.isArray(candidate.specific_improvements) || !candidate.specific_improvements.every(isString)) return null;
   if (!Array.isArray(candidate.missed_core_points) || !candidate.missed_core_points.every(isString)) return null;
@@ -85,6 +88,9 @@ function normalizeAnalysisResult(value: unknown): AnalysisResult | null {
       symbolAwareness: normalizeStar(rubric.symbolAwareness, 3),
       overstatementControl: normalizeStar(rubric.overstatementControl, 3),
     },
+    question_category: candidate.question_category,
+    question_goal: candidate.question_goal,
+    card_primary_meaning: candidate.card_primary_meaning,
     specific_strengths: candidate.specific_strengths,
     specific_improvements: candidate.specific_improvements,
     missed_core_points: candidate.missed_core_points,
