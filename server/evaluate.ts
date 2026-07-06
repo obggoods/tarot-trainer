@@ -11,6 +11,7 @@ type NvidiaMessage = {
 };
 
 const MAX_ANALYSIS_RETRIES = 2;
+const MAX_FEEDBACK_RETRIES = 2;
 
 export async function evaluateReading(problem: TarotQuestion, answer: string, apiKey: string | undefined): Promise<EvaluationResult> {
   const card = getCard(problem.card_id);
@@ -28,16 +29,13 @@ export async function evaluateReading(problem: TarotQuestion, answer: string, ap
     return evaluateWithMock(input);
   }
 
-  const feedbackPrompt = buildFeedbackPrompt(input, analysis);
-  const feedbackContent = await requestNvidiaCompletion({
-    apiKey,
-    model,
-    prompt: feedbackPrompt,
-    maxTokens: 1800,
-  });
-  const parsedFeedback = parseEvaluationJson(feedbackContent);
+  if (process.env.NODE_ENV !== "production") {
+    console.debug("[TarotTrainer Analysis]", analysis);
+  }
 
-  return parsedFeedback ?? evaluateWithMock(input);
+  const feedback = await requestFeedback({ apiKey, model, input, analysis });
+
+  return feedback ?? evaluateWithMock(input);
 }
 
 async function requestAnalysis({
@@ -61,6 +59,34 @@ async function requestAnalysis({
     const analysis = parseAnalysisJson(content);
 
     if (analysis) return analysis;
+  }
+
+  return null;
+}
+
+async function requestFeedback({
+  apiKey,
+  model,
+  input,
+  analysis,
+}: {
+  apiKey: string;
+  model: string;
+  input: EvaluationInput;
+  analysis: AnalysisResult;
+}): Promise<EvaluationResult | null> {
+  const prompt = buildFeedbackPrompt(input, analysis);
+
+  for (let attempt = 0; attempt <= MAX_FEEDBACK_RETRIES; attempt += 1) {
+    const content = await requestNvidiaCompletion({
+      apiKey,
+      model,
+      prompt,
+      maxTokens: 1800,
+    });
+    const feedback = parseEvaluationJson(content);
+
+    if (feedback) return feedback;
   }
 
   return null;
@@ -101,13 +127,13 @@ async function requestNvidiaCompletion({
 
   if (!response.ok) {
     const errorText = await response.text();
-    throw new Error(`NVIDIA API 오류: ${response.status} ${errorText}`);
+    throw new Error(`NVIDIA API error: ${response.status} ${errorText}`);
   }
 
   const payload = (await response.json()) as { choices?: Array<{ message?: { content?: string } }> };
   const content = payload.choices?.[0]?.message?.content;
   if (!content) {
-    throw new Error("NVIDIA API 응답에 채점 내용이 없습니다.");
+    throw new Error("NVIDIA API response did not include evaluation content.");
   }
 
   return content;

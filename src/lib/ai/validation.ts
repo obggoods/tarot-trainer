@@ -57,35 +57,47 @@ function normalizeAnalysisResult(value: unknown): AnalysisResult | null {
   const score = Number(candidate.score);
 
   if (!Number.isFinite(score)) return null;
-  if (!Array.isArray(candidate.matched_points) || !candidate.matched_points.every(isString)) return null;
-  if (!Array.isArray(candidate.partial_points) || !candidate.partial_points.every(isString)) return null;
-  if (!Array.isArray(candidate.missing_points) || !candidate.missing_points.every(isString)) return null;
+  if (candidate.grade !== "correct" && candidate.grade !== "partial" && candidate.grade !== "incorrect") return null;
+  if (!candidate.rubric || typeof candidate.rubric !== "object") return null;
+  if (!Array.isArray(candidate.specific_strengths) || !candidate.specific_strengths.every(isString)) return null;
+  if (!Array.isArray(candidate.specific_improvements) || !candidate.specific_improvements.every(isString)) return null;
+  if (!Array.isArray(candidate.missed_core_points) || !candidate.missed_core_points.every(isString)) return null;
   if (!Array.isArray(candidate.incorrect_points) || !candidate.incorrect_points.every(isString)) return null;
-  if (!Array.isArray(candidate.feedback_focus) || !candidate.feedback_focus.every(isString)) return null;
-  if (!Array.isArray(candidate.must_include) || !candidate.must_include.every(isString)) return null;
+  if (!isString(candidate.traditional_core)) return null;
+  if (!isString(candidate.contextual_meaning)) return null;
+  if (!Array.isArray(candidate.symbol_notes) || !candidate.symbol_notes.every(isString)) return null;
+  if (!isString(candidate.feedback_focus)) return null;
+  if (!isString(candidate.sample_answer_draft)) return null;
+  if (!isString(candidate.model_answer_draft)) return null;
+  if (!Array.isArray(candidate.difference_notes) || !candidate.difference_notes.every(isString)) return null;
+  if (!isString(candidate.correction_note)) return null;
+  if (!Array.isArray(candidate.missed_key_points) || !candidate.missed_key_points.every(isString)) return null;
   if (!Array.isArray(candidate.avoid_topics) || !candidate.avoid_topics.every(isString)) return null;
-  if (!candidate.traditional_summary || typeof candidate.traditional_summary !== "object") return null;
 
-  const summary = candidate.traditional_summary as Partial<AnalysisResult["traditional_summary"]>;
-  if (!isString(summary.core_meaning)) return null;
-  if (!isString(summary.question_position_meaning)) return null;
-  if (!isString(summary.contextual_meaning)) return null;
-  if (!Array.isArray(summary.important_symbols) || !summary.important_symbols.every(isString)) return null;
+  const rubric = candidate.rubric as Partial<AnalysisResult["rubric"]>;
 
   return {
     score: Math.max(0, Math.min(100, Math.round(score))),
-    matched_points: candidate.matched_points,
-    partial_points: candidate.partial_points,
-    missing_points: candidate.missing_points,
-    incorrect_points: candidate.incorrect_points,
-    traditional_summary: {
-      core_meaning: summary.core_meaning,
-      question_position_meaning: summary.question_position_meaning,
-      contextual_meaning: summary.contextual_meaning,
-      important_symbols: summary.important_symbols,
+    grade: candidate.grade,
+    rubric: {
+      traditionalMeaning: normalizeStar(rubric.traditionalMeaning, 3),
+      questionApplication: normalizeStar(rubric.questionApplication, 3),
+      symbolAwareness: normalizeStar(rubric.symbolAwareness, 3),
+      overstatementControl: normalizeStar(rubric.overstatementControl, 3),
     },
+    specific_strengths: candidate.specific_strengths,
+    specific_improvements: candidate.specific_improvements,
+    missed_core_points: candidate.missed_core_points,
+    incorrect_points: candidate.incorrect_points,
+    traditional_core: candidate.traditional_core,
+    contextual_meaning: candidate.contextual_meaning,
+    symbol_notes: candidate.symbol_notes,
     feedback_focus: candidate.feedback_focus,
-    must_include: candidate.must_include,
+    sample_answer_draft: candidate.sample_answer_draft,
+    model_answer_draft: candidate.model_answer_draft,
+    difference_notes: candidate.difference_notes,
+    correction_note: candidate.correction_note,
+    missed_key_points: candidate.missed_key_points,
     avoid_topics: candidate.avoid_topics,
   };
 }
@@ -102,13 +114,18 @@ function normalizeRubric(value: unknown, score: number): EvaluationResult["rubri
     };
   }
 
-  const rubric = value as Partial<EvaluationResult["rubric"]>;
+  const rubric = value as Partial<
+    EvaluationResult["rubric"] & {
+      symbolAwareness: number;
+      overstatementControl: number;
+    }
+  >;
   return {
     traditionalMeaning: normalizeStar(rubric.traditionalMeaning, fallback),
     questionApplication: normalizeStar(rubric.questionApplication, fallback),
-    counselingExpression: normalizeStar(rubric.counselingExpression, fallback),
-    practicalApplication: normalizeStar(rubric.practicalApplication, fallback),
-    certaintyControl: normalizeStar(rubric.certaintyControl, fallback),
+    counselingExpression: normalizeStar(rubric.counselingExpression ?? rubric.symbolAwareness, fallback),
+    practicalApplication: normalizeStar(rubric.practicalApplication ?? rubric.questionApplication, fallback),
+    certaintyControl: normalizeStar(rubric.certaintyControl ?? rubric.overstatementControl, fallback),
   };
 }
 

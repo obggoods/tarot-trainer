@@ -9,18 +9,26 @@ export type EvaluationInput = {
 
 export type AnalysisResult = {
   score: number;
-  matched_points: string[];
-  partial_points: string[];
-  missing_points: string[];
-  incorrect_points: string[];
-  traditional_summary: {
-    core_meaning: string;
-    question_position_meaning: string;
-    contextual_meaning: string;
-    important_symbols: string[];
+  grade: "correct" | "partial" | "incorrect";
+  rubric: {
+    traditionalMeaning: number;
+    questionApplication: number;
+    symbolAwareness: number;
+    overstatementControl: number;
   };
-  feedback_focus: string[];
-  must_include: string[];
+  specific_strengths: string[];
+  specific_improvements: string[];
+  missed_core_points: string[];
+  incorrect_points: string[];
+  traditional_core: string;
+  contextual_meaning: string;
+  symbol_notes: string[];
+  feedback_focus: string;
+  sample_answer_draft: string;
+  model_answer_draft: string;
+  difference_notes: string[];
+  correction_note: string;
+  missed_key_points: string[];
   avoid_topics: string[];
 };
 
