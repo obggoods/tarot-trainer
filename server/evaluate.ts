@@ -36,7 +36,7 @@ export async function evaluateReading(problem: TarotQuestion, answer: string, ap
 
   const feedback = await requestFeedback({ apiKey, model, input, analysis });
 
-  return feedback ? sanitizeEvaluation(feedback, analysis.avoid_topics) : evaluateWithMock(input);
+  return feedback ? sanitizeEvaluation(applyAnalysisScoring(feedback, analysis), analysis.avoid_topics) : evaluateWithMock(input);
 }
 
 async function requestAnalysis({
@@ -172,6 +172,15 @@ function sanitizeEvaluation(evaluation: EvaluationResult, avoidTopics: string[])
     differences: sanitizeList(evaluation.differences, forbiddenTerms),
     wrong_note: sanitizeText(evaluation.wrong_note, forbiddenTerms),
     next_reading_tip: sanitizeText(evaluation.next_reading_tip, forbiddenTerms),
+  };
+}
+
+function applyAnalysisScoring(evaluation: EvaluationResult, analysis: AnalysisResult): EvaluationResult {
+  return {
+    ...evaluation,
+    score: analysis.score,
+    grade: analysis.grade,
+    rubric: analysis.rubric,
   };
 }
 
