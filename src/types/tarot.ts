@@ -69,18 +69,27 @@ export type TarotMeaningContexts = {
   business: TarotMeaningContext;
   money: TarotMeaningContext;
   health: TarotMeaningContext;
+  relationship: TarotMeaningContext;
+  advice: TarotMeaningContext;
+  daily: TarotMeaningContext;
 };
 
 export type TarotKnowledgeBaseEntry = {
   card_id: string;
   name_ko: string;
   name_en: string;
+  arcana?: TarotArcana;
+  number?: number;
+  suit?: TarotManifestSuit;
+  rank?: string;
   meanings: {
     upright: TkbOrientationMeaning;
     reversed: TkbOrientationMeaning;
   };
   contexts: TarotMeaningContexts;
 };
+
+export type RawMeaningEntry = CardMeaning | TarotKnowledgeBaseEntry;
 
 export type TarotQuestion = {
   question_id: string;

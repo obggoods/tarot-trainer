@@ -23,22 +23,26 @@ const legacyMajorIdMap: Record<string, string> = {
   "major-world": "major_21_world",
 };
 
-const legacyCourtIdMap: Record<string, string> = {
-  pentacles_page: "pentacles_11",
-  "pentacles-page": "pentacles_11",
+const minorRankIdMap: Record<string, string> = {
+  ace: "01",
+  page: "11",
+  knight: "12",
+  queen: "13",
+  king: "14",
 };
 
 export function normalizeCardId(cardId: string) {
   const directId = cardId.trim().toLowerCase();
   const mappedMajorId = legacyMajorIdMap[directId];
-  const mappedCourtId = legacyCourtIdMap[directId];
 
   if (mappedMajorId) {
     return mappedMajorId;
   }
 
-  if (mappedCourtId) {
-    return mappedCourtId;
+  const namedMinorMatch = /^(wands|cups|swords|pentacles)[_-](ace|page|knight|queen|king)$/.exec(directId);
+  if (namedMinorMatch) {
+    const [, suit, rank] = namedMinorMatch;
+    return `${suit}_${minorRankIdMap[rank]}`;
   }
 
   const legacyMinorMatch = /^(wands|cups|swords|pentacles)-(\d{1,2})$/.exec(directId);
@@ -49,4 +53,14 @@ export function normalizeCardId(cardId: string) {
   }
 
   return directId.split("-").join("_");
+}
+
+export function toTrainingCardId(cardId: string) {
+  const normalizedCardId = normalizeCardId(cardId);
+  const namedMinorMatch = /^(wands|cups|swords|pentacles)_(01|11|12|13|14)$/.exec(normalizedCardId);
+  if (!namedMinorMatch) return normalizedCardId;
+
+  const [, suit, number] = namedMinorMatch;
+  const rank = Object.entries(minorRankIdMap).find(([, mappedNumber]) => mappedNumber === number)?.[0];
+  return rank ? `${suit}_${rank}` : normalizedCardId;
 }

@@ -1,50 +1,18 @@
-import highPriestess02 from "../../data/tarot/meanings/major/02_high_priestess.json";
-import lovers06 from "../../data/tarot/meanings/major/06_lovers.json";
-import hangedMan12 from "../../data/tarot/meanings/major/12_hanged_man.json";
-import death13 from "../../data/tarot/meanings/major/13_death.json";
-import temperance14 from "../../data/tarot/meanings/major/14_temperance.json";
-import tower16 from "../../data/tarot/meanings/major/16_tower.json";
-import cups02 from "../../data/tarot/meanings/cups/02_cups.json";
-import cups05 from "../../data/tarot/meanings/cups/05_cups.json";
-import pentacles03 from "../../data/tarot/meanings/pentacles/03_pentacles.json";
-import pentacles04 from "../../data/tarot/meanings/minor/pentacles/04.json";
-import pentaclesPage from "../../data/tarot/meanings/pentacles/page_pentacles.json";
-import swords10 from "../../data/tarot/meanings/swords/10_swords.json";
-import wands08 from "../../data/tarot/meanings/minor/wands/08.json";
-import wands10 from "../../data/tarot/meanings/wands/10_wands.json";
+import { rawMeaningsByCardId } from "../../data/tarot/meanings/allMeanings";
 import type {
   CardMeaning,
   CardOrientationMeaning,
+  RawMeaningEntry,
   TarotCard,
-  TarotKnowledgeBaseEntry,
   TarotMeaningContexts,
 } from "../../types/tarot";
-import { normalizeCardId } from "./cardId";
+import { normalizeCardId, toTrainingCardId } from "./cardId";
 import { getCardMeta } from "./getCardMeta";
-
-type RawMeaningEntry = CardMeaning | TarotKnowledgeBaseEntry;
-
-const rawMeaningsByCardId: Record<string, RawMeaningEntry> = {
-  major_02_high_priestess: highPriestess02,
-  major_06_lovers: lovers06,
-  major_12_hanged_man: hangedMan12,
-  major_13_death: death13,
-  major_14_temperance: temperance14,
-  major_16_tower: tower16,
-  cups_02: cups02,
-  cups_05: cups05,
-  pentacles_03: pentacles03,
-  pentacles_04: pentacles04,
-  pentacles_11: pentaclesPage,
-  swords_10: swords10,
-  wands_08: wands08,
-  wands_10: wands10,
-};
 
 export function getCard(cardId: string): TarotCard {
   const normalizedCardId = normalizeCardId(cardId);
   const meta = getCardMeta(normalizedCardId);
-  const rawMeaning = rawMeaningsByCardId[normalizedCardId];
+  const rawMeaning = rawMeaningsByCardId[normalizedCardId] ?? rawMeaningsByCardId[toTrainingCardId(normalizedCardId)];
 
   if (!meta) {
     throw new Error(`카드 메타데이터를 찾을 수 없습니다: ${cardId}`);

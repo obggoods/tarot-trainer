@@ -2,6 +2,7 @@ import businessQuestions from "./tarot/questions/business.json";
 import careerQuestions from "./tarot/questions/career.json";
 import healthQuestions from "./tarot/questions/health.json";
 import loveQuestions from "./tarot/questions/love.json";
+import { allMeaningCardIds } from "./tarot/meanings/allMeanings";
 import moneyQuestions from "./tarot/questions/money.json";
 import reunionQuestions from "./tarot/questions/reunion.json";
 import type { ConsultationQuestion, Orientation, TarotQuestion } from "../types/tarot";
@@ -15,18 +16,7 @@ export const consultationQuestions: ConsultationQuestion[] = [
   ...healthQuestions,
 ] as ConsultationQuestion[];
 
-const trainingCardPool = [
-  "cups_05",
-  "swords_10",
-  "cups_02",
-  "wands_10",
-  "pentacles_03",
-  "major_02_high_priestess",
-  "major_13_death",
-  "major_16_tower",
-  "major_06_lovers",
-  "pentacles_page",
-];
+export const trainingCardPool = allMeaningCardIds;
 
 const orientations: Orientation[] = ["upright", "reversed"];
 

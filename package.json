@@ -9,6 +9,7 @@
     "dev:server": "tsx watch server/index.ts",
     "download-cards": "tsx scripts/download-rider-waite.ts",
     "serve:api": "tsx server/index.ts",
+    "validate:tarot": "tsx scripts/validate-tarot-meanings.ts",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview --host 127.0.0.1"

@@ -302,16 +302,8 @@ function getContextText({ card, question }: Pick<EvaluationInput, "card" | "ques
   const contexts = card.contexts;
   if (!contexts) return "";
 
-  if (
-    question.category === "love" ||
-    question.category === "reunion" ||
-    question.category === "career" ||
-    question.category === "business" ||
-    question.category === "money" ||
-    question.category === "health"
-  ) {
-    return contexts[question.category]?.[question.orientation] ?? "";
-  }
+  const contextKey = question.category === "general" ? "daily" : question.category;
+  if (contextKey in contexts) return contexts[contextKey as keyof typeof contexts]?.[question.orientation] ?? "";
 
   return "";
 }
