@@ -1,7 +1,7 @@
 import type { EvaluationInput } from "./types";
 import type { EvaluationResult } from "../../types/tarot";
 
-export async function evaluateWithNvidia(input: EvaluationInput): Promise<EvaluationResult> {
+export async function evaluateWithServer(input: EvaluationInput): Promise<EvaluationResult> {
   const response = await fetch("/api/evaluate", {
     method: "POST",
     headers: {
@@ -16,7 +16,7 @@ export async function evaluateWithNvidia(input: EvaluationInput): Promise<Evalua
   const payload = (await response.json().catch(() => null)) as { ok?: boolean; evaluation?: EvaluationResult; error?: string } | null;
 
   if (!response.ok || !payload?.ok || !payload.evaluation) {
-    throw new Error(payload?.error ?? `서버 채점 API 오류: ${response.status}`);
+    throw new Error(payload?.error ?? `Server evaluation API error: ${response.status}`);
   }
 
   return payload.evaluation;

@@ -27,18 +27,18 @@ npx vite --host 0.0.0.0 --port 5176 --strictPort
 `.env.example`을 `.env.local`로 복사한 뒤 필요한 값을 채웁니다.
 
 ```bash
-NVIDIA_API_KEY=
-NVIDIA_MODEL=meta/llama-3.1-70b-instruct
-VITE_USE_MOCK=true
+DEEPSEEK_API_KEY=
+DEEPSEEK_MODEL=deepseek-chat
+VITE_USE_MOCK=false
 ```
 
 환경변수 설명:
 
-- `NVIDIA_API_KEY`: 서버에서 NVIDIA Inference API를 호출할 때 사용합니다. Vercel Production/Preview 환경변수에 설정합니다.
-- `NVIDIA_MODEL`: 선택값입니다. 비워두면 기본값 `meta/llama-3.1-70b-instruct`를 사용합니다.
-- `VITE_USE_MOCK`: `true`이면 브라우저에서 mock evaluator를 사용합니다. 베타에서 실제 AI 채점을 쓰려면 Vercel에 `false`로 설정합니다.
+- `DEEPSEEK_API_KEY`: 서버에서 DeepSeek Chat Completions API를 호출할 때 사용합니다. Vercel Production/Preview 환경변수에 설정합니다.
+- `DEEPSEEK_MODEL`: 선택값입니다. 비워두면 기본값 `deepseek-chat`을 사용합니다.
+- `VITE_USE_MOCK`: `true`이면 브라우저에서 mock evaluator를 사용합니다. 실제 AI 채점을 쓰려면 Vercel에 `false`로 설정합니다.
 
-주의: NVIDIA API 키는 클라이언트용 `VITE_` 환경변수로 배포하지 마세요. 실제 AI 호출은 `/api/evaluate` 서버 함수에서 처리합니다.
+주의: DeepSeek API 키는 클라이언트용 `VITE_` 환경변수로 배포하지 마세요. 실제 AI 호출은 `/api/evaluate` 서버 함수에서 처리합니다.
 
 ## Build
 
@@ -59,14 +59,14 @@ Vercel에서 Git repository를 Import한 뒤 아래 설정을 사용합니다.
 필수 환경변수:
 
 ```bash
-NVIDIA_API_KEY=<your-nvidia-api-key>
+DEEPSEEK_API_KEY=<your-deepseek-api-key>
 VITE_USE_MOCK=false
 ```
 
 선택 환경변수:
 
 ```bash
-NVIDIA_MODEL=meta/llama-3.1-70b-instruct
+DEEPSEEK_MODEL=deepseek-chat
 ```
 
 `vercel.json`에는 `/api/*`를 제외한 모든 경로를 `index.html`로 보내는 SPA fallback rewrite가 포함되어 있습니다.

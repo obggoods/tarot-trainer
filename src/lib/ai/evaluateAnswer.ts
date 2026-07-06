@@ -1,5 +1,5 @@
 import { evaluateWithMock } from "./mockEvaluator";
-import { evaluateWithNvidia } from "./nvidiaEvaluator";
+import { evaluateWithServer } from "./serverEvaluator";
 import type { EvaluationInput } from "./types";
 import type { EvaluationResult } from "../../types/tarot";
 
@@ -9,9 +9,9 @@ export async function evaluateAnswer(input: EvaluationInput): Promise<Evaluation
   }
 
   try {
-    return await evaluateWithNvidia(input);
+    return await evaluateWithServer(input);
   } catch (error) {
-    console.warn("NVIDIA evaluator failed. Falling back to mock evaluator.", error);
+    console.warn("AI evaluator failed. Falling back to mock evaluator.", error);
     return evaluateWithMock(input);
   }
 }

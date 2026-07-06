@@ -5,7 +5,7 @@ import { getCard, getCardMeaning } from "../src/lib/tarot/getCard";
 import type { AnalysisResult, EvaluationInput } from "../src/lib/ai/types";
 import type { EvaluationResult, TarotQuestion } from "../src/types";
 
-type NvidiaMessage = {
+type ChatMessage = {
   role: "system" | "user" | "assistant";
   content: string;
 };
@@ -22,7 +22,7 @@ export async function evaluateReading(problem: TarotQuestion, answer: string, ap
     return evaluateWithMock(input);
   }
 
-  const model = process.env.NVIDIA_MODEL ?? process.env.VITE_NVIDIA_MODEL ?? "meta/llama-3.1-70b-instruct";
+  const model = process.env.DEEPSEEK_MODEL ?? "deepseek-chat";
 
   const analysis = await requestAnalysis({ apiKey, model, input });
   if (!analysis) {
@@ -50,7 +50,7 @@ async function requestAnalysis({
   const prompt = buildAnalysisPrompt(input);
 
   for (let attempt = 0; attempt <= MAX_ANALYSIS_RETRIES; attempt += 1) {
-    const content = await requestNvidiaCompletion({
+    const content = await requestDeepSeekCompletion({
       apiKey,
       model,
       prompt,
@@ -78,7 +78,7 @@ async function requestFeedback({
   const prompt = buildFeedbackPrompt(input, analysis);
 
   for (let attempt = 0; attempt <= MAX_FEEDBACK_RETRIES; attempt += 1) {
-    const content = await requestNvidiaCompletion({
+    const content = await requestDeepSeekCompletion({
       apiKey,
       model,
       prompt,
@@ -92,7 +92,7 @@ async function requestFeedback({
   return null;
 }
 
-async function requestNvidiaCompletion({
+async function requestDeepSeekCompletion({
   apiKey,
   model,
   prompt,
@@ -103,37 +103,54 @@ async function requestNvidiaCompletion({
   prompt: string;
   maxTokens: number;
 }) {
-  const messages: NvidiaMessage[] = [
+  const messages: ChatMessage[] = [
     {
       role: "user",
       content: prompt,
     },
   ];
 
-  const response = await fetch("https://integrate.api.nvidia.com/v1/chat/completions", {
+  const payload = {
+    model,
+    messages,
+    temperature: 0.2,
+    max_tokens: maxTokens,
+  };
+
+  const response = await fetchDeepSeekCompletion(apiKey, {
+    ...payload,
+    response_format: { type: "json_object" },
+  });
+
+  if (!response.ok) {
+    const fallbackResponse = await fetchDeepSeekCompletion(apiKey, payload);
+    if (!fallbackResponse.ok) {
+      const errorText = await fallbackResponse.text();
+      throw new Error(`DeepSeek API error: ${fallbackResponse.status} ${errorText}`);
+    }
+
+    return readDeepSeekContent(fallbackResponse);
+  }
+
+  return readDeepSeekContent(response);
+}
+
+async function fetchDeepSeekCompletion(apiKey: string, body: object) {
+  return fetch("https://api.deepseek.com/chat/completions", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${apiKey}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      model,
-      messages,
-      temperature: 0.2,
-      max_tokens: maxTokens,
-      response_format: { type: "json_object" },
-    }),
+    body: JSON.stringify(body),
   });
+}
 
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`NVIDIA API error: ${response.status} ${errorText}`);
-  }
-
+async function readDeepSeekContent(response: Response) {
   const payload = (await response.json()) as { choices?: Array<{ message?: { content?: string } }> };
   const content = payload.choices?.[0]?.message?.content;
   if (!content) {
-    throw new Error("NVIDIA API response did not include evaluation content.");
+    throw new Error("DeepSeek API response did not include evaluation content.");
   }
 
   return content;

@@ -15,7 +15,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const evaluation = await evaluateReading(problem, answer, process.env.NVIDIA_API_KEY ?? process.env.VITE_NVIDIA_API_KEY);
+    const evaluation = await evaluateReading(problem, answer, process.env.DEEPSEEK_API_KEY);
     return res.status(200).json({ ok: true, evaluation });
   } catch (error) {
     const message = error instanceof Error ? error.message : "채점 중 알 수 없는 오류가 발생했습니다.";
