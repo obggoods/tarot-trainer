@@ -1,0 +1,41 @@
+[
+  {
+    "question_id": "reunion_consult_001",
+    "spread": "재회",
+    "position": "현재 관계 상태",
+    "difficulty": "beginner",
+    "category": "reunion",
+    "question": "그 사람과 재회할 수 있을까요?",
+    "persona": {
+      "age": "30대 여성",
+      "background": "반년 전 헤어진 연인과 최근 다시 연락이 닿았습니다.",
+      "concern": "상대가 단순한 안부인지 다시 만나고 싶은 건지 알고 싶어합니다."
+    }
+  },
+  {
+    "question_id": "reunion_consult_002",
+    "spread": "재회",
+    "position": "재회를 위해 필요한 태도",
+    "difficulty": "beginner",
+    "category": "reunion",
+    "question": "제가 먼저 연락해도 괜찮을까요?",
+    "persona": {
+      "age": "20대 남성",
+      "background": "다툼 후 헤어졌고 서로 자존심 때문에 연락하지 않고 있습니다.",
+      "concern": "먼저 다가가면 상황이 나아질지 더 나빠질지 걱정합니다."
+    }
+  },
+  {
+    "question_id": "reunion_consult_003",
+    "spread": "재회",
+    "position": "관계 회복 가능성",
+    "difficulty": "beginner",
+    "category": "reunion",
+    "question": "이별 후 다시 대화할 기회가 생길까요?",
+    "persona": {
+      "age": "30대 여성",
+      "background": "상대가 갑자기 연락을 끊었고 이유를 명확히 말하지 않았습니다.",
+      "concern": "관계가 완전히 끝난 것인지 대화 여지가 남았는지 알고 싶어합니다."
+    }
+  }
+]

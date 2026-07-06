@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color: #1f2421;
+  background: #f5f0e6;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+}
+
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+.trainer-top-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.trainer-card-image {
+  width: min(52%, 190px);
+  flex-shrink: 0;
+}
+
+.trainer-answer-textarea {
+  height: 10rem;
+}
+
+@media (min-width: 640px) {
+  .trainer-answer-textarea {
+    height: 9rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .trainer-top-grid {
+    grid-template-columns: minmax(0, 1.75fr) minmax(320px, 0.95fr);
+  }
+
+  .trainer-top-question {
+    min-width: 0;
+  }
+}

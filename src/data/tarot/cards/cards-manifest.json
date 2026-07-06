@@ -1,0 +1,738 @@
+{
+  "major_00_fool": {
+    "card_id": "major_00_fool",
+    "name_ko": "바보",
+    "name_en": "The Fool",
+    "arcana": "major",
+    "image": "/cards/optimized/major/00_fool.webp",
+    "original_image": "/cards/original/major/00_fool.jpg"
+  },
+  "major_01_magician": {
+    "card_id": "major_01_magician",
+    "name_ko": "마법사",
+    "name_en": "The Magician",
+    "arcana": "major",
+    "image": "/cards/optimized/major/01_magician.webp",
+    "original_image": "/cards/original/major/01_magician.jpg"
+  },
+  "major_02_high_priestess": {
+    "card_id": "major_02_high_priestess",
+    "name_ko": "여사제",
+    "name_en": "The High Priestess",
+    "arcana": "major",
+    "image": "/cards/optimized/major/02_high_priestess.webp",
+    "original_image": "/cards/original/major/02_high_priestess.jpg"
+  },
+  "major_03_empress": {
+    "card_id": "major_03_empress",
+    "name_ko": "여황제",
+    "name_en": "The Empress",
+    "arcana": "major",
+    "image": "/cards/optimized/major/03_empress.webp",
+    "original_image": "/cards/original/major/03_empress.jpg"
+  },
+  "major_04_emperor": {
+    "card_id": "major_04_emperor",
+    "name_ko": "황제",
+    "name_en": "The Emperor",
+    "arcana": "major",
+    "image": "/cards/optimized/major/04_emperor.webp",
+    "original_image": "/cards/original/major/04_emperor.jpg"
+  },
+  "major_05_hierophant": {
+    "card_id": "major_05_hierophant",
+    "name_ko": "교황",
+    "name_en": "The Hierophant",
+    "arcana": "major",
+    "image": "/cards/optimized/major/05_hierophant.webp",
+    "original_image": "/cards/original/major/05_hierophant.jpg"
+  },
+  "major_06_lovers": {
+    "card_id": "major_06_lovers",
+    "name_ko": "연인",
+    "name_en": "The Lovers",
+    "arcana": "major",
+    "image": "/cards/optimized/major/06_lovers.webp",
+    "original_image": "/cards/original/major/06_lovers.jpg"
+  },
+  "major_07_chariot": {
+    "card_id": "major_07_chariot",
+    "name_ko": "전차",
+    "name_en": "The Chariot",
+    "arcana": "major",
+    "image": "/cards/optimized/major/07_chariot.webp",
+    "original_image": "/cards/original/major/07_chariot.jpg"
+  },
+  "major_08_strength": {
+    "card_id": "major_08_strength",
+    "name_ko": "힘",
+    "name_en": "Strength",
+    "arcana": "major",
+    "image": "/cards/optimized/major/08_strength.webp",
+    "original_image": "/cards/original/major/08_strength.jpg"
+  },
+  "major_09_hermit": {
+    "card_id": "major_09_hermit",
+    "name_ko": "은둔자",
+    "name_en": "The Hermit",
+    "arcana": "major",
+    "image": "/cards/optimized/major/09_hermit.webp",
+    "original_image": "/cards/original/major/09_hermit.jpg"
+  },
+  "major_10_wheel_of_fortune": {
+    "card_id": "major_10_wheel_of_fortune",
+    "name_ko": "운명의 수레바퀴",
+    "name_en": "Wheel of Fortune",
+    "arcana": "major",
+    "image": "/cards/optimized/major/10_wheel_of_fortune.webp",
+    "original_image": "/cards/original/major/10_wheel_of_fortune.jpg"
+  },
+  "major_11_justice": {
+    "card_id": "major_11_justice",
+    "name_ko": "정의",
+    "name_en": "Justice",
+    "arcana": "major",
+    "image": "/cards/optimized/major/11_justice.webp",
+    "original_image": "/cards/original/major/11_justice.jpg"
+  },
+  "major_12_hanged_man": {
+    "card_id": "major_12_hanged_man",
+    "name_ko": "매달린 사람",
+    "name_en": "The Hanged Man",
+    "arcana": "major",
+    "image": "/cards/optimized/major/12_hanged_man.webp",
+    "original_image": "/cards/original/major/12_hanged_man.jpg"
+  },
+  "major_13_death": {
+    "card_id": "major_13_death",
+    "name_ko": "죽음",
+    "name_en": "Death",
+    "arcana": "major",
+    "image": "/cards/optimized/major/13_death.webp",
+    "original_image": "/cards/original/major/13_death.jpg"
+  },
+  "major_14_temperance": {
+    "card_id": "major_14_temperance",
+    "name_ko": "절제",
+    "name_en": "Temperance",
+    "arcana": "major",
+    "image": "/cards/optimized/major/14_temperance.webp",
+    "original_image": "/cards/original/major/14_temperance.jpg"
+  },
+  "major_15_devil": {
+    "card_id": "major_15_devil",
+    "name_ko": "악마",
+    "name_en": "The Devil",
+    "arcana": "major",
+    "image": "/cards/optimized/major/15_devil.webp",
+    "original_image": "/cards/original/major/15_devil.jpg"
+  },
+  "major_16_tower": {
+    "card_id": "major_16_tower",
+    "name_ko": "탑",
+    "name_en": "The Tower",
+    "arcana": "major",
+    "image": "/cards/optimized/major/16_tower.webp",
+    "original_image": "/cards/original/major/16_tower.jpg"
+  },
+  "major_17_star": {
+    "card_id": "major_17_star",
+    "name_ko": "별",
+    "name_en": "The Star",
+    "arcana": "major",
+    "image": "/cards/optimized/major/17_star.webp",
+    "original_image": "/cards/original/major/17_star.jpg"
+  },
+  "major_18_moon": {
+    "card_id": "major_18_moon",
+    "name_ko": "달",
+    "name_en": "The Moon",
+    "arcana": "major",
+    "image": "/cards/optimized/major/18_moon.webp",
+    "original_image": "/cards/original/major/18_moon.jpg"
+  },
+  "major_19_sun": {
+    "card_id": "major_19_sun",
+    "name_ko": "태양",
+    "name_en": "The Sun",
+    "arcana": "major",
+    "image": "/cards/optimized/major/19_sun.webp",
+    "original_image": "/cards/original/major/19_sun.jpg"
+  },
+  "major_20_judgement": {
+    "card_id": "major_20_judgement",
+    "name_ko": "심판",
+    "name_en": "Judgement",
+    "arcana": "major",
+    "image": "/cards/optimized/major/20_judgement.webp",
+    "original_image": "/cards/original/major/20_judgement.jpg"
+  },
+  "major_21_world": {
+    "card_id": "major_21_world",
+    "name_ko": "세계",
+    "name_en": "The World",
+    "arcana": "major",
+    "image": "/cards/optimized/major/21_world.webp",
+    "original_image": "/cards/original/major/21_world.jpg"
+  },
+  "wands_01": {
+    "card_id": "wands_01",
+    "name_ko": "완드 에이스",
+    "name_en": "Ace of Wands",
+    "arcana": "minor",
+    "suit": "wands",
+    "number": 1,
+    "image": "/cards/optimized/minor/wands/01_ace.webp",
+    "original_image": "/cards/original/minor/wands/01_ace.jpg"
+  },
+  "wands_02": {
+    "card_id": "wands_02",
+    "name_ko": "완드 2",
+    "name_en": "Two of Wands",
+    "arcana": "minor",
+    "suit": "wands",
+    "number": 2,
+    "image": "/cards/optimized/minor/wands/02_two.webp",
+    "original_image": "/cards/original/minor/wands/02_two.jpg"
+  },
+  "wands_03": {
+    "card_id": "wands_03",
+    "name_ko": "완드 3",
+    "name_en": "Three of Wands",
+    "arcana": "minor",
+    "suit": "wands",
+    "number": 3,
+    "image": "/cards/optimized/minor/wands/03_three.webp",
+    "original_image": "/cards/original/minor/wands/03_three.jpg"
+  },
+  "wands_04": {
+    "card_id": "wands_04",
+    "name_ko": "완드 4",
+    "name_en": "Four of Wands",
+    "arcana": "minor",
+    "suit": "wands",
+    "number": 4,
+    "image": "/cards/optimized/minor/wands/04_four.webp",
+    "original_image": "/cards/original/minor/wands/04_four.jpg"
+  },
+  "wands_05": {
+    "card_id": "wands_05",
+    "name_ko": "완드 5",
+    "name_en": "Five of Wands",
+    "arcana": "minor",
+    "suit": "wands",
+    "number": 5,
+    "image": "/cards/optimized/minor/wands/05_five.webp",
+    "original_image": "/cards/original/minor/wands/05_five.jpg"
+  },
+  "wands_06": {
+    "card_id": "wands_06",
+    "name_ko": "완드 6",
+    "name_en": "Six of Wands",
+    "arcana": "minor",
+    "suit": "wands",
+    "number": 6,
+    "image": "/cards/optimized/minor/wands/06_six.webp",
+    "original_image": "/cards/original/minor/wands/06_six.jpg"
+  },
+  "wands_07": {
+    "card_id": "wands_07",
+    "name_ko": "완드 7",
+    "name_en": "Seven of Wands",
+    "arcana": "minor",
+    "suit": "wands",
+    "number": 7,
+    "image": "/cards/optimized/minor/wands/07_seven.webp",
+    "original_image": "/cards/original/minor/wands/07_seven.jpg"
+  },
+  "wands_08": {
+    "card_id": "wands_08",
+    "name_ko": "완드 8",
+    "name_en": "Eight of Wands",
+    "arcana": "minor",
+    "suit": "wands",
+    "number": 8,
+    "image": "/cards/optimized/minor/wands/08_eight.webp",
+    "original_image": "/cards/original/minor/wands/08_eight.jpg"
+  },
+  "wands_09": {
+    "card_id": "wands_09",
+    "name_ko": "완드 9",
+    "name_en": "Nine of Wands",
+    "arcana": "minor",
+    "suit": "wands",
+    "number": 9,
+    "image": "/cards/optimized/minor/wands/09_nine.webp",
+    "original_image": "/cards/original/minor/wands/09_nine.jpg"
+  },
+  "wands_10": {
+    "card_id": "wands_10",
+    "name_ko": "완드 10",
+    "name_en": "Ten of Wands",
+    "arcana": "minor",
+    "suit": "wands",
+    "number": 10,
+    "image": "/cards/optimized/minor/wands/10_ten.webp",
+    "original_image": "/cards/original/minor/wands/10_ten.jpg"
+  },
+  "wands_11": {
+    "card_id": "wands_11",
+    "name_ko": "완드 페이지",
+    "name_en": "Page of Wands",
+    "arcana": "minor",
+    "suit": "wands",
+    "number": 11,
+    "image": "/cards/optimized/minor/wands/11_page.webp",
+    "original_image": "/cards/original/minor/wands/11_page.jpg"
+  },
+  "wands_12": {
+    "card_id": "wands_12",
+    "name_ko": "완드 기사",
+    "name_en": "Knight of Wands",
+    "arcana": "minor",
+    "suit": "wands",
+    "number": 12,
+    "image": "/cards/optimized/minor/wands/12_knight.webp",
+    "original_image": "/cards/original/minor/wands/12_knight.jpg"
+  },
+  "wands_13": {
+    "card_id": "wands_13",
+    "name_ko": "완드 퀸",
+    "name_en": "Queen of Wands",
+    "arcana": "minor",
+    "suit": "wands",
+    "number": 13,
+    "image": "/cards/optimized/minor/wands/13_queen.webp",
+    "original_image": "/cards/original/minor/wands/13_queen.jpg"
+  },
+  "wands_14": {
+    "card_id": "wands_14",
+    "name_ko": "완드 킹",
+    "name_en": "King of Wands",
+    "arcana": "minor",
+    "suit": "wands",
+    "number": 14,
+    "image": "/cards/optimized/minor/wands/14_king.webp",
+    "original_image": "/cards/original/minor/wands/14_king.jpg"
+  },
+  "cups_01": {
+    "card_id": "cups_01",
+    "name_ko": "컵 에이스",
+    "name_en": "Ace of Cups",
+    "arcana": "minor",
+    "suit": "cups",
+    "number": 1,
+    "image": "/cards/optimized/minor/cups/01_ace.webp",
+    "original_image": "/cards/original/minor/cups/01_ace.jpg"
+  },
+  "cups_02": {
+    "card_id": "cups_02",
+    "name_ko": "컵 2",
+    "name_en": "Two of Cups",
+    "arcana": "minor",
+    "suit": "cups",
+    "number": 2,
+    "image": "/cards/optimized/minor/cups/02_two.webp",
+    "original_image": "/cards/original/minor/cups/02_two.jpg"
+  },
+  "cups_03": {
+    "card_id": "cups_03",
+    "name_ko": "컵 3",
+    "name_en": "Three of Cups",
+    "arcana": "minor",
+    "suit": "cups",
+    "number": 3,
+    "image": "/cards/optimized/minor/cups/03_three.webp",
+    "original_image": "/cards/original/minor/cups/03_three.jpg"
+  },
+  "cups_04": {
+    "card_id": "cups_04",
+    "name_ko": "컵 4",
+    "name_en": "Four of Cups",
+    "arcana": "minor",
+    "suit": "cups",
+    "number": 4,
+    "image": "/cards/optimized/minor/cups/04_four.webp",
+    "original_image": "/cards/original/minor/cups/04_four.jpg"
+  },
+  "cups_05": {
+    "card_id": "cups_05",
+    "name_ko": "컵 5",
+    "name_en": "Five of Cups",
+    "arcana": "minor",
+    "suit": "cups",
+    "number": 5,
+    "image": "/cards/optimized/minor/cups/05_five.webp",
+    "original_image": "/cards/original/minor/cups/05_five.jpg"
+  },
+  "cups_06": {
+    "card_id": "cups_06",
+    "name_ko": "컵 6",
+    "name_en": "Six of Cups",
+    "arcana": "minor",
+    "suit": "cups",
+    "number": 6,
+    "image": "/cards/optimized/minor/cups/06_six.webp",
+    "original_image": "/cards/original/minor/cups/06_six.jpg"
+  },
+  "cups_07": {
+    "card_id": "cups_07",
+    "name_ko": "컵 7",
+    "name_en": "Seven of Cups",
+    "arcana": "minor",
+    "suit": "cups",
+    "number": 7,
+    "image": "/cards/optimized/minor/cups/07_seven.webp",
+    "original_image": "/cards/original/minor/cups/07_seven.jpg"
+  },
+  "cups_08": {
+    "card_id": "cups_08",
+    "name_ko": "컵 8",
+    "name_en": "Eight of Cups",
+    "arcana": "minor",
+    "suit": "cups",
+    "number": 8,
+    "image": "/cards/optimized/minor/cups/08_eight.webp",
+    "original_image": "/cards/original/minor/cups/08_eight.jpg"
+  },
+  "cups_09": {
+    "card_id": "cups_09",
+    "name_ko": "컵 9",
+    "name_en": "Nine of Cups",
+    "arcana": "minor",
+    "suit": "cups",
+    "number": 9,
+    "image": "/cards/optimized/minor/cups/09_nine.webp",
+    "original_image": "/cards/original/minor/cups/09_nine.jpg"
+  },
+  "cups_10": {
+    "card_id": "cups_10",
+    "name_ko": "컵 10",
+    "name_en": "Ten of Cups",
+    "arcana": "minor",
+    "suit": "cups",
+    "number": 10,
+    "image": "/cards/optimized/minor/cups/10_ten.webp",
+    "original_image": "/cards/original/minor/cups/10_ten.jpg"
+  },
+  "cups_11": {
+    "card_id": "cups_11",
+    "name_ko": "컵 페이지",
+    "name_en": "Page of Cups",
+    "arcana": "minor",
+    "suit": "cups",
+    "number": 11,
+    "image": "/cards/optimized/minor/cups/11_page.webp",
+    "original_image": "/cards/original/minor/cups/11_page.jpg"
+  },
+  "cups_12": {
+    "card_id": "cups_12",
+    "name_ko": "컵 기사",
+    "name_en": "Knight of Cups",
+    "arcana": "minor",
+    "suit": "cups",
+    "number": 12,
+    "image": "/cards/optimized/minor/cups/12_knight.webp",
+    "original_image": "/cards/original/minor/cups/12_knight.jpg"
+  },
+  "cups_13": {
+    "card_id": "cups_13",
+    "name_ko": "컵 퀸",
+    "name_en": "Queen of Cups",
+    "arcana": "minor",
+    "suit": "cups",
+    "number": 13,
+    "image": "/cards/optimized/minor/cups/13_queen.webp",
+    "original_image": "/cards/original/minor/cups/13_queen.jpg"
+  },
+  "cups_14": {
+    "card_id": "cups_14",
+    "name_ko": "컵 킹",
+    "name_en": "King of Cups",
+    "arcana": "minor",
+    "suit": "cups",
+    "number": 14,
+    "image": "/cards/optimized/minor/cups/14_king.webp",
+    "original_image": "/cards/original/minor/cups/14_king.jpg"
+  },
+  "swords_01": {
+    "card_id": "swords_01",
+    "name_ko": "소드 에이스",
+    "name_en": "Ace of Swords",
+    "arcana": "minor",
+    "suit": "swords",
+    "number": 1,
+    "image": "/cards/optimized/minor/swords/01_ace.webp",
+    "original_image": "/cards/original/minor/swords/01_ace.jpg"
+  },
+  "swords_02": {
+    "card_id": "swords_02",
+    "name_ko": "소드 2",
+    "name_en": "Two of Swords",
+    "arcana": "minor",
+    "suit": "swords",
+    "number": 2,
+    "image": "/cards/optimized/minor/swords/02_two.webp",
+    "original_image": "/cards/original/minor/swords/02_two.jpg"
+  },
+  "swords_03": {
+    "card_id": "swords_03",
+    "name_ko": "소드 3",
+    "name_en": "Three of Swords",
+    "arcana": "minor",
+    "suit": "swords",
+    "number": 3,
+    "image": "/cards/optimized/minor/swords/03_three.webp",
+    "original_image": "/cards/original/minor/swords/03_three.jpg"
+  },
+  "swords_04": {
+    "card_id": "swords_04",
+    "name_ko": "소드 4",
+    "name_en": "Four of Swords",
+    "arcana": "minor",
+    "suit": "swords",
+    "number": 4,
+    "image": "/cards/optimized/minor/swords/04_four.webp",
+    "original_image": "/cards/original/minor/swords/04_four.jpg"
+  },
+  "swords_05": {
+    "card_id": "swords_05",
+    "name_ko": "소드 5",
+    "name_en": "Five of Swords",
+    "arcana": "minor",
+    "suit": "swords",
+    "number": 5,
+    "image": "/cards/optimized/minor/swords/05_five.webp",
+    "original_image": "/cards/original/minor/swords/05_five.jpg"
+  },
+  "swords_06": {
+    "card_id": "swords_06",
+    "name_ko": "소드 6",
+    "name_en": "Six of Swords",
+    "arcana": "minor",
+    "suit": "swords",
+    "number": 6,
+    "image": "/cards/optimized/minor/swords/06_six.webp",
+    "original_image": "/cards/original/minor/swords/06_six.jpg"
+  },
+  "swords_07": {
+    "card_id": "swords_07",
+    "name_ko": "소드 7",
+    "name_en": "Seven of Swords",
+    "arcana": "minor",
+    "suit": "swords",
+    "number": 7,
+    "image": "/cards/optimized/minor/swords/07_seven.webp",
+    "original_image": "/cards/original/minor/swords/07_seven.jpg"
+  },
+  "swords_08": {
+    "card_id": "swords_08",
+    "name_ko": "소드 8",
+    "name_en": "Eight of Swords",
+    "arcana": "minor",
+    "suit": "swords",
+    "number": 8,
+    "image": "/cards/optimized/minor/swords/08_eight.webp",
+    "original_image": "/cards/original/minor/swords/08_eight.jpg"
+  },
+  "swords_09": {
+    "card_id": "swords_09",
+    "name_ko": "소드 9",
+    "name_en": "Nine of Swords",
+    "arcana": "minor",
+    "suit": "swords",
+    "number": 9,
+    "image": "/cards/optimized/minor/swords/09_nine.webp",
+    "original_image": "/cards/original/minor/swords/09_nine.jpg"
+  },
+  "swords_10": {
+    "card_id": "swords_10",
+    "name_ko": "소드 10",
+    "name_en": "Ten of Swords",
+    "arcana": "minor",
+    "suit": "swords",
+    "number": 10,
+    "image": "/cards/optimized/minor/swords/10_ten.webp",
+    "original_image": "/cards/original/minor/swords/10_ten.jpg"
+  },
+  "swords_11": {
+    "card_id": "swords_11",
+    "name_ko": "소드 페이지",
+    "name_en": "Page of Swords",
+    "arcana": "minor",
+    "suit": "swords",
+    "number": 11,
+    "image": "/cards/optimized/minor/swords/11_page.webp",
+    "original_image": "/cards/original/minor/swords/11_page.jpg"
+  },
+  "swords_12": {
+    "card_id": "swords_12",
+    "name_ko": "소드 기사",
+    "name_en": "Knight of Swords",
+    "arcana": "minor",
+    "suit": "swords",
+    "number": 12,
+    "image": "/cards/optimized/minor/swords/12_knight.webp",
+    "original_image": "/cards/original/minor/swords/12_knight.jpg"
+  },
+  "swords_13": {
+    "card_id": "swords_13",
+    "name_ko": "소드 퀸",
+    "name_en": "Queen of Swords",
+    "arcana": "minor",
+    "suit": "swords",
+    "number": 13,
+    "image": "/cards/optimized/minor/swords/13_queen.webp",
+    "original_image": "/cards/original/minor/swords/13_queen.jpg"
+  },
+  "swords_14": {
+    "card_id": "swords_14",
+    "name_ko": "소드 킹",
+    "name_en": "King of Swords",
+    "arcana": "minor",
+    "suit": "swords",
+    "number": 14,
+    "image": "/cards/optimized/minor/swords/14_king.webp",
+    "original_image": "/cards/original/minor/swords/14_king.jpg"
+  },
+  "pentacles_01": {
+    "card_id": "pentacles_01",
+    "name_ko": "펜타클 에이스",
+    "name_en": "Ace of Pentacles",
+    "arcana": "minor",
+    "suit": "pentacles",
+    "number": 1,
+    "image": "/cards/optimized/minor/pentacles/01_ace.webp",
+    "original_image": "/cards/original/minor/pentacles/01_ace.jpg"
+  },
+  "pentacles_02": {
+    "card_id": "pentacles_02",
+    "name_ko": "펜타클 2",
+    "name_en": "Two of Pentacles",
+    "arcana": "minor",
+    "suit": "pentacles",
+    "number": 2,
+    "image": "/cards/optimized/minor/pentacles/02_two.webp",
+    "original_image": "/cards/original/minor/pentacles/02_two.jpg"
+  },
+  "pentacles_03": {
+    "card_id": "pentacles_03",
+    "name_ko": "펜타클 3",
+    "name_en": "Three of Pentacles",
+    "arcana": "minor",
+    "suit": "pentacles",
+    "number": 3,
+    "image": "/cards/optimized/minor/pentacles/03_three.webp",
+    "original_image": "/cards/original/minor/pentacles/03_three.jpg"
+  },
+  "pentacles_04": {
+    "card_id": "pentacles_04",
+    "name_ko": "펜타클 4",
+    "name_en": "Four of Pentacles",
+    "arcana": "minor",
+    "suit": "pentacles",
+    "number": 4,
+    "image": "/cards/optimized/minor/pentacles/04_four.webp",
+    "original_image": "/cards/original/minor/pentacles/04_four.jpg"
+  },
+  "pentacles_05": {
+    "card_id": "pentacles_05",
+    "name_ko": "펜타클 5",
+    "name_en": "Five of Pentacles",
+    "arcana": "minor",
+    "suit": "pentacles",
+    "number": 5,
+    "image": "/cards/optimized/minor/pentacles/05_five.webp",
+    "original_image": "/cards/original/minor/pentacles/05_five.jpg"
+  },
+  "pentacles_06": {
+    "card_id": "pentacles_06",
+    "name_ko": "펜타클 6",
+    "name_en": "Six of Pentacles",
+    "arcana": "minor",
+    "suit": "pentacles",
+    "number": 6,
+    "image": "/cards/optimized/minor/pentacles/06_six.webp",
+    "original_image": "/cards/original/minor/pentacles/06_six.jpg"
+  },
+  "pentacles_07": {
+    "card_id": "pentacles_07",
+    "name_ko": "펜타클 7",
+    "name_en": "Seven of Pentacles",
+    "arcana": "minor",
+    "suit": "pentacles",
+    "number": 7,
+    "image": "/cards/optimized/minor/pentacles/07_seven.webp",
+    "original_image": "/cards/original/minor/pentacles/07_seven.jpg"
+  },
+  "pentacles_08": {
+    "card_id": "pentacles_08",
+    "name_ko": "펜타클 8",
+    "name_en": "Eight of Pentacles",
+    "arcana": "minor",
+    "suit": "pentacles",
+    "number": 8,
+    "image": "/cards/optimized/minor/pentacles/08_eight.webp",
+    "original_image": "/cards/original/minor/pentacles/08_eight.jpg"
+  },
+  "pentacles_09": {
+    "card_id": "pentacles_09",
+    "name_ko": "펜타클 9",
+    "name_en": "Nine of Pentacles",
+    "arcana": "minor",
+    "suit": "pentacles",
+    "number": 9,
+    "image": "/cards/optimized/minor/pentacles/09_nine.webp",
+    "original_image": "/cards/original/minor/pentacles/09_nine.jpg"
+  },
+  "pentacles_10": {
+    "card_id": "pentacles_10",
+    "name_ko": "펜타클 10",
+    "name_en": "Ten of Pentacles",
+    "arcana": "minor",
+    "suit": "pentacles",
+    "number": 10,
+    "image": "/cards/optimized/minor/pentacles/10_ten.webp",
+    "original_image": "/cards/original/minor/pentacles/10_ten.jpg"
+  },
+  "pentacles_11": {
+    "card_id": "pentacles_11",
+    "name_ko": "펜타클 페이지",
+    "name_en": "Page of Pentacles",
+    "arcana": "minor",
+    "suit": "pentacles",
+    "number": 11,
+    "image": "/cards/optimized/minor/pentacles/11_page.webp",
+    "original_image": "/cards/original/minor/pentacles/11_page.jpg"
+  },
+  "pentacles_12": {
+    "card_id": "pentacles_12",
+    "name_ko": "펜타클 기사",
+    "name_en": "Knight of Pentacles",
+    "arcana": "minor",
+    "suit": "pentacles",
+    "number": 12,
+    "image": "/cards/optimized/minor/pentacles/12_knight.webp",
+    "original_image": "/cards/original/minor/pentacles/12_knight.jpg"
+  },
+  "pentacles_13": {
+    "card_id": "pentacles_13",
+    "name_ko": "펜타클 퀸",
+    "name_en": "Queen of Pentacles",
+    "arcana": "minor",
+    "suit": "pentacles",
+    "number": 13,
+    "image": "/cards/optimized/minor/pentacles/13_queen.webp",
+    "original_image": "/cards/original/minor/pentacles/13_queen.jpg"
+  },
+  "pentacles_14": {
+    "card_id": "pentacles_14",
+    "name_ko": "펜타클 킹",
+    "name_en": "King of Pentacles",
+    "arcana": "minor",
+    "suit": "pentacles",
+    "number": 14,
+    "image": "/cards/optimized/minor/pentacles/14_king.webp",
+    "original_image": "/cards/original/minor/pentacles/14_king.jpg"
+  }
+}

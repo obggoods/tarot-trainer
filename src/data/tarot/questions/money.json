@@ -1,0 +1,41 @@
+[
+  {
+    "question_id": "money_consult_001",
+    "spread": "금전운",
+    "position": "현재 금전 흐름",
+    "difficulty": "beginner",
+    "category": "money",
+    "question": "지금 금전운에서 가장 조심해야 할 점은 무엇인가요?",
+    "persona": {
+      "age": "30대 여성",
+      "background": "최근 지출이 늘었고 투자 제안을 하나 받았습니다.",
+      "concern": "돈을 더 굴려야 할지, 지키는 것이 먼저인지 고민합니다."
+    }
+  },
+  {
+    "question_id": "money_consult_002",
+    "spread": "금전운",
+    "position": "투자 판단",
+    "difficulty": "beginner",
+    "category": "money",
+    "question": "지금 투자를 시작해도 괜찮을까요?",
+    "persona": {
+      "age": "20대 남성",
+      "background": "주변 권유로 처음 투자를 알아보고 있습니다.",
+      "concern": "기회를 놓칠까 불안하지만 아직 공부가 충분하지 않습니다."
+    }
+  },
+  {
+    "question_id": "money_consult_003",
+    "spread": "금전운",
+    "position": "재정 회복 가능성",
+    "difficulty": "beginner",
+    "category": "money",
+    "question": "현재 재정 상황을 회복할 수 있을까요?",
+    "persona": {
+      "age": "40대 남성",
+      "background": "사업 부진으로 저축을 많이 사용했고 고정비 부담이 있습니다.",
+      "concern": "손실을 멈추고 다시 안정될 수 있을지 알고 싶어합니다."
+    }
+  }
+]

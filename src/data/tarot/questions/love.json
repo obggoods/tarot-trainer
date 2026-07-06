@@ -1,0 +1,54 @@
+[
+  {
+    "question_id": "love_consult_001",
+    "spread": "연애운",
+    "position": "현재 관계 상태",
+    "difficulty": "beginner",
+    "category": "love",
+    "question": "이 관계를 계속 이어가도 괜찮을까요?",
+    "persona": {
+      "age": "30대 여성",
+      "background": "3년 연애 중이며 최근 연락 빈도가 줄어들었습니다.",
+      "concern": "상대의 마음이 식은 것 같아 관계를 이어가도 되는지 불안합니다."
+    }
+  },
+  {
+    "question_id": "love_consult_002",
+    "spread": "연애운",
+    "position": "상대방의 현재 마음",
+    "difficulty": "beginner",
+    "category": "love",
+    "question": "상대도 저에게 호감이 있을까요?",
+    "persona": {
+      "age": "20대 여성",
+      "background": "최근 알게 된 사람과 자주 연락하지만 관계가 분명하지 않습니다.",
+      "concern": "혼자만 기대하고 있는 건 아닌지 확인하고 싶어합니다."
+    }
+  },
+  {
+    "question_id": "love_consult_003",
+    "spread": "연애운",
+    "position": "앞으로의 관계 흐름",
+    "difficulty": "beginner",
+    "category": "love",
+    "question": "새로운 사람을 만날 가능성이 있을까요?",
+    "persona": {
+      "age": "30대 남성",
+      "background": "오랜 연애가 끝난 뒤 한동안 소개나 만남을 피했습니다.",
+      "concern": "다시 누군가를 만나도 괜찮을지 망설이고 있습니다."
+    }
+  },
+  {
+    "question_id": "relationship_consult_001",
+    "spread": "인간관계",
+    "position": "관계에서 조심할 점",
+    "difficulty": "beginner",
+    "category": "relationship",
+    "question": "이 사람과 거리를 두는 게 좋을까요?",
+    "persona": {
+      "age": "40대 여성",
+      "background": "가까운 지인과 반복적으로 오해가 생기고 있습니다.",
+      "concern": "관계를 유지해야 할지, 잠시 거리를 둬야 할지 고민합니다."
+    }
+  }
+]

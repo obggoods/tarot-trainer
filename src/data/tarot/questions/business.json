@@ -1,0 +1,41 @@
+[
+  {
+    "question_id": "business_consult_001",
+    "spread": "사업운",
+    "position": "현재 사업 상태",
+    "difficulty": "beginner",
+    "category": "business",
+    "question": "사업을 계속해도 될까요?",
+    "persona": {
+      "age": "40대 자영업자",
+      "background": "매출이 예전보다 줄었고 인건비 부담이 커졌습니다.",
+      "concern": "지금 버티는 게 맞는지 방향을 바꿔야 하는지 고민합니다."
+    }
+  },
+  {
+    "question_id": "business_consult_002",
+    "spread": "사업운",
+    "position": "파트너십 흐름",
+    "difficulty": "beginner",
+    "category": "business",
+    "question": "이 파트너와 함께 사업을 진행해도 괜찮을까요?",
+    "persona": {
+      "age": "30대 남성",
+      "background": "지인이 공동 사업을 제안했지만 조건이 아직 명확하지 않습니다.",
+      "concern": "상대는 적극적이지만 신뢰해도 되는지 조심스럽습니다."
+    }
+  },
+  {
+    "question_id": "business_consult_003",
+    "spread": "사업운",
+    "position": "사업에서 주의할 점",
+    "difficulty": "beginner",
+    "category": "business",
+    "question": "지금 사업에서 주의해야 할 점은 무엇인가요?",
+    "persona": {
+      "age": "50대 여성",
+      "background": "작은 매장을 운영 중이며 최근 새로운 상품 라인을 준비하고 있습니다.",
+      "concern": "확장해도 될지, 현재 운영을 안정시키는 것이 먼저인지 고민합니다."
+    }
+  }
+]

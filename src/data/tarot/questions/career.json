@@ -1,0 +1,41 @@
+[
+  {
+    "question_id": "career_consult_001",
+    "spread": "직업운",
+    "position": "현재 직장 흐름",
+    "difficulty": "beginner",
+    "category": "career",
+    "question": "이직을 준비해도 괜찮을까요?",
+    "persona": {
+      "age": "30대 남성",
+      "background": "현재 회사에서 5년째 일하고 있지만 성장 정체를 느낍니다.",
+      "concern": "지금 움직이는 것이 맞는지, 더 버텨야 하는지 고민합니다."
+    }
+  },
+  {
+    "question_id": "career_consult_002",
+    "spread": "직업운",
+    "position": "프로젝트 결과",
+    "difficulty": "beginner",
+    "category": "career",
+    "question": "이번 프로젝트에서 좋은 평가를 받을 수 있을까요?",
+    "persona": {
+      "age": "20대 여성",
+      "background": "입사 후 처음으로 중요한 발표를 맡았습니다.",
+      "concern": "준비는 했지만 상사와 팀원들의 평가가 걱정됩니다."
+    }
+  },
+  {
+    "question_id": "career_consult_003",
+    "spread": "직업운",
+    "position": "현재 조심할 점",
+    "difficulty": "beginner",
+    "category": "career",
+    "question": "지금 직장에서 가장 조심해야 할 점은 무엇인가요?",
+    "persona": {
+      "age": "40대 남성",
+      "background": "조직 개편 이후 업무 범위가 갑자기 넓어졌습니다.",
+      "concern": "책임은 늘었지만 권한은 부족해 부담을 느낍니다."
+    }
+  }
+]
