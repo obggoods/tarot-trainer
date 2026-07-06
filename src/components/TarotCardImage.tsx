@@ -39,8 +39,15 @@ export function TarotCardImage({
   const meta = useMemo(() => getCardMeta(cardId), [cardId]);
   const image = useMemo(() => getCardImage(cardId), [cardId]);
   const originalImage = useMemo(() => getOriginalCardImage(cardId), [cardId]);
+  const [currentImage, setCurrentImage] = useState(image);
   const imageAlt = alt ?? meta?.name_ko ?? "Tarot card";
-  const lightboxImage = originalImage ?? image;
+  const lightboxImage = originalImage ?? currentImage ?? image;
+
+  useEffect(() => {
+    setLoaded(false);
+    setHasError(false);
+    setCurrentImage(image);
+  }, [cardId, image, originalImage]);
 
   useEffect(() => {
     if (!isLightboxOpen) return;
@@ -66,6 +73,23 @@ export function TarotCardImage({
     setShowUprightInModal((value) => !value);
   }
 
+  function handleImageError() {
+    console.warn("[TarotTrainer card image load failed]", {
+      cardId,
+      failedSrc: currentImage,
+      fallbackSrc: originalImage,
+      location: window.location.href,
+    });
+
+    if (currentImage !== originalImage && originalImage) {
+      setLoaded(false);
+      setCurrentImage(originalImage);
+      return;
+    }
+
+    setHasError(true);
+  }
+
   const shouldRotateInModal = isReversed && !showUprightInModal;
 
   return (
@@ -82,15 +106,15 @@ export function TarotCardImage({
             <span className="absolute inset-0 animate-pulse bg-gradient-to-br from-stone-100 via-stone-200 to-stone-100" />
           ) : null}
 
-          {image && !hasError ? (
+          {currentImage && !hasError ? (
             <img
-              src={image}
+              src={currentImage}
               alt={imageAlt}
               loading="lazy"
               decoding="async"
               className={cn("h-full w-full object-cover transition duration-300", loaded ? "opacity-100" : "opacity-0", isReversed ? "rotate-180" : "")}
               onLoad={() => setLoaded(true)}
-              onError={() => setHasError(true)}
+              onError={handleImageError}
             />
           ) : (
             <span className="flex h-full w-full flex-col items-center justify-center gap-3 px-4 text-center text-stone-500">
@@ -99,7 +123,7 @@ export function TarotCardImage({
             </span>
           )}
 
-          {enableLightbox && image && !hasError ? (
+          {enableLightbox && currentImage && !hasError ? (
             <span className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-md bg-black/55 text-white opacity-0 transition group-hover:opacity-100">
               <Maximize2 size={16} />
             </span>

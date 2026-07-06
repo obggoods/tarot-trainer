@@ -36,6 +36,10 @@ await writeIcon(192, "pwa-192x192.png");
 await writeIcon(512, "pwa-512x512.png");
 await writeIcon(512, "pwa-maskable-512x512.png");
 await writeIcon(180, "apple-touch-icon.png");
+await writeIcon(192, "tarot-app-icon-192.png");
+await writeIcon(512, "tarot-app-icon-512.png");
+await writeIcon(512, "tarot-app-icon-maskable-512.png");
+await writeIcon(180, "tarot-apple-touch-icon.png");
 
 for (const [width, height] of [
   [1170, 2532],

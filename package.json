@@ -8,6 +8,7 @@
     "dev:client": "vite --host 127.0.0.1 --port 5175 --strictPort",
     "dev:server": "tsx watch server/index.ts",
     "download-cards": "tsx scripts/download-rider-waite.ts",
+    "validate:cards": "node scripts/validate-card-assets.mjs",
     "serve:api": "tsx server/index.ts",
     "validate:tarot": "tsx scripts/validate-tarot-meanings.ts",
     "build": "tsc -b && vite build",
