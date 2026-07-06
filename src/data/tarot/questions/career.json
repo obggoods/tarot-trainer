@@ -15,7 +15,7 @@
   {
     "question_id": "career_consult_002",
     "spread": "직업운",
-    "position": "프로젝트 결과",
+    "position": "프로젝트 평가 포인트",
     "difficulty": "beginner",
     "category": "career",
     "question": "이번 프로젝트에서 평가를 좌우할 가장 중요한 부분은 무엇일까요?",
@@ -28,7 +28,7 @@
   {
     "question_id": "career_consult_003",
     "spread": "직업운",
-    "position": "현재 조심할 점",
+    "position": "직장 부담과 주의점",
     "difficulty": "beginner",
     "category": "career",
     "question": "지금 직장에서 부담이 커지는 이유와 가장 조심해야 할 부분은 무엇일까요?",

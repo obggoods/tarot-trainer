@@ -2,7 +2,7 @@
   {
     "question_id": "reunion_consult_001",
     "spread": "재회",
-    "position": "현재 관계 상태",
+    "position": "재회를 어렵게 만드는 흐름",
     "difficulty": "beginner",
     "category": "reunion",
     "question": "현재 두 사람 사이에서 재회를 어렵게 만드는 가장 큰 흐름은 무엇일까요?",
@@ -15,7 +15,7 @@
   {
     "question_id": "reunion_consult_002",
     "spread": "재회",
-    "position": "재회를 위해 필요한 태도",
+    "position": "재회를 위해 바꿔야 할 태도",
     "difficulty": "beginner",
     "category": "reunion",
     "question": "재회를 원한다면 질문자가 먼저 바꿔야 할 태도는 무엇일까요?",
@@ -28,7 +28,7 @@
   {
     "question_id": "reunion_consult_003",
     "spread": "재회",
-    "position": "관계 회복 가능성",
+    "position": "다시 대화가 열리기 위한 조건",
     "difficulty": "beginner",
     "category": "reunion",
     "question": "다시 대화가 열린다면 어떤 조건이 먼저 필요할까요?",

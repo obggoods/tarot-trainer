@@ -2,7 +2,7 @@
   {
     "question_id": "health_consult_001",
     "spread": "건강운",
-    "position": "현재 몸과 마음 상태",
+    "position": "몸과 마음에서 먼저 알아차릴 신호",
     "difficulty": "beginner",
     "category": "health",
     "question": "현재 몸과 마음에서 가장 먼저 알아차려야 할 신호는 무엇일까요?",
@@ -15,7 +15,7 @@
   {
     "question_id": "health_consult_002",
     "spread": "건강운",
-    "position": "회복을 위한 조언",
+    "position": "회복을 방해하는 생활 패턴",
     "difficulty": "beginner",
     "category": "health",
     "question": "회복을 방해하는 가장 큰 생활 패턴은 무엇일까요?",
@@ -28,7 +28,7 @@
   {
     "question_id": "health_consult_003",
     "spread": "건강운",
-    "position": "생활 습관 점검",
+    "position": "생활 습관에서 균형을 되찾을 부분",
     "difficulty": "beginner",
     "category": "health",
     "question": "생활 습관에서 가장 먼저 균형을 되찾아야 할 부분은 무엇일까요?",

@@ -54,6 +54,7 @@ export function evaluateWithMock({ card, meaning, question, userAnswer }: Evalua
     traditional_correction: buildTraditionalCorrection(card.meta.name_ko, question, meaning, contextText),
     sample_answer: buildSampleAnswer(question, meaning, contextText),
     model_answer: buildModelAnswer(card.meta.name_ko, question, meaning, contextText),
+    missed_key_points: buildMissedKeyPoints(meaning, matchedKeywords),
     differences: buildDifferences(missingKeywords, questionApplicationRatio, question),
     wrong_note: buildWrongNote(card.meta.name_ko, question, meaning),
     next_reading_tip: "",
@@ -214,7 +215,7 @@ function buildDifferences(missingKeywords: string[], questionApplicationRatio: n
     if (questionApplicationRatio < 0.6) {
       return [`카드의 기본 의미는 어느 정도 잡았지만, ${question.position}에서 실제로 무엇이 위험하거나 불리한지까지 더 직접적으로 이어지면 좋습니다. 이 답변은 카드 설명은 잡았지만 내담자의 상황에서 드러나는 구체 장면이 아직 약하게 느껴집니다.`];
     }
-    return ["전체 방향은 좋습니다. 더 나아가려면 카드 의미를 설명한 뒤 내담자의 실제 상황에서 무엇을 확인하고 조심해야 하는지 한 문장 더 선명하게 잡아보세요."];
+    return [`답변에서 카드의 큰 흐름은 잡았지만, ${question.position}에서 그것이 어떤 현실 장면으로 나타나는지 한 단계 더 이어지면 좋습니다. 예를 들어 내담자가 지금 무엇을 정리해야 하는지, 무엇이 회복이나 변화의 시작점인지까지 말해주면 해석이 더 선명해집니다.`];
   }
 
   return [
@@ -252,17 +253,27 @@ function buildSampleAnswer(question: TarotQuestion, meaning: EvaluationInput["me
   const actionSentence = getActionSentence(question);
   const cautionSentence = meaning.warning || "지금 보이는 흐름을 한쪽으로만 단정하지 않는 편이 좋습니다.";
 
-  return [contextSentence, actionSentence, cautionSentence].join(" ");
+  return [contextSentence, actionSentence, cautionSentence].join("\n\n");
 }
 
 function buildModelAnswer(cardName: string, question: TarotQuestion, meaning: EvaluationInput["meaning"], contextText: string) {
-  const positionApplication = contextText || `${question.persona.concern}라는 고민에서는 ${meaning.must_include.slice(0, 3).join(", ")}의 흐름이 실제 판단 지점으로 드러납니다.`;
+  const positionApplication = contextText || `${question.persona.concern}라는 고민에서는 지금 가장 먼저 정리하거나 확인해야 할 부분이 실제 판단 지점으로 드러납니다.`;
 
   return [
-    `${cardName} ${orientationText(question)}은 ${meaning.traditional_meaning}`,
-    `${question.position}에서 보면 ${positionApplication}`,
-    `따라서 "${question.question}"에 대한 답변은 카드 키워드를 단순히 말하는 데서 멈추지 않고, 내담자의 상황에서 무엇이 끝나거나 흔들리고 있는지, 어떤 부분을 확인해야 하는지까지 연결하는 것이 정통 해석에 가깝습니다.`,
+    `${cardName} ${orientationText(question)}은 이 상황에서 ${positionApplication}`,
+    `따라서 "${question.question}"에 대해서는 지금 드러난 흐름을 무리하게 밀어붙이기보다, 내담자의 현실에서 무엇이 부담이 되고 무엇을 먼저 정리해야 하는지 살피는 답변이 적절합니다.`,
+    `카드가 보여주는 흐름은 가능성과 경고를 함께 담고 있으므로, 결과를 단정하기보다 현재 상황에서 가장 먼저 다루어야 할 부분을 짚어주는 것이 정통 해석에 가깝습니다.`,
   ].join(" ");
+}
+
+function buildMissedKeyPoints(meaning: EvaluationInput["meaning"], matchedKeywords: string[]) {
+  const corePoints = meaning.must_include.slice(0, 4);
+  const points = corePoints.length > 0 ? corePoints : meaning.keywords.slice(0, 4);
+
+  return points.map((point) => {
+    const checked = matchedKeywords.includes(point) ? "☑" : "☐";
+    return `${checked} ${point}`;
+  });
 }
 
 function buildWrongNote(cardName: string, question: TarotQuestion, meaning: EvaluationInput["meaning"]) {
@@ -274,7 +285,6 @@ function orientationText(question: TarotQuestion) {
 }
 
 function buildPositionApplication(question: TarotQuestion, meaning: EvaluationInput["meaning"], contextText: string) {
-  const focus = meaning.must_include.slice(0, 3).join(", ");
   const warning = meaning.warning || "불분명한 흐름을 성급하게 확정하지 않는 태도가 필요하다.";
   const positive = meaning.positive_aspect || "상황을 차분히 파악하면 다음 흐름을 정리할 수 있다.";
   const baseContext = contextText ? `${categoryLabel[question.category]}의 ${question.position}에서는 ${contextText}` : "";
@@ -282,32 +292,32 @@ function buildPositionApplication(question: TarotQuestion, meaning: EvaluationIn
   const position = question.position;
 
   if (position.includes("조심") || position.includes("주의")) {
-    sentences.push(`이 카드가 가리키는 주의점은 ${focus}의 흐름이 상황 판단을 흐리거나 무리한 선택으로 이어지는 장면이다.`);
+    sentences.push(`이 카드의 의미는 내담자가 이미 느끼는 불안이나 부담이 실제 선택을 흐릴 수 있는 장면으로 나타난다.`);
     sentences.push(`${warning}`);
-    sentences.push(`따라서 ${question.question}에 대해서는 겉으로 보이는 반응보다 확인되지 않은 정보, 감정적 추측, 과도한 부담을 먼저 살펴야 한다.`);
+    sentences.push(`가장 핵심적으로는 겉으로 보이는 반응보다 확인되지 않은 정보, 감정적 추측, 과도한 부담이 어디에서 생기는지를 먼저 살펴야 한다.`);
   } else if (position.includes("상대") || position.includes("마음")) {
-    sentences.push(`상대의 마음으로 보면 ${focus}가 직접적인 표현을 막거나 속마음을 쉽게 드러내지 않는 상태로 나타난다.`);
+    sentences.push(`상대의 마음으로 보면 카드의 흐름은 직접적인 표현을 막거나 속마음을 쉽게 드러내지 않는 상태로 나타난다.`);
     sentences.push(`호감이나 거절을 빠르게 단정하기보다 숨겨진 사정, 말하지 않은 감정, 혼란스러운 태도가 함께 있을 수 있다.`);
     sentences.push(`${warning}`);
   } else if (position.includes("현재")) {
-    sentences.push(`현재 상태로는 ${focus}가 지금 상황의 중심 흐름이다.`);
+    sentences.push(`현재 상태로는 카드의 정통 의미가 지금 상황의 중심 흐름으로 드러난다.`);
     sentences.push(`겉으로는 움직임이 있어 보여도 내부적으로는 정리되지 않은 감정, 정보, 부담이 남아 있을 수 있다.`);
     sentences.push(`${warning}`);
   } else if (position.includes("가능성") || position.includes("흐름") || position.includes("결과")) {
-    sentences.push(`앞으로의 흐름에서는 ${focus}가 결과를 좌우하는 요소로 작용한다.`);
+    sentences.push(`앞으로의 흐름에서는 지금까지 이어진 부담이나 변화가 결과를 좌우하는 요소로 작용한다.`);
     sentences.push(`${positive}`);
     sentences.push(`${warning}`);
   } else if (position.includes("조언") || position.includes("태도") || position.includes("배울")) {
-    sentences.push(`필요한 태도로는 ${focus}를 무시하지 않고 차분히 다루는 자세가 강조된다.`);
+    sentences.push(`필요한 태도로는 카드가 보여주는 흐름을 무시하지 않고 차분히 다루는 자세가 강조된다.`);
     sentences.push(`${positive}`);
     sentences.push(`${warning}`);
   } else {
-    sentences.push(`${question.position}에서는 ${focus}가 "${question.question}"의 실제 쟁점으로 드러난다.`);
+    sentences.push(`${question.position}에서는 카드의 정통 의미가 "${question.question}"의 실제 쟁점으로 드러난다.`);
     sentences.push(`${positive}`);
     sentences.push(`${warning}`);
   }
 
-  return sentences.join("\n");
+  return sentences.join(" ");
 }
 
 function getOpeningSentence(question: TarotQuestion, contextText: string) {

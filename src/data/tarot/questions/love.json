@@ -2,7 +2,7 @@
   {
     "question_id": "love_consult_001",
     "spread": "연애운",
-    "position": "현재 관계 상태",
+    "position": "관계에서 변하고 있는 부분",
     "difficulty": "beginner",
     "category": "love",
     "question": "지금 두 사람의 관계에서 가장 크게 변하고 있는 부분은 무엇일까요?",
@@ -15,7 +15,7 @@
   {
     "question_id": "love_consult_002",
     "spread": "연애운",
-    "position": "상대방의 현재 마음",
+    "position": "상대 태도의 호감과 애매함",
     "difficulty": "beginner",
     "category": "love",
     "question": "상대의 태도에서 호감인지 애매함인지 구분해야 할 부분은 무엇일까요?",
@@ -28,7 +28,7 @@
   {
     "question_id": "love_consult_003",
     "spread": "연애운",
-    "position": "앞으로의 관계 흐름",
+    "position": "새 만남 전 정리할 감정",
     "difficulty": "beginner",
     "category": "love",
     "question": "새로운 만남을 위해 질문자가 먼저 정리해야 할 감정은 무엇일까요?",
@@ -41,7 +41,7 @@
   {
     "question_id": "relationship_consult_001",
     "spread": "인간관계",
-    "position": "관계에서 조심할 점",
+    "position": "거리를 둬야 하는 이유",
     "difficulty": "beginner",
     "category": "relationship",
     "question": "이 관계에서 거리를 둬야 한다면 어떤 부분 때문일까요?",

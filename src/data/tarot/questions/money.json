@@ -2,7 +2,7 @@
   {
     "question_id": "money_consult_001",
     "spread": "금전운",
-    "position": "현재 금전 흐름",
+    "position": "돈의 흐름에서 먼저 점검할 부분",
     "difficulty": "beginner",
     "category": "money",
     "question": "지금 돈의 흐름에서 가장 먼저 점검해야 할 부분은 무엇일까요?",
@@ -15,7 +15,7 @@
   {
     "question_id": "money_consult_002",
     "spread": "금전운",
-    "position": "투자 판단",
+    "position": "투자 판단에서 놓치기 쉬운 위험",
     "difficulty": "beginner",
     "category": "money",
     "question": "지금 투자 판단에서 놓치기 쉬운 위험 요소는 무엇일까요?",
@@ -28,7 +28,7 @@
   {
     "question_id": "money_consult_003",
     "spread": "금전운",
-    "position": "재정 회복 가능성",
+    "position": "재정 회복을 위해 먼저 정리할 흐름",
     "difficulty": "beginner",
     "category": "money",
     "question": "재정 회복을 위해 가장 먼저 정리해야 할 흐름은 무엇일까요?",
