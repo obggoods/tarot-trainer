@@ -124,7 +124,7 @@ function App() {
 
   return (
     <main className="min-h-screen bg-parchment text-ink">
-      <div className="mx-auto flex min-h-screen w-full max-w-6xl flex-col px-4 py-4 sm:px-6 lg:px-8">
+      <div className="app-shell mx-auto flex min-h-screen w-full max-w-6xl flex-col">
         <header className="flex shrink-0 flex-col gap-3 border-b border-stone-300/70 pb-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
           <div className="flex min-w-0 items-center gap-3">
             <div className="flex h-11 w-11 items-center justify-center rounded-md bg-night text-white">
