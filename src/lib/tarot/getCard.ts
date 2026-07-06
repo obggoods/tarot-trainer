@@ -2,6 +2,7 @@ import highPriestess02 from "../../data/tarot/meanings/major/02_high_priestess.j
 import lovers06 from "../../data/tarot/meanings/major/06_lovers.json";
 import hangedMan12 from "../../data/tarot/meanings/major/12_hanged_man.json";
 import death13 from "../../data/tarot/meanings/major/13_death.json";
+import temperance14 from "../../data/tarot/meanings/major/14_temperance.json";
 import tower16 from "../../data/tarot/meanings/major/16_tower.json";
 import cups02 from "../../data/tarot/meanings/cups/02_cups.json";
 import cups05 from "../../data/tarot/meanings/cups/05_cups.json";
@@ -28,6 +29,7 @@ const rawMeaningsByCardId: Record<string, RawMeaningEntry> = {
   major_06_lovers: lovers06,
   major_12_hanged_man: hangedMan12,
   major_13_death: death13,
+  major_14_temperance: temperance14,
   major_16_tower: tower16,
   cups_02: cups02,
   cups_05: cups05,

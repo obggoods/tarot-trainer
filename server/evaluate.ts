@@ -35,7 +35,7 @@ export async function evaluateReading(problem: TarotQuestion, answer: string, ap
 
   const feedback = await requestFeedback({ apiKey, model, input, analysis });
 
-  return feedback ?? evaluateWithMock(input);
+  return feedback ? sanitizeEvaluation(feedback, analysis.avoid_topics) : evaluateWithMock(input);
 }
 
 async function requestAnalysis({
@@ -113,7 +113,7 @@ async function requestDeepSeekCompletion({
   const payload = {
     model,
     messages,
-    temperature: 0.2,
+    temperature: 0.3,
     max_tokens: maxTokens,
   };
 
@@ -154,4 +154,57 @@ async function readDeepSeekContent(response: Response) {
   }
 
   return content;
+}
+
+function sanitizeEvaluation(evaluation: EvaluationResult, avoidTopics: string[]): EvaluationResult {
+  const forbiddenTerms = buildForbiddenTerms(avoidTopics);
+  if (forbiddenTerms.length === 0) return evaluation;
+
+  return {
+    ...evaluation,
+    strengths: sanitizeList(evaluation.strengths, forbiddenTerms),
+    missing_points: sanitizeList(evaluation.missing_points, forbiddenTerms),
+    traditional_correction: sanitizeText(evaluation.traditional_correction, forbiddenTerms),
+    sample_answer: sanitizeText(evaluation.sample_answer, forbiddenTerms),
+    model_answer: sanitizeText(evaluation.model_answer, forbiddenTerms),
+    missed_key_points: sanitizeList(evaluation.missed_key_points, forbiddenTerms),
+    differences: sanitizeList(evaluation.differences, forbiddenTerms),
+    wrong_note: sanitizeText(evaluation.wrong_note, forbiddenTerms),
+    next_reading_tip: sanitizeText(evaluation.next_reading_tip, forbiddenTerms),
+  };
+}
+
+function buildForbiddenTerms(avoidTopics: string[]) {
+  const terms = new Map<string, string>();
+
+  for (const topic of avoidTopics) {
+    for (const token of topic.split(/[,\s/]+/)) {
+      const normalized = token.trim();
+      if (normalized.length >= 3) {
+        terms.set(normalized, "질문과 맞지 않는 대표 키워드");
+      }
+    }
+
+    if (topic.includes("파트너")) {
+      terms.set("파트너십", "질문과 맞지 않는 대표 키워드");
+      terms.set("파트너", "결정 대상");
+      terms.set("협력자", "결정 대상");
+      terms.set("관계", "대표 키워드");
+    }
+
+    if (topic.includes("협업") || topic.includes("팀워크")) {
+      terms.set("협업", "관리 방식");
+      terms.set("팀워크", "관리 방식");
+    }
+  }
+
+  return [...terms.entries()].sort(([a], [b]) => b.length - a.length);
+}
+
+function sanitizeList(items: string[], forbiddenTerms: Array<[string, string]>) {
+  return items.map((item) => sanitizeText(item, forbiddenTerms)).filter((item) => item.trim().length > 0);
+}
+
+function sanitizeText(value: string, forbiddenTerms: Array<[string, string]>) {
+  return forbiddenTerms.reduce((text, [term, replacement]) => text.split(term).join(replacement), value);
 }

@@ -64,8 +64,8 @@ function normalizeAnalysisResult(value: unknown): AnalysisResult | null {
   if (!isString(candidate.card_primary_meaning)) return null;
   if (!Array.isArray(candidate.specific_strengths) || !candidate.specific_strengths.every(isString)) return null;
   if (!Array.isArray(candidate.specific_improvements) || !candidate.specific_improvements.every(isString)) return null;
-  if (!Array.isArray(candidate.missed_core_points) || !candidate.missed_core_points.every(isString)) return null;
-  if (!Array.isArray(candidate.incorrect_points) || !candidate.incorrect_points.every(isString)) return null;
+  if (candidate.missed_core_points !== undefined && (!Array.isArray(candidate.missed_core_points) || !candidate.missed_core_points.every(isString))) return null;
+  if (candidate.incorrect_points !== undefined && (!Array.isArray(candidate.incorrect_points) || !candidate.incorrect_points.every(isString))) return null;
   if (!isString(candidate.traditional_core)) return null;
   if (!isString(candidate.contextual_meaning)) return null;
   if (!Array.isArray(candidate.symbol_notes) || !candidate.symbol_notes.every(isString)) return null;
@@ -93,8 +93,8 @@ function normalizeAnalysisResult(value: unknown): AnalysisResult | null {
     card_primary_meaning: candidate.card_primary_meaning,
     specific_strengths: candidate.specific_strengths,
     specific_improvements: candidate.specific_improvements,
-    missed_core_points: candidate.missed_core_points,
-    incorrect_points: candidate.incorrect_points,
+    missed_core_points: candidate.missed_core_points ?? candidate.missed_key_points,
+    incorrect_points: candidate.incorrect_points ?? candidate.specific_improvements,
     traditional_core: candidate.traditional_core,
     contextual_meaning: candidate.contextual_meaning,
     symbol_notes: candidate.symbol_notes,

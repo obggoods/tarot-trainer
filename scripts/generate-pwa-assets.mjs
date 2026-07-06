@@ -1,4 +1,5 @@
 import { mkdir } from "node:fs/promises";
+import { Buffer } from "node:buffer";
 import sharp from "sharp";
 
 const iconDir = "public/icons";
