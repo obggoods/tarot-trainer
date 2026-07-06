@@ -51,8 +51,8 @@ const orientationLabel = {
 };
 
 const gradeLabel: Record<EvaluationResult["grade"], string> = {
-  correct: "정답",
-  partial: "부분 정답",
+  correct: "잘 읽음",
+  partial: "흐름 확인",
   incorrect: "보완 필요",
 };
 
@@ -280,11 +280,11 @@ function AnswerPanel({
         <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-sm text-stone-500">
             {answerLength}자
-            <span className={answerLength >= 20 ? "ml-2 text-moss" : "ml-2 text-stone-400"}>20자 이상 입력 시 채점 가능</span>
+            <span className={answerLength >= 20 ? "ml-2 text-moss" : "ml-2 text-stone-400"}>20자 이상 입력 시 피드백 가능</span>
           </p>
           <Button type="submit" disabled={!canSubmit}>
             {isEvaluating ? <Loader2 className="animate-spin" size={16} /> : <BookOpenCheck size={16} />}
-            {isEvaluating ? "채점 중..." : "AI 채점"}
+            {isEvaluating ? "피드백 생성 중..." : "AI 피드백"}
           </Button>
         </div>
       </form>
@@ -432,21 +432,21 @@ function ResultPanel({
         <ResultSection title="상담 예시" tone="plain">
           {evaluation.sample_answer}
         </ResultSection>
-        <ResultSection title="모범 답안 예시" tone="good">
+        <ResultSection title="모범 답안" tone="good">
           {evaluation.model_answer}
         </ResultSection>
-        <FeedbackList title="핵심 놓친 포인트" items={evaluation.missed_key_points} tone="plain" emptyText="비교할 핵심 포인트가 없습니다." />
+        <ResultSection title="사고과정 피드백" tone="good">
+          {evaluation.wrong_note}
+        </ResultSection>
         <details className="rounded-md border border-night/15 bg-night/5 p-4">
-          <summary className="cursor-pointer text-sm font-semibold text-night">채점 요약 보기</summary>
+          <summary className="cursor-pointer text-sm font-semibold text-night">학습 진단 요약 보기</summary>
           <div className="mt-4 grid gap-4">
             <RubricGrid rubric={evaluation.rubric} />
             <ScoreSummary evaluation={evaluation} />
             <ResultSection title="내 답변" tone="plain">
               {userAnswer}
             </ResultSection>
-            <ResultSection title="오답노트" tone="good">
-              {evaluation.wrong_note}
-            </ResultSection>
+            <FeedbackList title="핵심 놓친 포인트" items={evaluation.missed_key_points} tone="plain" emptyText="비교할 핵심 포인트가 없습니다." />
           </div>
         </details>
 
@@ -461,7 +461,7 @@ function ResultPanel({
 function ScoreSummary({ evaluation }: { evaluation: EvaluationResult }) {
   return (
     <section className="rounded-md border border-night/15 bg-night/5 p-4">
-      <p className="text-sm font-semibold text-stone-500">최종 점수</p>
+      <p className="text-sm font-semibold text-stone-500">학습 점수</p>
       <div className="mt-2 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <span className="text-4xl font-semibold text-night">{evaluation.score}점</span>

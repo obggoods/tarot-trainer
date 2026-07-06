@@ -1,5 +1,6 @@
 import { evaluateWithMock } from "../src/lib/ai/mockEvaluator";
-import { buildAnalysisPrompt, buildFeedbackPrompt } from "../src/lib/ai/prompt/evaluationPrompt";
+import { buildAnalysisPrompt } from "../src/lib/ai/prompt/analysisPrompt";
+import { buildFeedbackPrompt } from "../src/lib/ai/prompt/feedbackPrompt";
 import { parseAnalysisJson, parseEvaluationJson } from "../src/lib/ai/validation";
 import { getCard, getCardMeaning } from "../src/lib/tarot/getCard";
 import type { AnalysisResult, EvaluationInput } from "../src/lib/ai/types";

@@ -1,4 +1,4 @@
-import { PROMPT_VERSION } from "./prompt/evaluationPrompt";
+import { PROMPT_VERSION } from "./prompt/feedbackPrompt";
 import type { EvaluationInput } from "./types";
 import type { EvaluationResult, TarotQuestion } from "../../types/tarot";
 
@@ -50,14 +50,14 @@ export function evaluateWithMock({ card, meaning, question, userAnswer }: Evalua
       certaintyRatio: getCertaintyRatio(answer),
     }),
     strengths: buildStrengths(question, card.meta.name_ko, matchedKeywords, questionApplicationRatio),
-    missing_points: [],
+    missing_points: buildDifferences(missingKeywords, questionApplicationRatio, question),
     traditional_correction: buildTraditionalCorrection(card.meta.name_ko, question, meaning, contextText),
     sample_answer: buildSampleAnswer(question, meaning, contextText),
     model_answer: buildModelAnswer(card.meta.name_ko, question, meaning, contextText),
     missed_key_points: buildMissedKeyPoints(meaning, matchedKeywords),
     differences: buildDifferences(missingKeywords, questionApplicationRatio, question),
     wrong_note: buildWrongNote(card.meta.name_ko, question, meaning),
-    next_reading_tip: "",
+    next_reading_tip: "질문 -> 카드 의미 -> 질문 적용 -> 현실 적용 순서로 한 번 더 풀어보세요.",
     promptVersion: PROMPT_VERSION,
   };
 }
@@ -243,8 +243,8 @@ function buildTraditionalCorrection(cardName: string, question: TarotQuestion, m
   const positionApplication = buildPositionApplication(question, meaning, contextText);
 
   return [
-    `① 카드의 정통 의미\n${cardName} ${orientationText(question)}은 ${meaning.traditional_meaning}`,
-    `② 질문 위치 적용\n${positionApplication}`,
+    `${cardName} ${orientationText(question)}의 핵심은 ${meaning.must_include[0] ?? meaning.keywords[0] ?? meaning.traditional_meaning}입니다.`,
+    `이번 질문에서는 그 의미를 "${question.position}"에 맞춰 읽어야 하므로, ${positionApplication}`,
   ].join("\n\n");
 }
 
@@ -277,7 +277,7 @@ function buildMissedKeyPoints(meaning: EvaluationInput["meaning"], matchedKeywor
 }
 
 function buildWrongNote(cardName: string, question: TarotQuestion, meaning: EvaluationInput["meaning"]) {
-  return `${cardName}은 ${meaning.must_include.slice(0, 3).join(", ")}를 중심으로 보되, 반드시 "${question.position}" 위치에 맞게 적용해야 합니다. 같은 카드라도 건강운, 연애운, 사업운에서는 답변의 초점이 달라집니다.`;
+  return `이번 답변은 ${cardName}의 핵심을 떠올리는 데서는 출발했지만, 사고가 "${question.position}"에 적용되는 지점에서 멈췄습니다. 다음에는 질문이 무엇을 묻는지 먼저 정하고, ${meaning.must_include[0] ?? meaning.keywords[0] ?? "카드의 핵심 의미"}가 내담자의 현실에서 어떤 장면으로 나타나는지까지 이어서 말해보세요.`;
 }
 
 function orientationText(question: TarotQuestion) {

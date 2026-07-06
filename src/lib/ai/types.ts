@@ -8,31 +8,21 @@ export type EvaluationInput = {
 };
 
 export type AnalysisResult = {
-  score: number;
-  grade: "correct" | "partial" | "incorrect";
-  rubric: {
-    traditionalMeaning: number;
-    questionApplication: number;
-    symbolAwareness: number;
-    overstatementControl: number;
-  };
-  question_category: string;
-  question_goal: string;
-  card_primary_meaning: string;
-  specific_strengths: string[];
-  specific_improvements: string[];
-  missed_core_points: string[];
-  incorrect_points: string[];
-  traditional_core: string;
-  contextual_meaning: string;
-  symbol_notes: string[];
-  feedback_focus: string;
-  sample_answer_draft: string;
-  model_answer_draft: string;
-  difference_notes: string[];
-  correction_note: string;
-  missed_key_points: string[];
+  questionFocus: string;
+  questionArea: string;
+  selectedMeaning: string;
+  reversalMode: "" | "부족" | "과잉" | "왜곡" | "지연" | "내면화";
+  selectedReason: string;
+  correctPoints: string[];
+  missingPoints: string[];
+  incorrectPoints: string[];
+  recommendedAddition: string[];
+  commonMisreading: string;
+  consultingDirection: string;
+  traditionalSummary: string;
+  modelAnswerOutline: string;
   avoid_topics: string[];
+  avoidTopics: string[];
 };
 
 export type Evaluator = (input: EvaluationInput) => Promise<EvaluationResult> | EvaluationResult;

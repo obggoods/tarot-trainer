@@ -1,4 +1,4 @@
-import { PROMPT_VERSION } from "./prompt/evaluationPrompt";
+import { PROMPT_VERSION } from "./prompt/feedbackPrompt";
 import type { AnalysisResult } from "./types";
 import type { EvaluationResult } from "../../types/tarot";
 
@@ -54,57 +54,39 @@ function normalizeAnalysisResult(value: unknown): AnalysisResult | null {
   if (!value || typeof value !== "object") return null;
 
   const candidate = value as Partial<AnalysisResult>;
-  const score = Number(candidate.score);
+  const avoidTopics = candidate.avoidTopics ?? candidate.avoid_topics;
 
-  if (!Number.isFinite(score)) return null;
-  if (candidate.grade !== "correct" && candidate.grade !== "partial" && candidate.grade !== "incorrect") return null;
-  if (!candidate.rubric || typeof candidate.rubric !== "object") return null;
-  if (!isString(candidate.question_category)) return null;
-  if (!isString(candidate.question_goal)) return null;
-  if (!isString(candidate.card_primary_meaning)) return null;
-  if (!Array.isArray(candidate.specific_strengths) || !candidate.specific_strengths.every(isString)) return null;
-  if (!Array.isArray(candidate.specific_improvements) || !candidate.specific_improvements.every(isString)) return null;
-  if (candidate.missed_core_points !== undefined && (!Array.isArray(candidate.missed_core_points) || !candidate.missed_core_points.every(isString))) return null;
-  if (candidate.incorrect_points !== undefined && (!Array.isArray(candidate.incorrect_points) || !candidate.incorrect_points.every(isString))) return null;
-  if (!isString(candidate.traditional_core)) return null;
-  if (!isString(candidate.contextual_meaning)) return null;
-  if (!Array.isArray(candidate.symbol_notes) || !candidate.symbol_notes.every(isString)) return null;
-  if (!isString(candidate.feedback_focus)) return null;
-  if (!isString(candidate.sample_answer_draft)) return null;
-  if (!isString(candidate.model_answer_draft)) return null;
-  if (!Array.isArray(candidate.difference_notes) || !candidate.difference_notes.every(isString)) return null;
-  if (!isString(candidate.correction_note)) return null;
-  if (!Array.isArray(candidate.missed_key_points) || !candidate.missed_key_points.every(isString)) return null;
-  if (!Array.isArray(candidate.avoid_topics) || !candidate.avoid_topics.every(isString)) return null;
-
-  const rubric = candidate.rubric as Partial<AnalysisResult["rubric"]>;
+  if (!isString(candidate.questionFocus)) return null;
+  if (!isString(candidate.questionArea)) return null;
+  if (!isString(candidate.selectedMeaning)) return null;
+  if (!isReversalMode(candidate.reversalMode)) return null;
+  if (!isString(candidate.selectedReason)) return null;
+  if (!Array.isArray(candidate.correctPoints) || !candidate.correctPoints.every(isString)) return null;
+  if (!Array.isArray(candidate.missingPoints) || !candidate.missingPoints.every(isString)) return null;
+  if (!Array.isArray(candidate.incorrectPoints) || !candidate.incorrectPoints.every(isString)) return null;
+  if (!Array.isArray(candidate.recommendedAddition) || !candidate.recommendedAddition.every(isString)) return null;
+  if (!isString(candidate.commonMisreading)) return null;
+  if (!isString(candidate.consultingDirection)) return null;
+  if (!isString(candidate.traditionalSummary)) return null;
+  if (!isString(candidate.modelAnswerOutline)) return null;
+  if (!Array.isArray(avoidTopics) || !avoidTopics.every(isString)) return null;
 
   return {
-    score: Math.max(0, Math.min(100, Math.round(score))),
-    grade: candidate.grade,
-    rubric: {
-      traditionalMeaning: normalizeStar(rubric.traditionalMeaning, 3),
-      questionApplication: normalizeStar(rubric.questionApplication, 3),
-      symbolAwareness: normalizeStar(rubric.symbolAwareness, 3),
-      overstatementControl: normalizeStar(rubric.overstatementControl, 3),
-    },
-    question_category: candidate.question_category,
-    question_goal: candidate.question_goal,
-    card_primary_meaning: candidate.card_primary_meaning,
-    specific_strengths: candidate.specific_strengths,
-    specific_improvements: candidate.specific_improvements,
-    missed_core_points: candidate.missed_core_points ?? candidate.missed_key_points,
-    incorrect_points: candidate.incorrect_points ?? candidate.specific_improvements,
-    traditional_core: candidate.traditional_core,
-    contextual_meaning: candidate.contextual_meaning,
-    symbol_notes: candidate.symbol_notes,
-    feedback_focus: candidate.feedback_focus,
-    sample_answer_draft: candidate.sample_answer_draft,
-    model_answer_draft: candidate.model_answer_draft,
-    difference_notes: candidate.difference_notes,
-    correction_note: candidate.correction_note,
-    missed_key_points: candidate.missed_key_points,
-    avoid_topics: candidate.avoid_topics,
+    questionFocus: candidate.questionFocus,
+    questionArea: candidate.questionArea,
+    selectedMeaning: candidate.selectedMeaning,
+    reversalMode: candidate.reversalMode,
+    selectedReason: candidate.selectedReason,
+    correctPoints: candidate.correctPoints,
+    missingPoints: candidate.missingPoints,
+    incorrectPoints: candidate.incorrectPoints,
+    recommendedAddition: candidate.recommendedAddition,
+    commonMisreading: candidate.commonMisreading,
+    consultingDirection: candidate.consultingDirection,
+    traditionalSummary: candidate.traditionalSummary,
+    modelAnswerOutline: candidate.modelAnswerOutline,
+    avoid_topics: avoidTopics,
+    avoidTopics,
   };
 }
 
@@ -164,4 +146,8 @@ function extractStrictJson(rawText: string) {
 
 function isString(value: unknown): value is string {
   return typeof value === "string";
+}
+
+function isReversalMode(value: unknown): value is AnalysisResult["reversalMode"] {
+  return value === "" || value === "부족" || value === "과잉" || value === "왜곡" || value === "지연" || value === "내면화";
 }
