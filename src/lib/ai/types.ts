@@ -7,4 +7,19 @@ export type EvaluationInput = {
   userAnswer: string;
 };
 
+export type AnalysisResult = {
+  score: number;
+  matched_points: string[];
+  partial_points: string[];
+  missing_points: string[];
+  incorrect_points: string[];
+  traditional_summary: {
+    core_meaning: string;
+    question_position_meaning: string;
+    important_symbols: string[];
+  };
+  feedback_focus: string[];
+  must_include: string[];
+};
+
 export type Evaluator = (input: EvaluationInput) => Promise<EvaluationResult> | EvaluationResult;
