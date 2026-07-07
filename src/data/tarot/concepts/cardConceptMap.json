@@ -1,4 +1,14 @@
 {
+  "major_00_fool": {
+    "upright": [
+      "decision_criteria",
+      "risk_management"
+    ],
+    "reversed": [
+      "preparation",
+      "risk_management"
+    ]
+  },
   "major_01_magician": {
     "upright": [
       "execution",
@@ -17,6 +27,16 @@
     "reversed": [
       "unfinished_emotion",
       "operation_system"
+    ]
+  },
+  "major_10_wheel_of_fortune": {
+    "upright": [
+      "transition",
+      "decision_criteria"
+    ],
+    "reversed": [
+      "transition",
+      "recovery"
     ]
   },
   "swords_ace": {

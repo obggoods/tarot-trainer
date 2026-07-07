@@ -6,6 +6,7 @@ import { buildCorrectionPrompt } from "../src/lib/ai/prompt/correctionPrompt";
 import { parseCorrectionJson } from "../src/lib/ai/validation";
 import { resolveConceptGraph } from "../src/lib/tarot/conceptGraphResolver";
 import { getCard, getCardMeaning } from "../src/lib/tarot/getCard";
+import { hasThinkingGuide } from "../src/lib/tarot/thinking/getThinkingGuide";
 import type { AnalysisResult, EvaluationInput } from "../src/lib/ai/types";
 import type { EvaluationResult, TarotQuestion } from "../src/types";
 
@@ -38,6 +39,7 @@ export async function evaluateReading(problem: TarotQuestion, answer: string, ap
     orientation: problem.orientation,
     category: problem.category,
     position: problem.position,
+    thinkingGuideApplied: hasThinkingGuide(problem.card_id, problem.orientation),
   });
 
   const graphStartedAt = Date.now();

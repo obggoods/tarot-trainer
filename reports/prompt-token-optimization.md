@@ -27,9 +27,9 @@
 
 ## Duplicate Block Estimate
 
-- Current mapped-card old repeated blocks: 1920 context/hint blocks for 60 cards x 2 orientations x 8 axes x 2 data types.
-- Current concept engine blocks: 207 blocks (75 concepts + 120 orientation maps + 12 question rules).
-- Removed or centralized blocks in current mapped scope: 1713.
+- Current mapped-card old repeated blocks: 1984 context/hint blocks for 62 cards x 2 orientations x 8 axes x 2 data types.
+- Current concept engine blocks: 211 blocks (75 concepts + 124 orientation maps + 12 question rules).
+- Removed or centralized blocks in current mapped scope: 1773.
 - 78-card old structure estimate: 2496 context/hint blocks.
 - 78-card concept engine rough estimate: 224 blocks if about 60 reusable concepts are enough.
 - 78-card rough block reduction: 2272 blocks, about 91%.

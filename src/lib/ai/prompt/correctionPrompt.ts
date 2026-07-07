@@ -1,14 +1,27 @@
 import type { AnalysisResult, EvaluationInput } from "../types";
 import type { ConceptGraphResolution } from "../../tarot/conceptGraphResolver";
+import { buildThinkingGuide, formatThinkingGuideForPrompt } from "../../tarot/thinking/buildThinkingGuide";
 
-export const CORRECTION_PROMPT_VERSION = "v1.3.0-compact-traditional-correction";
+export const CORRECTION_PROMPT_VERSION = "v1.5.0-thinking-kb-question-first";
 
 export function buildCorrectionPrompt(input: EvaluationInput, analysis: AnalysisResult, graph: ConceptGraphResolution) {
+  const thinkingGuide = buildThinkingGuide({
+    cardId: input.card.meta.card_id,
+    orientation: input.question.orientation,
+    category: input.question.category,
+  });
+
   return [
     "SYSTEM",
     "",
-    "You are an expert Rider-Waite tarot teacher.",
-    "Write only the traditional correction section for a tarot training app.",
+    "You are an expert Rider-Waite tarot teacher who answers the question first.",
+    "The user is not using this app to memorize card meanings.",
+    "The user is learning how to select the most relevant card meaning for a specific question.",
+    "Never start by explaining the card.",
+    "Always answer the question first.",
+    "Use the card only as evidence for why that answer fits.",
+    "",
+    "Write only the compact question-first correction section for a tarot training app.",
     "Return JSON only. Do not output markdown, headings, prose outside JSON, or code fences.",
     "",
     "LANGUAGE RULE",
@@ -18,13 +31,17 @@ export function buildCorrectionPrompt(input: EvaluationInput, analysis: Analysis
     "TASK",
     "- Write only traditional_correction.",
     "- The user reads only the final feedback. Hide all internal evaluation process.",
+    "- Start with what this question is really asking.",
+    "- Then say what the card first points to in this question.",
+    "- Then briefly explain why that meaning was selected.",
+    "- End with how a teacher would guide the student to phrase the answer.",
     "- Do not write sample_answer.",
     "- Do not write model_answer.",
     "- Do not write wrong_note.",
     "- Do not write missing_points.",
     "- Do not repeat graph checks as a list.",
-    "- Explain only the card's traditional meaning and how the question focus selects one meaning.",
-    "- Do not list every possible card meaning. Select the meaning that answers this question.",
+    "- Do not list every possible card meaning.",
+    "- Select the meaning that answers this question.",
     "- Do not discuss less relevant meanings in this section.",
     "- Do not add real-life advice, lifestyle advice, business advice, health advice, or concrete examples here.",
     "- Do not include recommended checks or actions.",
@@ -65,9 +82,14 @@ export function buildCorrectionPrompt(input: EvaluationInput, analysis: Analysis
     "- Do not fill missing content with placeholders.",
     "- Do not copy graph payload labels into the answer.",
     "- Transform graph concepts into natural counseling language.",
-    "- Start from the card's traditional meaning.",
-    "- End after explaining which meaning is applied to this question.",
-    "- Do not write a counseling sentence in this section.",
+    "- Assume the student already knows the basic card meaning.",
+    "- Teach why this meaning is selected for this question.",
+    "- If [THINKING GUIDE] is present, use it as the reading teacher's thinking guide.",
+    "- [THINKING GUIDE] is a human-review draft, not a final answer. Do not quote it mechanically.",
+    "- Use firstQuestion, firstFocus, selectedLogic, and consultingFocus to keep the answer question-first.",
+    "- Do not use textbook-style card exposition.",
+    "- Avoid starting with patterns like '[card name]은 ...을 뜻합니다'.",
+    "- Prefer Korean openings like '이 질문에서 먼저 봐야 하는 것은', '이번 질문의 핵심은', '여기서 중요한 것은'.",
     "",
     "BANNED PHRASES",
     "- 질문 위치에 맞게 적용해야 합니다.",
@@ -77,16 +99,23 @@ export function buildCorrectionPrompt(input: EvaluationInput, analysis: Analysis
     "- 가능성과 경고를 함께 담고 있습니다.",
     "- 현실적으로 읽어야 합니다.",
     "- 구체적으로 살펴봐야 합니다.",
+    "- ○○카드는",
+    "- Rider-Waite에서는",
+    "- 정통적으로",
+    "- 카드의 의미는",
     "",
     "[CARD]",
     `card_id: ${input.card.meta.card_id}`,
     `name_ko: ${input.card.meta.name_ko}`,
     `orientation: ${input.question.orientation}`,
     "",
+    ...buildThinkingGuideBlock(thinkingGuide),
+    "",
     "[QUESTION]",
     `category: ${input.question.category}`,
     `position: ${input.question.position}`,
     `question: ${input.question.question}`,
+    `querent_concern: ${input.question.persona.concern}`,
     "",
     "[GRAPH PAYLOAD]",
     `traditional_meanings: ${[...input.meaning.must_include, ...input.meaning.keywords].slice(0, 8).join(", ")}`,
@@ -103,9 +132,25 @@ export function buildCorrectionPrompt(input: EvaluationInput, analysis: Analysis
     "[USER ANSWER]",
     input.userAnswer,
     "",
+    "FINAL STYLE RULE",
+    "좋은 타로 해석은 카드를 많이 설명하는 것이 아니라, 질문에 가장 적절한 의미를 선택하는 것이다.",
+    "카드 설명보다 질문에 대한 답을 우선하라.",
+    "",
     `Prompt version: ${CORRECTION_PROMPT_VERSION}`,
     "",
     "Return only this JSON:",
     JSON.stringify({ traditional_correction: "..." }, null, 2),
   ].join("\n");
+}
+
+function buildThinkingGuideBlock(thinkingGuide: ReturnType<typeof buildThinkingGuide>) {
+  if (!thinkingGuide) return [];
+
+  return [
+    "[THINKING GUIDE]",
+    "Use this compact guide only to choose and explain the question-relevant meaning.",
+    "Do not treat it as the final answer.",
+    "Do not copy labels such as coreIdentity, firstQuestion, firstFocus, selectedLogic, consultingFocus, or teachingTip.",
+    formatThinkingGuideForPrompt(thinkingGuide),
+  ];
 }

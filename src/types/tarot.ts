@@ -202,4 +202,6 @@ export type TarotCard = {
   meta: TarotCardMeta;
   meaning: CardMeaning;
   contexts?: TarotMeaningContexts;
+  /** Future-compatible extension point for Tarot Thinking Knowledge Base. */
+  thinking?: unknown;
 };

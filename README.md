@@ -150,6 +150,71 @@ npm run build
 
 `npm run validate:concepts`는 Concept ID 중복, Card Map 참조, Question Rule 참조, Resolver 동작을 검사하고 `reports/prompt-token-optimization.md`에 프롬프트 토큰 절감 리포트를 생성합니다.
 
+## Tarot Thinking Knowledge Base
+
+Tarot Thinking Knowledge Base는 카드 의미 DB가 아니라 AI가 질문 앞에서 어떤 순서로 사고해야 하는지를 저장하는 foundation 데이터입니다.
+
+```text
+Question
+↓
+Thinking Guide
+↓
+Meaning JSON
+↓
+User Answer
+↓
+Prompt
+```
+
+v1 foundation은 전체 78장이 아니라 대표 5장만 포함합니다.
+
+- 바보: `major_00_fool`
+- 마법사: `major_01_magician`
+- 운명의 수레바퀴: `major_10_wheel_of_fortune`
+- 컵 2: `cups_02`
+- 완드 9: `wands_09`
+
+데이터와 helper 위치:
+
+- `src/data/tarot/thinking/tarotThinkingGuides.json`
+- `src/lib/tarot/thinking/types.ts`
+- `src/lib/tarot/thinking/getThinkingGuide.ts`
+- `src/lib/tarot/thinking/buildThinkingGuide.ts`
+
+중요: 이 데이터는 AI가 최종 정답으로 사용하는 데이터가 아니라 사람이 검수할 초안입니다. 프로젝트의 핵심 자산은 JSON 파일 자체가 아니라, 검수하며 다듬는 Rider-Waite 질문 중심 해석 철학입니다.
+
+검증:
+
+```bash
+npm run validate:thinking
+```
+
+`validate:thinking`은 v1 범위가 정확히 5장인지, 필수 thinking 필드가 채워졌는지, prompt payload로 변환 가능한지 검사합니다. 이 단계에서는 절대 78장 전체로 확장하지 않습니다.
+
+### Thinking KB DeepSeek Injection Test
+
+Thinking KB is now tested at the prompt boundary before expanding beyond the first 5 cards.
+
+```bash
+npm run test:thinking-kb
+```
+
+This test checks:
+
+- The 5 Thinking KB cards inject `[THINKING GUIDE]` into the correction prompt used by DeepSeek.
+- The compatibility analysis prompt receives the same guide.
+- Non-KB cards do not receive a fake Thinking Guide and continue through Graph/meaning fallback.
+- Question-first prompt rules are present, including openings such as "이 질문에서 가장 먼저 봐야 하는 것은...".
+- Graph Resolver payload remains present beside the Thinking Guide.
+
+Live DeepSeek sampling is optional because it uses the real API:
+
+```bash
+DEEPSEEK_THINKING_LIVE=true npm run test:thinking-kb
+```
+
+The result is written to `reports/thinking-kb-injection-report.md`. PASS means the guide is injected and structurally usable; it does not mean the interpretation philosophy is final. The Thinking KB remains a human-review draft.
+
 ## Vercel Deployment
 
 Vercel에서 Git repository를 Import한 뒤 아래 설정을 사용합니다.

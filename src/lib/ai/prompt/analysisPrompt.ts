@@ -1,8 +1,9 @@
 import { resolveConceptGraph } from "../../tarot/conceptGraphResolver";
 import { getQuestionContextV2, getTrainingHint } from "../../tarot/trainingHints";
+import { buildThinkingGuide, formatThinkingGuideForPrompt } from "../../tarot/thinking/buildThinkingGuide";
 import type { EvaluationInput } from "../types";
 
-export const ANALYSIS_PROMPT_VERSION = "v7.1.0-graph-first-fallback";
+export const ANALYSIS_PROMPT_VERSION = "v7.3.0-thinking-kb-question-first";
 
 export function buildAnalysisPrompt({ card, meaning, question, userAnswer }: EvaluationInput) {
   const resolved = resolveConceptGraph({
@@ -13,6 +14,11 @@ export function buildAnalysisPrompt({ card, meaning, question, userAnswer }: Eva
   });
   const needsLegacyFallback = resolved.primaryConcepts.length === 0 || resolved.recommendedChecks.length < 2;
   const legacyFallback = needsLegacyFallback ? buildLegacyFallback({ meaning, question }) : [];
+  const thinkingGuide = buildThinkingGuide({
+    cardId: card.meta.card_id,
+    orientation: question.orientation,
+    category: question.category,
+  });
 
   return [
     "SYSTEM",
@@ -21,6 +27,13 @@ export function buildAnalysisPrompt({ card, meaning, question, userAnswer }: Eva
     "This is a private Analysis Prompt.",
     "Do not write user-facing feedback.",
     "Return JSON only.",
+    "",
+    "CORE PERSPECTIVE",
+    "- The user is not using this app to memorize card meanings.",
+    "- The user is learning how to select the most relevant card meaning for the question.",
+    "- Never start from card explanation.",
+    "- Start from what the question is really asking.",
+    "- Use the card only as evidence for the selected answer.",
     "",
     "LANGUAGE RULE",
     "- Follow all procedural instructions in English.",
@@ -40,7 +53,7 @@ export function buildAnalysisPrompt({ card, meaning, question, userAnswer }: Eva
     "4. Do not list every possible meaning.",
     "5. Do not repeat the same idea in different words.",
     "6. Do not copy generic instructions into the output.",
-    "7. Always convert abstract tarot keywords into a concrete real-world issue.",
+    "7. Convert abstract tarot keywords only into a question-relevant issue, not an over-specific diagnosis.",
     "8. Always generate at least two concrete checks.",
     "9. Score and rubric must be calculated in this Analysis stage.",
     "10. [RESOLVED REASONING GRAPH] is the authoritative meaning source for this analysis.",
@@ -54,6 +67,9 @@ export function buildAnalysisPrompt({ card, meaning, question, userAnswer }: Eva
     "- Do not invent a different tarot meaning when the reasoning graph payload is present.",
     "- Do not ask for the full graph, aliases, definitions, bad readings, or the full card meaning data; they are intentionally excluded to reduce tokens.",
     "- Ignore legacy question_contexts and training_hints unless [LEGACY FALLBACK] is present.",
+    "- If [THINKING GUIDE] is present, use it as the question-first reading guide.",
+    "- [THINKING GUIDE] is a human-review draft, not a final answer. Do not quote it mechanically.",
+    "- Use firstQuestion, firstFocus, selectedLogic, and consultingFocus to select the question-relevant meaning.",
     "",
     "REASONING PROCEDURE",
     "Follow these steps internally. Do not output the steps.",
@@ -71,11 +87,11 @@ export function buildAnalysisPrompt({ card, meaning, question, userAnswer }: Eva
     "STEP 3. Select one meaning",
     "- Choose only one selectedMeaning that best fits this question.",
     "- If the card is reversed, choose one reversalMode only: 부족, 과잉, 지연, 왜곡, 내면화.",
-    "- Explain the reason in selectedReason using evidence -> conclusion order.",
+    "- Explain the reason in selectedReason using question answer -> selected meaning -> card evidence order.",
     "",
     "STEP 4. Make it concrete",
-    "- realWorldIssue must describe the actual situation this card points to in this question.",
-    "- specificRisk must describe what may go wrong in practice.",
+    "- realWorldIssue must describe what the question needs to examine, not a full diagnosis.",
+    "- specificRisk must stay within the question scope.",
     "- concreteChecks must contain 2 to 5 concrete items the querent should check.",
     "- concreteChecks must be nouns or short noun phrases, not abstract advice.",
     "- Good examples: 계약서 문구, 수익 배분, 업무 범위, 책임 소재, 일정, 의사결정 권한, 정보 공개 방식, 중도 이탈 조건.",
@@ -120,7 +136,7 @@ export function buildAnalysisPrompt({ card, meaning, question, userAnswer }: Eva
     "BAD:",
     "소드 7은 전략과 은밀한 행동을 뜻하므로 파트너십에서 리스크를 확인해야 합니다.",
     "GOOD:",
-    "이 질문에서 소드 7은 상대를 악인으로 단정하는 카드가 아니라, 정보 비대칭과 책임 회피 구조를 확인하라는 카드입니다. 말로 합의한 조건이 계약서에 들어가는지, 수익 배분과 업무 범위가 명확한지, 문제가 생겼을 때 누가 책임지는지를 확인해야 합니다.",
+    "이 질문에서 먼저 봐야 하는 것은 상대의 성격이 아니라 파트너십 조건의 투명성입니다. 소드 7은 정보 비대칭과 책임 회피 구조를 근거로 이 선택을 받쳐 주므로, 계약서와 역할 범위를 확인해야 합니다.",
     "",
     "BAD:",
     "질문 위치에 맞게 카드의 정통 의미를 적용해야 합니다.",
@@ -158,6 +174,8 @@ export function buildAnalysisPrompt({ card, meaning, question, userAnswer }: Eva
     `suit: ${card.meta.suit ?? "major"}`,
     `orientation: ${question.orientation}`,
     "",
+    ...buildThinkingGuideBlock(thinkingGuide),
+    "",
     "[RESOLVED REASONING GRAPH]",
     `primary_concepts: ${resolved.primaryConcepts.map((concept) => `${concept.name_ko}(${concept.id})`).join(", ")}`,
     `secondary_concepts: ${resolved.secondaryConcepts.map((concept) => `${concept.name_ko}(${concept.id})`).join(", ")}`,
@@ -184,9 +202,9 @@ export function buildAnalysisPrompt({ card, meaning, question, userAnswer }: Eva
         questionArea: "질문의 핵심 영역을 좁혀 작성합니다.",
         selectedMeaning: "이번 질문에 가장 적합한 카드 의미 하나만 작성합니다.",
         reversalMode: "정방향이면 빈 문자열, 역방향이면 부족/과잉/지연/왜곡/내면화 중 하나만 작성합니다.",
-        selectedReason: "근거 -> 결론 순서로 선택 이유를 작성합니다.",
-        realWorldIssue: "이번 질문에서 카드가 가리키는 실제 장면을 작성합니다.",
-        specificRisk: "내담자가 실제로 겪을 수 있는 구체 위험을 작성합니다.",
+        selectedReason: "질문에 대한 답 -> 선택 의미 -> 카드 근거 순서로 선택 이유를 작성합니다.",
+        realWorldIssue: "이번 질문이 실제로 확인해야 하는 장면을 작성합니다.",
+        specificRisk: "질문 범위 안에서 생길 수 있는 구체 위험을 작성합니다.",
         concreteChecks: ["내담자가 확인해야 할 구체 항목을 2~5개 작성합니다."],
         clientFacingAdvice: "상담에서 내담자에게 직접 말할 핵심 조언을 작성합니다.",
         whyUserAnswerIsInsufficient: "사용자 답변이 왜 부족한지 구체적으로 작성합니다.",
@@ -198,7 +216,7 @@ export function buildAnalysisPrompt({ card, meaning, question, userAnswer }: Eva
         commonMisreading: "초보자가 흔히 하는 오독이면 작성하고, 아니면 빈 문자열입니다.",
         consultingDirection: "실제 상담에서 어떤 흐름으로 말할지 한 줄로 작성합니다.",
         traditionalSummary: "이번 질문에 필요한 정통 핵심만 한 번 정리합니다.",
-        modelAnswerOutline: "질문 -> 카드 의미 -> 질문 적용 -> 현실 적용 순서의 모범 답안 뼈대를 작성합니다.",
+        modelAnswerOutline: "질문에 대한 답 -> 선택 의미 -> 카드 근거 -> 상담 적용 순서의 모범 답안 뼈대를 작성합니다.",
         score: 72,
         grade: "partial",
         rubric: {
@@ -223,7 +241,23 @@ export function buildAnalysisPrompt({ card, meaning, question, userAnswer }: Eva
       null,
       2,
     ),
+    "",
+    "FINAL STYLE RULE",
+    "좋은 타로 해석은 카드를 많이 설명하는 것이 아니라, 질문에 가장 적절한 의미를 선택하는 것이다.",
+    "카드 설명보다 질문에 대한 답을 우선하라.",
   ].join("\n");
+}
+
+function buildThinkingGuideBlock(thinkingGuide: ReturnType<typeof buildThinkingGuide>) {
+  if (!thinkingGuide) return [];
+
+  return [
+    "[THINKING GUIDE]",
+    "Use this compact guide only to choose and explain the question-relevant meaning.",
+    "Do not treat it as the final answer.",
+    "Do not copy labels such as coreIdentity, firstQuestion, firstFocus, selectedLogic, consultingFocus, or teachingTip.",
+    formatThinkingGuideForPrompt(thinkingGuide),
+  ];
 }
 
 function buildLegacyFallback({ meaning, question }: Pick<EvaluationInput, "meaning" | "question">) {
