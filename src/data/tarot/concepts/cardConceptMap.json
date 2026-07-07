@@ -1,0 +1,604 @@
+{
+  "major_01_magician": {
+    "upright": [
+      "execution",
+      "decision_criteria"
+    ],
+    "reversed": [
+      "execution",
+      "responsibility"
+    ]
+  },
+  "major_21_world": {
+    "upright": [
+      "operation_system",
+      "decision_criteria"
+    ],
+    "reversed": [
+      "unfinished_emotion",
+      "operation_system"
+    ]
+  },
+  "swords_ace": {
+    "upright": [
+      "mental_clarity",
+      "execution"
+    ],
+    "reversed": [
+      "mental_clarity",
+      "boundary"
+    ]
+  },
+  "swords_02": {
+    "upright": [
+      "decision_criteria",
+      "boundary"
+    ],
+    "reversed": [
+      "decision_criteria",
+      "information_asymmetry"
+    ]
+  },
+  "swords_03": {
+    "upright": [
+      "emotional_wound",
+      "mental_clarity"
+    ],
+    "reversed": [
+      "emotional_wound",
+      "recovery"
+    ]
+  },
+  "swords_07": {
+    "upright": [
+      "information_asymmetry",
+      "responsibility"
+    ],
+    "reversed": [
+      "information_asymmetry",
+      "responsibility"
+    ]
+  },
+  "swords_05": {
+    "upright": [
+      "conflict_cost",
+      "responsibility"
+    ],
+    "reversed": [
+      "conflict_cost",
+      "recovery"
+    ]
+  },
+  "swords_06": {
+    "upright": [
+      "transition",
+      "recovery"
+    ],
+    "reversed": [
+      "transition",
+      "unfinished_emotion"
+    ]
+  },
+  "swords_08": {
+    "upright": [
+      "mental_restriction",
+      "boundary"
+    ],
+    "reversed": [
+      "mental_restriction",
+      "execution"
+    ]
+  },
+  "swords_09": {
+    "upright": [
+      "anxiety_loop",
+      "recovery"
+    ],
+    "reversed": [
+      "anxiety_loop",
+      "mental_clarity"
+    ]
+  },
+  "swords_10": {
+    "upright": [
+      "painful_ending",
+      "recovery"
+    ],
+    "reversed": [
+      "painful_ending",
+      "recovery"
+    ]
+  },
+  "swords_page": {
+    "upright": [
+      "critical_discernment",
+      "information_asymmetry"
+    ],
+    "reversed": [
+      "information_asymmetry",
+      "impulsive_action"
+    ]
+  },
+  "swords_knight": {
+    "upright": [
+      "impulsive_action",
+      "mental_clarity"
+    ],
+    "reversed": [
+      "impulsive_action",
+      "boundary"
+    ]
+  },
+  "swords_queen": {
+    "upright": [
+      "critical_discernment",
+      "boundary"
+    ],
+    "reversed": [
+      "critical_discernment",
+      "emotional_wound"
+    ]
+  },
+  "swords_king": {
+    "upright": [
+      "authority_judgment",
+      "mental_clarity"
+    ],
+    "reversed": [
+      "authority_judgment",
+      "responsibility"
+    ]
+  },
+  "pentacles_ace": {
+    "upright": [
+      "material_opportunity",
+      "preparation"
+    ],
+    "reversed": [
+      "material_opportunity",
+      "preparation"
+    ]
+  },
+  "pentacles_02": {
+    "upright": [
+      "balance_juggling",
+      "resource_management"
+    ],
+    "reversed": [
+      "balance_juggling",
+      "resource_management"
+    ]
+  },
+  "pentacles_03": {
+    "upright": [
+      "operation_system",
+      "responsibility",
+      "craftsmanship"
+    ],
+    "reversed": [
+      "operation_system",
+      "craftsmanship"
+    ]
+  },
+  "pentacles_04": {
+    "upright": [
+      "stability_control",
+      "resource_management"
+    ],
+    "reversed": [
+      "stability_control",
+      "fair_exchange"
+    ]
+  },
+  "pentacles_05": {
+    "upright": [
+      "scarcity_mindset",
+      "recovery"
+    ],
+    "reversed": [
+      "scarcity_mindset",
+      "recovery"
+    ]
+  },
+  "pentacles_06": {
+    "upright": [
+      "fair_exchange",
+      "responsibility"
+    ],
+    "reversed": [
+      "fair_exchange",
+      "responsibility"
+    ]
+  },
+  "pentacles_07": {
+    "upright": [
+      "long_term_investment",
+      "resource_management"
+    ],
+    "reversed": [
+      "long_term_investment",
+      "decision_criteria"
+    ]
+  },
+  "pentacles_08": {
+    "upright": [
+      "craftsmanship",
+      "skill_building"
+    ],
+    "reversed": [
+      "craftsmanship",
+      "preparation"
+    ]
+  },
+  "pentacles_09": {
+    "upright": [
+      "financial_independence",
+      "resource_management"
+    ],
+    "reversed": [
+      "financial_independence",
+      "stability_control"
+    ]
+  },
+  "pentacles_10": {
+    "upright": [
+      "family_asset",
+      "stability_control"
+    ],
+    "reversed": [
+      "family_asset",
+      "responsibility"
+    ]
+  },
+  "pentacles_page": {
+    "upright": [
+      "skill_building",
+      "material_opportunity"
+    ],
+    "reversed": [
+      "preparation",
+      "operation_system"
+    ]
+  },
+  "pentacles_knight": {
+    "upright": [
+      "practical_maturity",
+      "resource_management"
+    ],
+    "reversed": [
+      "practical_maturity",
+      "stability_control"
+    ]
+  },
+  "pentacles_queen": {
+    "upright": [
+      "resource_management",
+      "financial_independence"
+    ],
+    "reversed": [
+      "resource_management",
+      "boundary"
+    ]
+  },
+  "pentacles_king": {
+    "upright": [
+      "stability_control",
+      "family_asset"
+    ],
+    "reversed": [
+      "stability_control",
+      "fair_exchange"
+    ]
+  },
+  "cups_05": {
+    "upright": [
+      "grief_focus",
+      "remaining_possibility"
+    ],
+    "reversed": [
+      "remaining_possibility",
+      "healing"
+    ]
+  },
+  "wands_10": {
+    "upright": [
+      "overload",
+      "burden_overload",
+      "responsibility"
+    ],
+    "reversed": [
+      "burden_overload",
+      "boundary"
+    ]
+  },
+  "swords_04": {
+    "upright": [
+      "recovery",
+      "boundary"
+    ],
+    "reversed": [
+      "recovery",
+      "execution"
+    ]
+  },
+  "major_06_lovers": {
+    "upright": [
+      "decision_criteria",
+      "responsibility"
+    ],
+    "reversed": [
+      "decision_criteria",
+      "boundary"
+    ]
+  },
+  "major_02_high_priestess": {
+    "upright": [
+      "information_asymmetry",
+      "boundary"
+    ],
+    "reversed": [
+      "information_asymmetry",
+      "boundary"
+    ]
+  },
+  "cups_ace": {
+    "upright": [
+      "emotional_opening",
+      "healing"
+    ],
+    "reversed": [
+      "emotional_apathy",
+      "emotional_immaturity"
+    ]
+  },
+  "cups_02": {
+    "upright": [
+      "mutual_connection",
+      "trust"
+    ],
+    "reversed": [
+      "mutual_connection",
+      "boundary"
+    ]
+  },
+  "cups_03": {
+    "upright": [
+      "celebration_support",
+      "communication"
+    ],
+    "reversed": [
+      "celebration_support",
+      "boundary"
+    ]
+  },
+  "cups_04": {
+    "upright": [
+      "emotional_apathy",
+      "remaining_possibility"
+    ],
+    "reversed": [
+      "emotional_opening",
+      "remaining_possibility"
+    ]
+  },
+  "cups_06": {
+    "upright": [
+      "nostalgia_pattern",
+      "unfinished_emotion"
+    ],
+    "reversed": [
+      "nostalgia_pattern",
+      "emotional_direction_reset"
+    ]
+  },
+  "cups_07": {
+    "upright": [
+      "fantasy_projection",
+      "decision_criteria"
+    ],
+    "reversed": [
+      "fantasy_projection",
+      "verification"
+    ]
+  },
+  "cups_08": {
+    "upright": [
+      "emotional_departure",
+      "emotional_direction_reset"
+    ],
+    "reversed": [
+      "emotional_departure",
+      "unfinished_emotion"
+    ]
+  },
+  "cups_09": {
+    "upright": [
+      "emotional_satisfaction",
+      "decision_quality"
+    ],
+    "reversed": [
+      "emotional_satisfaction",
+      "emotional_apathy"
+    ]
+  },
+  "cups_10": {
+    "upright": [
+      "family_harmony",
+      "trust"
+    ],
+    "reversed": [
+      "family_harmony",
+      "responsibility"
+    ]
+  },
+  "cups_page": {
+    "upright": [
+      "emotional_opening",
+      "emotional_immaturity"
+    ],
+    "reversed": [
+      "emotional_immaturity",
+      "fantasy_projection"
+    ]
+  },
+  "cups_knight": {
+    "upright": [
+      "emotional_opening",
+      "fantasy_projection"
+    ],
+    "reversed": [
+      "fantasy_projection",
+      "emotional_immaturity"
+    ]
+  },
+  "cups_queen": {
+    "upright": [
+      "emotional_maturity",
+      "boundary"
+    ],
+    "reversed": [
+      "emotional_maturity",
+      "emotional_apathy"
+    ]
+  },
+  "cups_king": {
+    "upright": [
+      "emotional_maturity",
+      "trust"
+    ],
+    "reversed": [
+      "emotional_maturity",
+      "emotional_immaturity"
+    ]
+  },
+  "wands_ace": {
+    "upright": [
+      "creative_spark",
+      "execution"
+    ],
+    "reversed": [
+      "creative_spark",
+      "preparation"
+    ]
+  },
+  "wands_02": {
+    "upright": [
+      "planning_vision",
+      "decision_criteria"
+    ],
+    "reversed": [
+      "planning_vision",
+      "preparation"
+    ]
+  },
+  "wands_03": {
+    "upright": [
+      "expansion_momentum",
+      "planning_vision"
+    ],
+    "reversed": [
+      "expansion_momentum",
+      "risk_management"
+    ]
+  },
+  "wands_04": {
+    "upright": [
+      "stable_celebration",
+      "trust"
+    ],
+    "reversed": [
+      "stable_celebration",
+      "operation_system"
+    ]
+  },
+  "wands_05": {
+    "upright": [
+      "competition_tension",
+      "conflict_cost"
+    ],
+    "reversed": [
+      "competition_tension",
+      "boundary"
+    ]
+  },
+  "wands_06": {
+    "upright": [
+      "public_recognition",
+      "accountability"
+    ],
+    "reversed": [
+      "public_recognition",
+      "responsibility"
+    ]
+  },
+  "wands_07": {
+    "upright": [
+      "defensive_stance",
+      "boundary"
+    ],
+    "reversed": [
+      "defensive_stance",
+      "overload"
+    ]
+  },
+  "wands_08": {
+    "upright": [
+      "rapid_progress",
+      "execution"
+    ],
+    "reversed": [
+      "rapid_progress",
+      "risk_management"
+    ]
+  },
+  "wands_09": {
+    "upright": [
+      "sustained_resilience",
+      "boundary"
+    ],
+    "reversed": [
+      "sustained_resilience",
+      "recovery"
+    ]
+  },
+  "wands_page": {
+    "upright": [
+      "exploratory_drive",
+      "creative_spark"
+    ],
+    "reversed": [
+      "exploratory_drive",
+      "impulsive_drive"
+    ]
+  },
+  "wands_knight": {
+    "upright": [
+      "impulsive_drive",
+      "rapid_progress"
+    ],
+    "reversed": [
+      "impulsive_drive",
+      "boundary"
+    ]
+  },
+  "wands_queen": {
+    "upright": [
+      "confident_leadership",
+      "emotional_maturity"
+    ],
+    "reversed": [
+      "confident_leadership",
+      "boundary"
+    ]
+  },
+  "wands_king": {
+    "upright": [
+      "visionary_leadership",
+      "responsibility"
+    ],
+    "reversed": [
+      "visionary_leadership",
+      "accountability"
+    ]
+  }
+}

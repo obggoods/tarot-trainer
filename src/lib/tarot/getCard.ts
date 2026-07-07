@@ -92,5 +92,7 @@ function withCompatibilityFields(meaning: Partial<CardOrientationMeaning>): Card
     traditional_correction: meaning.traditional_correction ?? traditionalMeaning,
     sample_answer: meaning.sample_answer ?? positiveAspect,
     wrong_note: meaning.wrong_note ?? commonMistakes.join(" / "),
+    question_contexts: meaning.question_contexts,
+    training_hints: meaning.training_hints,
   };
 }

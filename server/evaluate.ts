@@ -1,7 +1,10 @@
+import { composeAnalysisFromGraph } from "../src/lib/ai/analysisComposer";
+import { sanitizeEvaluationForDisplay, sanitizeText as sanitizeDisplayText } from "../src/lib/ai/evaluationSanitizer";
+import { buildFallbackTraditionalCorrection, composeFeedback } from "../src/lib/ai/feedbackComposer";
 import { evaluateWithMock } from "../src/lib/ai/mockEvaluator";
-import { buildAnalysisPrompt } from "../src/lib/ai/prompt/analysisPrompt";
-import { buildFeedbackPrompt } from "../src/lib/ai/prompt/feedbackPrompt";
-import { parseAnalysisJson, parseEvaluationJson } from "../src/lib/ai/validation";
+import { buildCorrectionPrompt } from "../src/lib/ai/prompt/correctionPrompt";
+import { parseCorrectionJson } from "../src/lib/ai/validation";
+import { resolveConceptGraph } from "../src/lib/tarot/conceptGraphResolver";
 import { getCard, getCardMeaning } from "../src/lib/tarot/getCard";
 import type { AnalysisResult, EvaluationInput } from "../src/lib/ai/types";
 import type { EvaluationResult, TarotQuestion } from "../src/types";
@@ -11,8 +14,7 @@ type ChatMessage = {
   content: string;
 };
 
-const MAX_ANALYSIS_RETRIES = 2;
-const MAX_FEEDBACK_RETRIES = 2;
+const MAX_CORRECTION_RETRIES = 2;
 
 export async function evaluateReading(problem: TarotQuestion, answer: string, apiKey: string | undefined): Promise<EvaluationResult> {
   const card = getCard(problem.card_id);
@@ -20,74 +22,99 @@ export async function evaluateReading(problem: TarotQuestion, answer: string, ap
   const input = { card, meaning, question: problem, userAnswer: answer };
 
   if (!apiKey) {
-    return evaluateWithMock(input);
+    logAiDebug("missing-api-key", {
+      card_id: problem.card_id,
+      category: problem.category,
+      position: problem.position,
+    });
+    return sanitizeEvaluationForDisplay(evaluateWithMock(input));
   }
 
   const model = process.env.DEEPSEEK_MODEL ?? "deepseek-chat";
+  const startedAt = Date.now();
+  logAiDebug("start", {
+    model,
+    card_id: problem.card_id,
+    orientation: problem.orientation,
+    category: problem.category,
+    position: problem.position,
+  });
 
-  const analysis = await requestAnalysis({ apiKey, model, input });
-  if (!analysis) {
-    return evaluateWithMock(input);
-  }
+  const graphStartedAt = Date.now();
+  const graph = resolveConceptGraph({
+    cardId: problem.card_id,
+    orientation: problem.orientation,
+    category: problem.category,
+    position: problem.position,
+  });
+  const graphResolverMs = Date.now() - graphStartedAt;
+
+  const analysisStartedAt = Date.now();
+  const analysis = composeAnalysisFromGraph({ ...input, graph });
+  const analysisComposerMs = Date.now() - analysisStartedAt;
 
   if (process.env.NODE_ENV !== "production") {
     console.debug("[TarotTrainer Analysis]", analysis);
   }
 
-  const feedback = await requestFeedback({ apiKey, model, input, analysis });
+  const correctionStartedAt = Date.now();
+  const traditionalCorrection =
+    (await requestCorrection({ apiKey, model, input, analysis, graph })) ??
+    buildFallbackTraditionalCorrection(analysis, graph, card.meta.name_ko);
+  const correctionLlmMs = Date.now() - correctionStartedAt;
 
-  return feedback ? sanitizeEvaluation(applyAnalysisScoring(feedback, analysis), analysis.avoid_topics) : evaluateWithMock(input);
+  const feedbackStartedAt = Date.now();
+  const feedback = composeFeedback({
+    ...input,
+    analysis,
+    graph,
+    traditionalCorrection,
+  });
+  const feedbackComposerMs = Date.now() - feedbackStartedAt;
+  const totalMs = Date.now() - startedAt;
+
+  logAiDebug("timings", {
+    graphResolverMs,
+    analysisComposerMs,
+    correctionLlmMs,
+    feedbackComposerMs,
+    totalMs,
+    llmCalls: 1,
+  });
+
+  return sanitizeEvaluation(feedback, analysis.avoid_topics);
 }
 
-async function requestAnalysis({
-  apiKey,
-  model,
-  input,
-}: {
-  apiKey: string;
-  model: string;
-  input: EvaluationInput;
-}): Promise<AnalysisResult | null> {
-  const prompt = buildAnalysisPrompt(input);
-
-  for (let attempt = 0; attempt <= MAX_ANALYSIS_RETRIES; attempt += 1) {
-    const content = await requestDeepSeekCompletion({
-      apiKey,
-      model,
-      prompt,
-      maxTokens: 1200,
-    });
-    const analysis = parseAnalysisJson(content);
-
-    if (analysis) return analysis;
-  }
-
-  return null;
-}
-
-async function requestFeedback({
+async function requestCorrection({
   apiKey,
   model,
   input,
   analysis,
+  graph,
 }: {
   apiKey: string;
   model: string;
   input: EvaluationInput;
   analysis: AnalysisResult;
-}): Promise<EvaluationResult | null> {
-  const prompt = buildFeedbackPrompt(input, analysis);
+  graph: ReturnType<typeof resolveConceptGraph>;
+}): Promise<string | null> {
+  const prompt = buildCorrectionPrompt(input, analysis, graph);
 
-  for (let attempt = 0; attempt <= MAX_FEEDBACK_RETRIES; attempt += 1) {
+  for (let attempt = 0; attempt <= MAX_CORRECTION_RETRIES; attempt += 1) {
+    logAiDebug("correction-request", buildRequestDebugPayload(model, prompt, 800, attempt));
     const content = await requestDeepSeekCompletion({
       apiKey,
       model,
       prompt,
-      maxTokens: 1800,
+      maxTokens: 800,
     });
-    const feedback = parseEvaluationJson(content);
+    const correction = parseCorrectionJson(content);
 
-    if (feedback) return feedback;
+    if (correction) return correction.traditional_correction;
+    logAiDebug("correction-parse-failed", {
+      attempt,
+      contentExcerpt: excerpt(content),
+    });
   }
 
   return null;
@@ -159,9 +186,9 @@ async function readDeepSeekContent(response: Response) {
 
 function sanitizeEvaluation(evaluation: EvaluationResult, avoidTopics: string[]): EvaluationResult {
   const forbiddenTerms = buildForbiddenTerms(avoidTopics);
-  if (forbiddenTerms.length === 0) return evaluation;
+  if (forbiddenTerms.length === 0) return sanitizeEvaluationForDisplay(evaluation);
 
-  return {
+  return sanitizeEvaluationForDisplay({
     ...evaluation,
     strengths: sanitizeList(evaluation.strengths, forbiddenTerms),
     missing_points: sanitizeList(evaluation.missing_points, forbiddenTerms),
@@ -172,43 +199,11 @@ function sanitizeEvaluation(evaluation: EvaluationResult, avoidTopics: string[])
     differences: sanitizeList(evaluation.differences, forbiddenTerms),
     wrong_note: sanitizeText(evaluation.wrong_note, forbiddenTerms),
     next_reading_tip: sanitizeText(evaluation.next_reading_tip, forbiddenTerms),
-  };
-}
-
-function applyAnalysisScoring(evaluation: EvaluationResult, analysis: AnalysisResult): EvaluationResult {
-  return {
-    ...evaluation,
-    score: analysis.score,
-    grade: analysis.grade,
-    rubric: analysis.rubric,
-  };
+  });
 }
 
 function buildForbiddenTerms(avoidTopics: string[]) {
-  const terms = new Map<string, string>();
-
-  for (const topic of avoidTopics) {
-    for (const token of topic.split(/[,\s/]+/)) {
-      const normalized = token.trim();
-      if (normalized.length >= 3) {
-        terms.set(normalized, "질문과 맞지 않는 대표 키워드");
-      }
-    }
-
-    if (topic.includes("파트너")) {
-      terms.set("파트너십", "질문과 맞지 않는 대표 키워드");
-      terms.set("파트너", "결정 대상");
-      terms.set("협력자", "결정 대상");
-      terms.set("관계", "대표 키워드");
-    }
-
-    if (topic.includes("협업") || topic.includes("팀워크")) {
-      terms.set("협업", "관리 방식");
-      terms.set("팀워크", "관리 방식");
-    }
-  }
-
-  return [...terms.entries()].sort(([a], [b]) => b.length - a.length);
+  return [...new Set(avoidTopics.map((topic) => topic.trim()).filter((topic) => topic.length >= 8))].map((term) => [term, ""] as [string, string]);
 }
 
 function sanitizeList(items: string[], forbiddenTerms: Array<[string, string]>) {
@@ -216,5 +211,29 @@ function sanitizeList(items: string[], forbiddenTerms: Array<[string, string]>) 
 }
 
 function sanitizeText(value: string, forbiddenTerms: Array<[string, string]>) {
-  return forbiddenTerms.reduce((text, [term, replacement]) => text.split(term).join(replacement), value);
+  const stripped = forbiddenTerms.reduce((text, [term, replacement]) => text.split(term).join(replacement), value);
+  return sanitizeDisplayText(stripped);
+}
+
+function buildRequestDebugPayload(model: string, prompt: string, maxTokens: number, attempt: number) {
+  return {
+    attempt,
+    payload: {
+      model,
+      messages: [{ role: "user", contentLength: prompt.length, contentExcerpt: excerpt(prompt) }],
+      temperature: 0.3,
+      max_tokens: maxTokens,
+      response_format: { type: "json_object" },
+    },
+  };
+}
+
+function excerpt(value: string) {
+  return value.length > 600 ? `${value.slice(0, 600)}...` : value;
+}
+
+function logAiDebug(event: string, payload: Record<string, unknown>) {
+  if (process.env.NODE_ENV === "production") return;
+
+  console.debug(`[TarotTrainer AI] ${event}`, payload);
 }

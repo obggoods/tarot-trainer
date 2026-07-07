@@ -135,7 +135,7 @@ function buildMeaning(card, orientation) {
 
   return {
     keywords,
-    traditional_meaning: `${card.name_ko} ${reversed ? "역방향" : "정방향"}은 ${core}을 뜻합니다. Rider-Waite 전통에서는 이 카드를 ${card.theme}의 흐름 안에서 읽으며, 질문의 분야에 맞춰 핵심 의미를 선택해야 합니다.`,
+    traditional_meaning: `${card.name_ko} ${reversed ? "역방향" : "정방향"}은 ${core}을 뜻합니다.`,
     symbolism: card.symbols,
     positive_aspect: reversed
       ? `${card.revCore}을 자각하면 패턴을 수정하고 다시 균형을 잡을 수 있습니다.`
@@ -155,8 +155,8 @@ function buildContexts(card) {
   const contexts = {};
   for (const [key, label] of Object.entries(contextLabels)) {
     contexts[key] = {
-      upright: `${label} 질문에서는 ${card.name_ko}의 ${card.core}을 ${domainApplication(key)}에 맞춰 읽습니다. 카드의 정통 의미를 벗어나 단정적 결과로 말하지 않습니다.`,
-      reversed: `${label} 질문에서는 ${card.name_ko} 역방향의 ${card.revCore}을 ${domainApplication(key)}의 부족, 과잉, 지연, 왜곡 중 무엇인지 구분해 읽습니다.`,
+      upright: `${label} 질문에서는 ${card.name_ko}의 ${card.core}이 ${domainApplication(key)}에서 어떤 확인 항목으로 드러나는지 좁혀 읽습니다.`,
+      reversed: `${label} 질문에서는 ${card.name_ko} 역방향의 ${card.revCore}이 ${domainApplication(key)}에서 부족, 과잉, 지연, 왜곡 중 무엇으로 드러나는지 구분해 읽습니다.`,
     };
   }
   return contexts;

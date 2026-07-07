@@ -10,6 +10,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const problem = req.body?.problem as TarotQuestion | undefined;
   const answer = typeof req.body?.answer === "string" ? req.body.answer.trim() : "";
 
+  logApiDebug("request", {
+    card_id: problem?.card_id,
+    orientation: problem?.orientation,
+    category: problem?.category,
+    position: problem?.position,
+    answerLength: answer.length,
+  });
+
   if (!problem || !answer) {
     return res.status(400).json({ ok: false, error: "문제와 답변을 모두 입력해 주세요." });
   }
@@ -21,4 +29,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const message = error instanceof Error ? error.message : "채점 중 알 수 없는 오류가 발생했습니다.";
     return res.status(500).json({ ok: false, error: message });
   }
+}
+
+function logApiDebug(event: string, payload: Record<string, unknown>) {
+  if (process.env.NODE_ENV === "production") return;
+
+  console.debug(`[TarotTrainer API] ${event}`, payload);
 }

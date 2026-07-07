@@ -1,10 +1,26 @@
 import { PROMPT_VERSION } from "./prompt/feedbackPrompt";
+import { hasInternalLeak, sanitizeText } from "./evaluationSanitizer";
 import type { AnalysisResult, PipelineSelfCheck } from "./types";
 import type { EvaluationResult } from "../../types/tarot";
 
 export function parseEvaluationJson(rawText: string): EvaluationResult | null {
   try {
     return normalizeEvaluationResult(JSON.parse(extractJson(rawText)));
+  } catch {
+    return null;
+  }
+}
+
+export function parseCorrectionJson(rawText: string): { traditional_correction: string } | null {
+  try {
+    const candidate = JSON.parse(extractStrictJson(rawText)) as { traditional_correction?: unknown };
+    if (Object.keys(candidate).some((key) => key !== "traditional_correction")) return null;
+    if (typeof candidate.traditional_correction !== "string") return null;
+
+    const correction = sanitizeText(candidate.traditional_correction);
+    if (!isValidCorrection(correction)) return null;
+
+    return { traditional_correction: correction };
   } catch {
     return null;
   }
@@ -32,6 +48,7 @@ export function normalizeEvaluationResult(value: unknown): EvaluationResult | nu
     score: Math.max(0, Math.min(100, Math.round(score))),
     grade: candidate.grade,
     rubric: normalizeRubric(candidate.rubric, score),
+    interpretation_graph: normalizeInterpretationGraph(candidate.interpretation_graph),
     strengths,
     missing_points: missingPoints,
     traditional_correction: candidate.traditional_correction,
@@ -42,6 +59,37 @@ export function normalizeEvaluationResult(value: unknown): EvaluationResult | nu
     wrong_note: candidate.wrong_note,
     next_reading_tip: isString(candidate.next_reading_tip) ? candidate.next_reading_tip : "",
     promptVersion: isString(candidate.promptVersion) ? candidate.promptVersion : PROMPT_VERSION,
+  };
+}
+
+function normalizeInterpretationGraph(value: unknown): EvaluationResult["interpretation_graph"] {
+  const fallback = {
+    card: "카드",
+    orientation: "upright" as const,
+    traditional_meanings: [],
+    question_focus: "질문 초점",
+    selected_meanings: [],
+    rejected_meanings: [],
+    reasoning_bridge: "카드의 정통 의미 중 질문에 가장 직접적으로 답하는 의미를 선택해 읽습니다.",
+    counseling_sentence: "지금은 결론보다 먼저 확인해야 할 조건을 차분히 점검해보는 것이 좋습니다.",
+  };
+
+  if (!value || typeof value !== "object") return fallback;
+
+  const candidate = value as Partial<EvaluationResult["interpretation_graph"]>;
+  return {
+    card: isString(candidate.card) ? candidate.card : fallback.card,
+    orientation: candidate.orientation === "reversed" ? "reversed" : "upright",
+    traditional_meanings: normalizeStringList(candidate.traditional_meanings) ?? [],
+    question_focus: isString(candidate.question_focus) ? candidate.question_focus : fallback.question_focus,
+    selected_meanings: normalizeStringList(candidate.selected_meanings) ?? [],
+    rejected_meanings: Array.isArray(candidate.rejected_meanings)
+      ? candidate.rejected_meanings
+          .filter((item): item is { meaning: string; reason: string } => Boolean(item) && typeof item === "object" && isString((item as { meaning?: unknown }).meaning) && isString((item as { reason?: unknown }).reason))
+          .slice(0, 4)
+      : [],
+    reasoning_bridge: isString(candidate.reasoning_bridge) ? candidate.reasoning_bridge : fallback.reasoning_bridge,
+    counseling_sentence: isString(candidate.counseling_sentence) ? candidate.counseling_sentence : fallback.counseling_sentence,
   };
 }
 
@@ -181,6 +229,14 @@ function extractStrictJson(rawText: string) {
   }
 
   return trimmed;
+}
+
+function isValidCorrection(value: string) {
+  if (!value.trim()) return false;
+  if (value.trim().length < 40) return false;
+  if (hasInternalLeak(value)) return false;
+  if (/```|#{1,6}\s|^\s*[-*]\s/m.test(value)) return false;
+  return true;
 }
 
 function isString(value: unknown): value is string {

@@ -1,9 +1,18 @@
+import { resolveConceptGraph } from "../../tarot/conceptGraphResolver";
+import { getQuestionContextV2, getTrainingHint } from "../../tarot/trainingHints";
 import type { EvaluationInput } from "../types";
 
-export const ANALYSIS_PROMPT_VERSION = "v5.3.0";
+export const ANALYSIS_PROMPT_VERSION = "v7.1.0-graph-first-fallback";
 
 export function buildAnalysisPrompt({ card, meaning, question, userAnswer }: EvaluationInput) {
-  const contextText = getContextText({ card, question });
+  const resolved = resolveConceptGraph({
+    cardId: card.meta.card_id,
+    orientation: question.orientation,
+    category: question.category,
+    position: question.position,
+  });
+  const needsLegacyFallback = resolved.primaryConcepts.length === 0 || resolved.recommendedChecks.length < 2;
+  const legacyFallback = needsLegacyFallback ? buildLegacyFallback({ meaning, question }) : [];
 
   return [
     "SYSTEM",
@@ -20,9 +29,9 @@ export function buildAnalysisPrompt({ card, meaning, question, userAnswer }: Eva
     "- Do not mix Korean and English in the final output.",
     "",
     "PRIMARY TASK",
-    "Analyze the question, card, traditional meaning data, and user's answer.",
-    "Your job is not to explain the card generally.",
-    "Your job is to identify what this card means in this exact question position, then evaluate the user's tarot-reading thinking.",
+    "Analyze the question, resolved reasoning graph payload, and user's answer.",
+    "The engine has already selected the concepts and reasoning path.",
+    "Your job is to explain that reasoning path in this exact question position, then evaluate the user's tarot-reading thinking.",
     "",
     "CORE RULES",
     "1. Return JSON only.",
@@ -34,6 +43,17 @@ export function buildAnalysisPrompt({ card, meaning, question, userAnswer }: Eva
     "7. Always convert abstract tarot keywords into a concrete real-world issue.",
     "8. Always generate at least two concrete checks.",
     "9. Score and rubric must be calculated in this Analysis stage.",
+    "10. [RESOLVED REASONING GRAPH] is the authoritative meaning source for this analysis.",
+    "11. [LEGACY FALLBACK] may appear only when the graph payload is empty or has fewer than two recommended checks.",
+    "",
+    "CONCEPT GRAPH ENGINE RULES",
+    "- Use primary_concepts as selectedMeaning candidates.",
+    "- Use reasoning_path to write selectedReason.",
+    "- Use recommended_checks to fill concreteChecks.",
+    "- Use recommended_actions to write clientFacingAdvice, consultingDirection, and modelAnswerOutline.",
+    "- Do not invent a different tarot meaning when the reasoning graph payload is present.",
+    "- Do not ask for the full graph, aliases, definitions, bad readings, or the full card meaning data; they are intentionally excluded to reduce tokens.",
+    "- Ignore legacy question_contexts and training_hints unless [LEGACY FALLBACK] is present.",
     "",
     "REASONING PROCEDURE",
     "Follow these steps internally. Do not output the steps.",
@@ -45,9 +65,8 @@ export function buildAnalysisPrompt({ card, meaning, question, userAnswer }: Eva
     "- Read the question before reading the card.",
     "",
     "STEP 2. Analyze the card",
-    "- Consider symbols, suit, number, arcana, orientation, and provided meaning data.",
-    "- Generate candidate meanings internally.",
-    "- Do not output all candidate meanings.",
+    "- Consider card identity, orientation, primary concepts, secondary concepts, and reasoning path.",
+    "- Do not generate unrelated candidate meanings.",
     "",
     "STEP 3. Select one meaning",
     "- Choose only one selectedMeaning that best fits this question.",
@@ -139,15 +158,13 @@ export function buildAnalysisPrompt({ card, meaning, question, userAnswer }: Eva
     `suit: ${card.meta.suit ?? "major"}`,
     `orientation: ${question.orientation}`,
     "",
-    "[TRADITIONAL MEANING DATA]",
-    `keywords: ${meaning.keywords.join(", ")}`,
-    `traditional_meaning: ${meaning.traditional_meaning}`,
-    `positive_aspect: ${meaning.positive_aspect}`,
-    `warning: ${meaning.warning}`,
-    `must_include: ${meaning.must_include.join(", ")}`,
-    `common_mistakes: ${meaning.common_mistakes.join(", ")}`,
-    `symbolism: ${(meaning.symbolism ?? []).join(", ")}`,
-    `context_for_category: ${contextText}`,
+    "[RESOLVED REASONING GRAPH]",
+    `primary_concepts: ${resolved.primaryConcepts.map((concept) => `${concept.name_ko}(${concept.id})`).join(", ")}`,
+    `secondary_concepts: ${resolved.secondaryConcepts.map((concept) => `${concept.name_ko}(${concept.id})`).join(", ")}`,
+    `reasoning_path: ${resolved.reasoningPath.join(" -> ")}`,
+    `recommended_checks: ${resolved.recommendedChecks.join(", ")}`,
+    `recommended_actions: ${resolved.recommendedActions.join(", ")}`,
+    ...legacyFallback,
     "",
     "[QUESTION]",
     `category: ${categoryLabel[question.category] ?? question.category}`,
@@ -209,6 +226,28 @@ export function buildAnalysisPrompt({ card, meaning, question, userAnswer }: Eva
   ].join("\n");
 }
 
+function buildLegacyFallback({ meaning, question }: Pick<EvaluationInput, "meaning" | "question">) {
+  const context = getQuestionContextV2(question, meaning);
+  const hint = getTrainingHint(question, meaning);
+  if (!context && !hint) {
+    return [
+      "",
+      "[LEGACY FALLBACK]",
+      "fallback_reason: graph resolver returned insufficient payload, but no legacy fallback data exists.",
+    ];
+  }
+
+  return [
+    "",
+    "[LEGACY FALLBACK]",
+    "fallback_reason: graph resolver returned insufficient payload.",
+    `selected_meaning: ${context?.selected_meaning ?? hint?.hint_title ?? ""}`,
+    `real_world_issues: ${(context?.real_world_issues ?? (hint ? [hint.hint_body] : [])).join(", ")}`,
+    `concrete_checks: ${(context?.concrete_checks ?? hint?.hint_keywords ?? []).join(", ")}`,
+    `answer_seed: ${hint?.answer_seed ?? ""}`,
+  ];
+}
+
 const categoryLabel: Record<string, string> = {
   love: "연애",
   reunion: "재회",
@@ -224,13 +263,3 @@ const categoryLabel: Record<string, string> = {
   exam: "시험",
   general: "오늘의 운세",
 };
-
-function getContextText({ card, question }: Pick<EvaluationInput, "card" | "question">) {
-  const contexts = card.contexts;
-  if (!contexts) return "";
-
-  const contextKey = question.category === "general" ? "daily" : question.category;
-  if (contextKey in contexts) return contexts[contextKey as keyof typeof contexts]?.[question.orientation] ?? "";
-
-  return "";
-}

@@ -1,0 +1,151 @@
+{
+  "business": {
+    "warning": {
+      "preferred": [
+        "burden_overload",
+        "competition_tension",
+        "rapid_progress",
+        "expansion_momentum",
+        "risk_management",
+        "responsibility",
+        "preparation",
+        "operation_system",
+        "overload"
+      ]
+    },
+    "advice": {
+      "preferred": [
+        "planning_vision",
+        "expansion_momentum",
+        "visionary_leadership",
+        "execution",
+        "operation_system",
+        "decision_criteria",
+        "resource_priority"
+      ]
+    }
+  },
+  "love": {
+    "current": {
+      "preferred": [
+        "creative_spark",
+        "impulsive_drive",
+        "competition_tension",
+        "defensive_stance",
+        "mutual_connection",
+        "emotional_opening",
+        "fantasy_projection",
+        "boundary"
+      ]
+    },
+    "advice": {
+      "preferred": [
+        "emotional_maturity",
+        "boundary",
+        "communication",
+        "planning_vision",
+        "confident_leadership",
+        "healing",
+        "decision_criteria"
+      ]
+    }
+  },
+  "reunion": {
+    "obstacle": {
+      "preferred": [
+        "grief_focus",
+        "nostalgia_pattern",
+        "emotional_departure",
+        "unfinished_emotion",
+        "emotional_immaturity",
+        "information_asymmetry",
+        "boundary"
+      ]
+    },
+    "advice": {
+      "preferred": [
+        "remaining_possibility",
+        "emotional_direction_reset",
+        "communication",
+        "healing",
+        "responsibility",
+        "boundary",
+        "recovery"
+      ]
+    }
+  },
+  "relationship": {
+    "partnership_check": {
+      "preferred": [
+        "mutual_connection",
+        "trust",
+        "emotional_maturity",
+        "responsibility",
+        "information_asymmetry",
+        "boundary",
+        "communication"
+      ]
+    }
+  },
+  "career": {
+    "warning": {
+      "preferred": [
+        "rapid_progress",
+        "competition_tension",
+        "burden_overload",
+        "impulsive_drive",
+        "decision_criteria",
+        "preparation",
+        "boundary",
+        "overload"
+      ]
+    },
+    "advice": {
+      "preferred": [
+        "rapid_progress",
+        "exploratory_drive",
+        "creative_spark",
+        "public_recognition",
+        "planning_vision",
+        "confident_leadership",
+        "skill_building",
+        "execution"
+      ]
+    }
+  },
+  "money": {
+    "warning": {
+      "preferred": [
+        "balance_juggling",
+        "resource_management",
+        "scarcity_mindset",
+        "stability_control",
+        "long_term_investment",
+        "fair_exchange"
+      ]
+    },
+    "advice": {
+      "preferred": [
+        "resource_management",
+        "balance_juggling",
+        "material_opportunity",
+        "long_term_investment",
+        "financial_independence",
+        "fair_exchange"
+      ]
+    }
+  },
+  "health": {
+    "warning": {
+      "preferred": [
+        "overload",
+        "burden_overload",
+        "sustained_resilience",
+        "recovery",
+        "boundary",
+        "emotional_apathy",
+        "resource_management"
+      ]
+    }
+  }
+}

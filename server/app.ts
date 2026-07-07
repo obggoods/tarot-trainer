@@ -17,6 +17,14 @@ app.post("/api/evaluate", async (c) => {
   const problem = body?.problem;
   const answer = typeof body?.answer === "string" ? body.answer.trim() : "";
 
+  logApiDebug("request", {
+    card_id: problem?.card_id,
+    orientation: problem?.orientation,
+    category: problem?.category,
+    position: problem?.position,
+    answerLength: answer.length,
+  });
+
   if (!problem || !answer) {
     return c.json({ ok: false, error: "문제와 답변을 모두 입력해 주세요." }, 400);
   }
@@ -29,3 +37,9 @@ app.post("/api/evaluate", async (c) => {
     return c.json({ ok: false, error: message }, 500);
   }
 });
+
+function logApiDebug(event: string, payload: Record<string, unknown>) {
+  if (process.env.NODE_ENV === "production") return;
+
+  console.debug(`[TarotTrainer API] ${event}`, payload);
+}

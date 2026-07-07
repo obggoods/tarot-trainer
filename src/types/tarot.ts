@@ -43,10 +43,34 @@ export type CardOrientationMeaning = {
   warning: string;
   must_include: string[];
   common_mistakes: string[];
+  /** Legacy/internal compatibility field. The compact feedback UI uses Graph learning + reality application instead. */
   traditional_correction: string;
   sample_answer: string;
   wrong_note: string;
+  /** Legacy fallback only. New cards should prefer Concept Graph map/rules. */
+  question_contexts?: TarotQuestionContexts;
+  /** Legacy fallback only. New cards should prefer Concept Graph map/rules. */
+  training_hints?: TarotTrainingHints;
 };
+
+export type TarotTrainingHint = {
+  hint_keywords: string[];
+  hint_title: string;
+  hint_body: string;
+  answer_seed?: string;
+};
+
+export type TarotTrainingHints = Record<string, Record<string, TarotTrainingHint>>;
+
+export type TarotQuestionContextV2 = {
+  selected_meaning: string;
+  real_world_issues: string[];
+  concrete_checks: string[];
+  bad_readings: string[];
+  model_logic: string;
+};
+
+export type TarotQuestionContexts = Record<string, Record<string, TarotQuestionContextV2>>;
 
 export type CardMeaning = {
   card_id: string;
@@ -112,6 +136,19 @@ export type EvaluationResult = {
     counselingExpression: number;
     practicalApplication: number;
     certaintyControl: number;
+  };
+  interpretation_graph: {
+    card: string;
+    orientation: Orientation;
+    traditional_meanings: string[];
+    question_focus: string;
+    selected_meanings: string[];
+    rejected_meanings: {
+      meaning: string;
+      reason: string;
+    }[];
+    reasoning_bridge: string;
+    counseling_sentence: string;
   };
   strengths: string[];
   missing_points: string[];

@@ -3,7 +3,13 @@ import { trainingCardPool } from "../src/data/tarotQuestions";
 import { getCard, getCardMeaning } from "../src/lib/tarot/getCard";
 import { normalizeCardId } from "../src/lib/tarot/cardId";
 import { tarotManifest } from "../src/lib/tarot/getCardMeta";
-import type { CardOrientationMeaning, TarotKnowledgeBaseEntry, TarotMeaningContexts } from "../src/types/tarot";
+import type {
+  CardOrientationMeaning,
+  TarotKnowledgeBaseEntry,
+  TarotMeaningContexts,
+  TarotQuestionContexts,
+  TarotTrainingHints,
+} from "../src/types/tarot";
 
 const REQUIRED_CONTEXTS: Array<keyof TarotMeaningContexts> = [
   "love",
@@ -43,6 +49,8 @@ function validateMeaning(cardId: string, orientation: "upright" | "reversed", me
   if (!hasText(meaning.warning)) fail(`${prefix}.warning is missing`);
   if (!hasTextArray(meaning.must_include)) fail(`${prefix}.must_include is missing`);
   if (!hasTextArray(meaning.common_mistakes)) fail(`${prefix}.common_mistakes is missing`);
+  validateQuestionContexts(prefix, meaning.question_contexts);
+  validateTrainingHints(prefix, meaning.training_hints);
 }
 
 function validateContexts(cardId: string, contexts: TarotMeaningContexts | undefined) {
@@ -54,6 +62,73 @@ function validateContexts(cardId: string, contexts: TarotMeaningContexts | undef
   for (const context of REQUIRED_CONTEXTS) {
     if (!hasText(contexts[context]?.upright)) fail(`${cardId}.contexts.${context}.upright is missing`);
     if (!hasText(contexts[context]?.reversed)) fail(`${cardId}.contexts.${context}.reversed is missing`);
+  }
+}
+
+function validateQuestionContexts(prefix: string, contexts: TarotQuestionContexts | undefined) {
+  if (contexts === undefined) return;
+
+  if (!contexts || typeof contexts !== "object" || Array.isArray(contexts)) {
+    fail(`${prefix}.question_contexts must be an object`);
+    return;
+  }
+
+  for (const [category, positions] of Object.entries(contexts)) {
+    const categoryPrefix = `${prefix}.question_contexts.${category}`;
+
+    if (!positions || typeof positions !== "object" || Array.isArray(positions)) {
+      fail(`${categoryPrefix} must be an object`);
+      continue;
+    }
+
+    for (const [position, context] of Object.entries(positions)) {
+      const contextPrefix = `${categoryPrefix}.${position}`;
+
+      if (!context || typeof context !== "object" || Array.isArray(context)) {
+        fail(`${contextPrefix} must be an object`);
+        continue;
+      }
+
+      if (!hasText(context.selected_meaning)) fail(`${contextPrefix}.selected_meaning is missing`);
+      if (!hasTextArray(context.real_world_issues)) fail(`${contextPrefix}.real_world_issues must contain at least 1 item`);
+      if (!Array.isArray(context.concrete_checks) || context.concrete_checks.length < 2 || !context.concrete_checks.every(hasText)) {
+        fail(`${contextPrefix}.concrete_checks must contain at least 2 text items`);
+      }
+      if (!Array.isArray(context.bad_readings)) fail(`${contextPrefix}.bad_readings must be an array`);
+      if (!hasText(context.model_logic)) fail(`${contextPrefix}.model_logic is missing`);
+    }
+  }
+}
+
+function validateTrainingHints(prefix: string, hints: TarotTrainingHints | undefined) {
+  if (hints === undefined) return;
+
+  if (!hints || typeof hints !== "object" || Array.isArray(hints)) {
+    fail(`${prefix}.training_hints must be an object`);
+    return;
+  }
+
+  for (const [category, positions] of Object.entries(hints)) {
+    const categoryPrefix = `${prefix}.training_hints.${category}`;
+
+    if (!positions || typeof positions !== "object" || Array.isArray(positions)) {
+      fail(`${categoryPrefix} must be an object`);
+      continue;
+    }
+
+    for (const [position, hint] of Object.entries(positions)) {
+      const hintPrefix = `${categoryPrefix}.${position}`;
+
+      if (!hint || typeof hint !== "object" || Array.isArray(hint)) {
+        fail(`${hintPrefix} must be an object`);
+        continue;
+      }
+
+      if (!hasTextArray(hint.hint_keywords)) fail(`${hintPrefix}.hint_keywords must contain at least 1 item`);
+      if (!hasText(hint.hint_title)) fail(`${hintPrefix}.hint_title is missing`);
+      if (!hasText(hint.hint_body)) fail(`${hintPrefix}.hint_body is missing`);
+      if (hint.answer_seed !== undefined && !hasText(hint.answer_seed)) fail(`${hintPrefix}.answer_seed must be text when provided`);
+    }
   }
 }
 

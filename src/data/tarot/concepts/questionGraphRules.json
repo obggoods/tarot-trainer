@@ -1,0 +1,98 @@
+{
+  "business": {
+    "warning": [
+      "risk_management",
+      "responsibility",
+      "boundary",
+      "recovery",
+      "verification"
+    ],
+    "advice": [
+      "planning_vision",
+      "resource_priority",
+      "decision_quality",
+      "accountability",
+      "documentation"
+    ]
+  },
+  "career": {
+    "warning": [
+      "risk_management",
+      "verification",
+      "boundary",
+      "burnout",
+      "resource_priority"
+    ],
+    "advice": [
+      "execution",
+      "skill_building",
+      "craftsmanship",
+      "planning_vision",
+      "verification"
+    ]
+  },
+  "money": {
+    "warning": [
+      "financial_boundary",
+      "resource_priority",
+      "risk_management",
+      "verification"
+    ],
+    "advice": [
+      "resource_management",
+      "financial_boundary",
+      "long_term_investment",
+      "documentation"
+    ]
+  },
+  "love": {
+    "current": [
+      "emotion_processing",
+      "mutual_connection",
+      "boundary",
+      "communication",
+      "verification"
+    ],
+    "advice": [
+      "communication",
+      "boundary",
+      "healing",
+      "planning_vision",
+      "closure"
+    ]
+  },
+  "reunion": {
+    "obstacle": [
+      "emotion_processing",
+      "remaining_possibility",
+      "trust",
+      "closure",
+      "verification"
+    ],
+    "advice": [
+      "communication",
+      "remaining_possibility",
+      "healing",
+      "emotional_direction_reset",
+      "accountability"
+    ]
+  },
+  "relationship": {
+    "partnership_check": [
+      "trust",
+      "communication",
+      "responsibility",
+      "boundary",
+      "verification"
+    ]
+  },
+  "health": {
+    "warning": [
+      "recovery",
+      "burnout",
+      "resource_priority",
+      "boundary",
+      "emotion_processing"
+    ]
+  }
+}

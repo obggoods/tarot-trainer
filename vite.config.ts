@@ -48,7 +48,7 @@ export default defineConfig({
       },
       workbox: {
         cleanupOutdatedCaches: true,
-        navigateFallback: "/offline.html",
+        navigateFallback: "/index.html",
         globPatterns: ["**/*.{js,css,html,ico,png,svg,webp,json}"],
         maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
         runtimeCaching: [
@@ -85,7 +85,7 @@ export default defineConfig({
         ],
       },
       devOptions: {
-        enabled: true,
+        enabled: false,
       },
     }),
   ],

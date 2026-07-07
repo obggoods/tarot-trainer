@@ -1,0 +1,703 @@
+{
+  "information_asymmetry": {
+    "leads_to": [
+      "unclear_contract"
+    ],
+    "supports": [],
+    "resolved_by": [
+      "documentation"
+    ]
+  },
+  "responsibility": {
+    "leads_to": [
+      "accountability"
+    ],
+    "supports": [],
+    "resolved_by": [
+      "documentation"
+    ]
+  },
+  "preparation": {
+    "leads_to": [
+      "verification"
+    ],
+    "supports": [],
+    "resolved_by": [
+      "documentation"
+    ]
+  },
+  "operation_system": {
+    "leads_to": [
+      "resource_priority"
+    ],
+    "supports": [],
+    "resolved_by": [
+      "verification"
+    ]
+  },
+  "unfinished_emotion": {
+    "leads_to": [
+      "emotion_processing"
+    ],
+    "supports": [],
+    "resolved_by": [
+      "healing"
+    ]
+  },
+  "boundary": {
+    "leads_to": [
+      "financial_boundary"
+    ],
+    "supports": [],
+    "resolved_by": [
+      "communication"
+    ]
+  },
+  "overload": {
+    "leads_to": [
+      "burnout"
+    ],
+    "supports": [],
+    "resolved_by": [
+      "recovery"
+    ]
+  },
+  "recovery": {
+    "leads_to": [
+      "healing"
+    ],
+    "supports": [],
+    "resolved_by": [
+      "resource_priority"
+    ]
+  },
+  "decision_criteria": {
+    "leads_to": [
+      "decision_quality"
+    ],
+    "supports": [],
+    "resolved_by": [
+      "documentation"
+    ]
+  },
+  "execution": {
+    "leads_to": [
+      "execution_gap"
+    ],
+    "supports": [],
+    "resolved_by": [
+      "accountability"
+    ]
+  },
+  "mental_clarity": {
+    "leads_to": [
+      "decision_quality"
+    ],
+    "supports": [],
+    "resolved_by": [
+      "documentation"
+    ]
+  },
+  "emotional_wound": {
+    "leads_to": [
+      "emotion_processing"
+    ],
+    "supports": [],
+    "resolved_by": [
+      "healing"
+    ]
+  },
+  "conflict_cost": {
+    "leads_to": [
+      "trust"
+    ],
+    "supports": [],
+    "resolved_by": [
+      "communication"
+    ]
+  },
+  "mental_restriction": {
+    "leads_to": [
+      "decision_quality"
+    ],
+    "supports": [],
+    "resolved_by": [
+      "verification"
+    ]
+  },
+  "transition": {
+    "leads_to": [
+      "closure"
+    ],
+    "supports": [],
+    "resolved_by": [
+      "resource_priority"
+    ]
+  },
+  "anxiety_loop": {
+    "leads_to": [
+      "burnout"
+    ],
+    "supports": [],
+    "resolved_by": [
+      "verification"
+    ]
+  },
+  "painful_ending": {
+    "leads_to": [
+      "closure"
+    ],
+    "supports": [],
+    "resolved_by": [
+      "recovery"
+    ]
+  },
+  "impulsive_action": {
+    "leads_to": [
+      "risk_management"
+    ],
+    "supports": [],
+    "resolved_by": [
+      "decision_quality"
+    ]
+  },
+  "critical_discernment": {
+    "leads_to": [
+      "verification"
+    ],
+    "supports": [],
+    "resolved_by": [
+      "documentation"
+    ]
+  },
+  "authority_judgment": {
+    "leads_to": [
+      "accountability"
+    ],
+    "supports": [],
+    "resolved_by": [
+      "documentation"
+    ]
+  },
+  "material_opportunity": {
+    "leads_to": [
+      "verification"
+    ],
+    "supports": [],
+    "resolved_by": [
+      "risk_management"
+    ]
+  },
+  "resource_management": {
+    "leads_to": [
+      "resource_priority"
+    ],
+    "supports": [],
+    "resolved_by": [
+      "documentation"
+    ]
+  },
+  "balance_juggling": {
+    "leads_to": [
+      "resource_priority"
+    ],
+    "supports": [],
+    "resolved_by": [
+      "verification"
+    ]
+  },
+  "skill_building": {
+    "leads_to": [
+      "craftsmanship"
+    ],
+    "supports": [],
+    "resolved_by": [
+      "documentation"
+    ]
+  },
+  "fair_exchange": {
+    "leads_to": [
+      "accountability"
+    ],
+    "supports": [],
+    "resolved_by": [
+      "unclear_contract"
+    ]
+  },
+  "scarcity_mindset": {
+    "leads_to": [
+      "financial_boundary"
+    ],
+    "supports": [],
+    "resolved_by": [
+      "communication"
+    ]
+  },
+  "long_term_investment": {
+    "leads_to": [
+      "decision_quality"
+    ],
+    "supports": [],
+    "resolved_by": [
+      "resource_priority"
+    ]
+  },
+  "craftsmanship": {
+    "leads_to": [
+      "verification"
+    ],
+    "supports": [],
+    "resolved_by": [
+      "documentation"
+    ]
+  },
+  "financial_independence": {
+    "leads_to": [
+      "resource_priority"
+    ],
+    "supports": [],
+    "resolved_by": [
+      "risk_management"
+    ]
+  },
+  "family_asset": {
+    "leads_to": [
+      "financial_boundary"
+    ],
+    "supports": [],
+    "resolved_by": [
+      "communication"
+    ]
+  },
+  "practical_maturity": {
+    "leads_to": [
+      "accountability"
+    ],
+    "supports": [],
+    "resolved_by": [
+      "verification"
+    ]
+  },
+  "stability_control": {
+    "leads_to": [
+      "financial_boundary"
+    ],
+    "supports": [],
+    "resolved_by": [
+      "communication"
+    ]
+  },
+  "unclear_contract": {
+    "leads_to": [
+      "trust"
+    ],
+    "supports": [],
+    "resolved_by": []
+  },
+  "documentation": {
+    "leads_to": [
+      "verification"
+    ],
+    "supports": [],
+    "resolved_by": []
+  },
+  "trust": {
+    "leads_to": [
+      "accountability"
+    ],
+    "supports": [],
+    "resolved_by": []
+  },
+  "communication": {
+    "leads_to": [
+      "closure"
+    ],
+    "supports": [],
+    "resolved_by": []
+  },
+  "financial_boundary": {
+    "leads_to": [
+      "resource_priority"
+    ],
+    "supports": [],
+    "resolved_by": []
+  },
+  "execution_gap": {
+    "leads_to": [
+      "accountability"
+    ],
+    "supports": [],
+    "resolved_by": []
+  },
+  "emotion_processing": {
+    "leads_to": [
+      "healing"
+    ],
+    "supports": [],
+    "resolved_by": []
+  },
+  "closure": {
+    "leads_to": [
+      "healing"
+    ],
+    "supports": [],
+    "resolved_by": []
+  },
+  "healing": {
+    "leads_to": [
+      "decision_quality"
+    ],
+    "supports": [],
+    "resolved_by": []
+  },
+  "resource_priority": {
+    "leads_to": [
+      "decision_quality"
+    ],
+    "supports": [],
+    "resolved_by": []
+  },
+  "burnout": {
+    "leads_to": [],
+    "supports": [
+      "overload"
+    ],
+    "resolved_by": []
+  },
+  "decision_quality": {
+    "leads_to": [],
+    "supports": [
+      "verification"
+    ],
+    "resolved_by": []
+  },
+  "risk_management": {
+    "leads_to": [],
+    "supports": [
+      "decision_quality"
+    ],
+    "resolved_by": []
+  },
+  "accountability": {
+    "leads_to": [],
+    "supports": [
+      "responsibility"
+    ],
+    "resolved_by": []
+  },
+  "verification": {
+    "leads_to": [],
+    "supports": [
+      "documentation"
+    ],
+    "resolved_by": []
+  },
+  "emotional_opening": {
+    "leads_to": [
+      "mutual_connection"
+    ],
+    "supports": [
+      "healing"
+    ],
+    "resolved_by": [
+      "communication"
+    ]
+  },
+  "mutual_connection": {
+    "leads_to": [
+      "trust"
+    ],
+    "supports": [
+      "communication"
+    ],
+    "resolved_by": [
+      "boundary"
+    ]
+  },
+  "celebration_support": {
+    "leads_to": [
+      "communication"
+    ],
+    "supports": [
+      "trust"
+    ],
+    "resolved_by": [
+      "responsibility"
+    ]
+  },
+  "emotional_apathy": {
+    "leads_to": [
+      "remaining_possibility"
+    ],
+    "supports": [
+      "recovery"
+    ],
+    "resolved_by": [
+      "emotion_processing"
+    ]
+  },
+  "grief_focus": {
+    "leads_to": [
+      "remaining_possibility"
+    ],
+    "supports": [
+      "unfinished_emotion"
+    ],
+    "resolved_by": [
+      "emotion_processing"
+    ]
+  },
+  "nostalgia_pattern": {
+    "leads_to": [
+      "unfinished_emotion"
+    ],
+    "supports": [
+      "trust"
+    ],
+    "resolved_by": [
+      "verification"
+    ]
+  },
+  "fantasy_projection": {
+    "leads_to": [
+      "decision_quality"
+    ],
+    "supports": [
+      "decision_criteria"
+    ],
+    "resolved_by": [
+      "verification"
+    ]
+  },
+  "emotional_departure": {
+    "leads_to": [
+      "emotional_direction_reset"
+    ],
+    "supports": [
+      "closure"
+    ],
+    "resolved_by": [
+      "communication"
+    ]
+  },
+  "emotional_satisfaction": {
+    "leads_to": [
+      "decision_quality"
+    ],
+    "supports": [
+      "family_harmony"
+    ],
+    "resolved_by": [
+      "verification"
+    ]
+  },
+  "family_harmony": {
+    "leads_to": [
+      "trust"
+    ],
+    "supports": [
+      "responsibility"
+    ],
+    "resolved_by": [
+      "communication"
+    ]
+  },
+  "emotional_maturity": {
+    "leads_to": [
+      "trust"
+    ],
+    "supports": [
+      "boundary"
+    ],
+    "resolved_by": [
+      "communication"
+    ]
+  },
+  "emotional_immaturity": {
+    "leads_to": [
+      "conflict_cost"
+    ],
+    "supports": [
+      "emotional_wound"
+    ],
+    "resolved_by": [
+      "emotion_processing"
+    ]
+  },
+  "remaining_possibility": {
+    "leads_to": [
+      "healing"
+    ],
+    "supports": [
+      "recovery"
+    ],
+    "resolved_by": [
+      "verification"
+    ]
+  },
+  "emotional_direction_reset": {
+    "leads_to": [
+      "closure"
+    ],
+    "supports": [
+      "decision_criteria"
+    ],
+    "resolved_by": [
+      "communication"
+    ]
+  },
+  "creative_spark": {
+    "leads_to": [
+      "execution"
+    ],
+    "supports": [
+      "exploratory_drive"
+    ],
+    "resolved_by": [
+      "planning_vision"
+    ]
+  },
+  "planning_vision": {
+    "leads_to": [
+      "decision_criteria"
+    ],
+    "supports": [
+      "decision_quality"
+    ],
+    "resolved_by": [
+      "documentation"
+    ]
+  },
+  "expansion_momentum": {
+    "leads_to": [
+      "risk_management"
+    ],
+    "supports": [
+      "operation_system"
+    ],
+    "resolved_by": [
+      "resource_priority"
+    ]
+  },
+  "stable_celebration": {
+    "leads_to": [
+      "responsibility"
+    ],
+    "supports": [
+      "trust"
+    ],
+    "resolved_by": [
+      "communication"
+    ]
+  },
+  "competition_tension": {
+    "leads_to": [
+      "boundary"
+    ],
+    "supports": [
+      "conflict_cost"
+    ],
+    "resolved_by": [
+      "communication"
+    ]
+  },
+  "public_recognition": {
+    "leads_to": [
+      "accountability"
+    ],
+    "supports": [
+      "decision_quality"
+    ],
+    "resolved_by": [
+      "responsibility"
+    ]
+  },
+  "defensive_stance": {
+    "leads_to": [
+      "boundary"
+    ],
+    "supports": [
+      "sustained_resilience"
+    ],
+    "resolved_by": [
+      "communication"
+    ]
+  },
+  "rapid_progress": {
+    "leads_to": [
+      "risk_management"
+    ],
+    "supports": [
+      "execution"
+    ],
+    "resolved_by": [
+      "verification"
+    ]
+  },
+  "sustained_resilience": {
+    "leads_to": [
+      "recovery"
+    ],
+    "supports": [
+      "boundary"
+    ],
+    "resolved_by": [
+      "resource_priority"
+    ]
+  },
+  "burden_overload": {
+    "leads_to": [
+      "burnout"
+    ],
+    "supports": [
+      "overload"
+    ],
+    "resolved_by": [
+      "recovery"
+    ]
+  },
+  "exploratory_drive": {
+    "leads_to": [
+      "creative_spark"
+    ],
+    "supports": [
+      "skill_building"
+    ],
+    "resolved_by": [
+      "verification"
+    ]
+  },
+  "impulsive_drive": {
+    "leads_to": [
+      "risk_management"
+    ],
+    "supports": [
+      "rapid_progress"
+    ],
+    "resolved_by": [
+      "decision_quality"
+    ]
+  },
+  "confident_leadership": {
+    "leads_to": [
+      "responsibility"
+    ],
+    "supports": [
+      "communication"
+    ],
+    "resolved_by": [
+      "accountability"
+    ]
+  },
+  "visionary_leadership": {
+    "leads_to": [
+      "responsibility"
+    ],
+    "supports": [
+      "planning_vision"
+    ],
+    "resolved_by": [
+      "accountability"
+    ]
+  }
+}
