@@ -61,9 +61,10 @@ function buildInterpretationGraph({
   const secondaryMeanings = nonEmpty(graph.secondaryConcepts.map((concept) => concept.name_ko)).slice(0, 3);
   const traditionalMeanings = dedupeKeywords([...meaning.must_include, ...meaning.keywords, ...selectedMeanings, ...secondaryMeanings]).slice(0, 7);
   const selected = selectedMeanings.length > 0 ? selectedMeanings : [analysis.selectedMeaning].filter(Boolean);
+  const selectedText = selected.slice(0, 2).join(", ");
   const bridge = joinSentences([
-    `${card.meta.name_ko} ${orientationText(question.orientation)}에는 ${traditionalMeanings.slice(0, 3).join(", ")}의 의미가 있습니다.`,
-    `이번 질문은 "${question.position}"${objectParticle(question.position)} 묻고 있으므로, 그중 ${selected.slice(0, 2).join(", ")}${objectParticle(selected[selected.length - 1] ?? "의미")} 중심으로 좁혀 읽는 것이 적절합니다.`,
+    `이 질문에서 먼저 봐야 하는 것은 ${categoryFocus(question.category)} 안에서 ${selectedText}${subjectParticle(selected[selected.length - 1] ?? "의미")} 어떻게 드러나는지입니다.`,
+    `${card.meta.name_ko} ${orientationText(question.orientation)}은 ${traditionalMeanings.slice(0, 3).join(", ")}의 흐름을 근거로 이 선택을 받쳐 줍니다.`,
   ]);
 
   return {
@@ -92,7 +93,7 @@ export function buildFallbackTraditionalCorrection(analysis: AnalysisResult, gra
 
 function buildMissingPoints(missingChecks: string[]) {
   if (missingChecks.length === 0) return [];
-  return [`답변에 ${missingChecks.slice(0, 3).join(", ")}처럼 실제로 확인해야 할 조건이 부족합니다. 카드 의미를 말한 뒤 이 조건까지 이어주면 해석이 더 분명해집니다.`];
+  return [`답변에 ${missingChecks.slice(0, 3).join(", ")}처럼 질문에 답하기 위해 확인해야 할 조건이 부족합니다. 의미 설명보다 이 조건을 먼저 잡으면 해석이 더 분명해집니다.`];
 }
 
 function buildMissedKeyPoints(missingChecks: string[], missingSecondary: string[]) {
@@ -105,8 +106,8 @@ function buildStructuredTraditionalCorrection(graph: EvaluationResult["interpret
   const selectedText = graph.selected_meanings.slice(0, 3).join(", ");
   void llmCorrection;
   return joinSentences([
-    `${graph.card} ${orientationText(graph.orientation)}의 정통 의미는 ${graph.traditional_meanings.slice(0, 4).join(", ")}입니다.`,
-    `이번 질문은 "${graph.question_focus}"${objectParticle(graph.question_focus)} 묻고 있으므로, 카드 의미 중 ${selectedText}${objectParticle(selectedText)} 중심으로 적용합니다.`,
+    `이 질문의 답은 ${selectedText}${objectParticle(selectedText)} 중심으로 잡는 것이 좋습니다.`,
+    `${graph.card} ${orientationText(graph.orientation)}은 ${graph.traditional_meanings.slice(0, 4).join(", ")}의 흐름으로 그 선택을 뒷받침합니다.`,
   ]);
 }
 
@@ -132,7 +133,7 @@ function buildModelAnswer(graph: EvaluationResult["interpretation_graph"], path:
   return joinSentences([
     `지금 이 질문에서는 ${primaryConcept}${objectParticle(primaryConcept)} 중심으로 읽어야 합니다.`,
     checks.length >= 2 ? `내담자에게는 ${checks[0]}${joinParticle(checks[0])} ${checks[1]}${objectParticle(checks[1])} 먼저 확인해야 한다고 말하면 됩니다.` : "",
-    path.length >= 2 ? `이렇게 말하면 카드 의미가 막연한 결론이 아니라 ${formatPath(path.slice(0, 3))} 이어지는 판단 기준으로 정리됩니다.` : "",
+    path.length >= 2 ? `이렇게 말하면 질문에 대한 답이 ${formatPath(path.slice(0, 3))} 이어지는 판단 기준으로 정리됩니다.` : "",
   ]);
 }
 
@@ -157,7 +158,7 @@ function buildWrongNote(missingChecks: string[], path: string[], graph: Evaluati
   return joinSentences([
     answerSummary,
     `다만 ${selected}${subjectParticle(selected)} 단순히 조심하라는 뜻으로 끝나면 부족합니다. 이 의미가 실제로 무엇을 확인하라는 말인지 구체화해야 합니다.`,
-    `다음 답변에서는 ${missingChecks.slice(0, 3).join(", ")} 중 최소 두 가지를 함께 언급하면 카드 의미가 질문의 현실 장면으로 살아납니다.`,
+    `다음 답변에서는 ${missingChecks.slice(0, 3).join(", ")} 중 최소 두 가지를 함께 언급하면 질문에 대한 답이 더 선명해집니다.`,
   ]);
 }
 
@@ -187,8 +188,8 @@ function hasOffTopicTerms(category: string, values: string[]) {
   const text = values.join(" ");
   const offTopicByCategory: Record<string, string[]> = {
     health: ["계약", "서면", "수익", "정산", "투자금", "비용 대비", "파트너", "재고"],
-    love: ["재고", "정산", "계약", "수익", "고정비"],
-    reunion: ["재고", "정산", "계약", "수익", "고정비"],
+    love: ["재고", "정산", "계약", "수익", "고정비", "남은 체력", "체력", "회복 시간", "수면", "휴식"],
+    reunion: ["재고", "정산", "계약", "수익", "고정비", "남은 체력", "체력", "회복 시간", "수면", "휴식"],
     money: ["상대의 태도", "재회", "감정 정리"],
   };
   return (offTopicByCategory[category] ?? []).some((term) => text.includes(term));

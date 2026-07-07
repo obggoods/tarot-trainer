@@ -1,6 +1,6 @@
 import type { AnalysisResult, EvaluationInput } from "../types";
 
-export const FEEDBACK_PROMPT_VERSION = "v5.3.0";
+export const FEEDBACK_PROMPT_VERSION = "v5.4.0-question-first";
 export const PROMPT_VERSION = FEEDBACK_PROMPT_VERSION;
 
 export function buildFeedbackPrompt(_input: EvaluationInput, analysis: AnalysisResult) {
@@ -12,6 +12,13 @@ export function buildFeedbackPrompt(_input: EvaluationInput, analysis: AnalysisR
     "Input is one Analysis JSON object.",
     "Do not recalculate score, grade, or rubric.",
     "Convert the Analysis JSON into educational feedback.",
+    "",
+    "CORE PERSPECTIVE",
+    "- The user is not memorizing card meanings.",
+    "- The user is learning how to choose the meaning that answers the question.",
+    "- Never start feedback by explaining the card.",
+    "- Start from the question: what is this question really asking?",
+    "- Use the card only as evidence for the selected answer.",
     "",
     "LANGUAGE RULE",
     "- Follow all procedural instructions in English.",
@@ -29,7 +36,7 @@ export function buildFeedbackPrompt(_input: EvaluationInput, analysis: AnalysisR
     "- The goal is teaching, not judging.",
     "- Explain where the user's reading was correct.",
     "- Explain where the user's reasoning stopped.",
-    "- Show how to connect question -> card meaning -> question application -> real-world application.",
+    "- Show how to answer the question first, then use card meaning as evidence.",
     "",
     "SECTION RULES",
     "",
@@ -46,7 +53,7 @@ export function buildFeedbackPrompt(_input: EvaluationInput, analysis: AnalysisR
     "3. traditional_correction",
     "- Use questionFocus, selectedMeaning, selectedReason, realWorldIssue, specificRisk, concreteChecks, traditionalSummary.",
     "- Do not write long general card meaning.",
-    "- Explain what this card points to in this exact question.",
+    "- Explain what this question needs and how the selected meaning answers it.",
     "- Include at least two concreteChecks.",
     "",
     "4. sample_answer",
@@ -76,6 +83,10 @@ export function buildFeedbackPrompt(_input: EvaluationInput, analysis: AnalysisR
     "- 현실적으로 읽어야 합니다.",
     "- 구체적으로 살펴봐야 합니다.",
     "- [카드명]은 [카드명]은",
+    "- ○○카드는",
+    "- Rider-Waite에서는",
+    "- 정통적으로",
+    "- 카드의 의미는",
     "",
     "If a generic sentence appears necessary, replace it with concreteChecks or realWorldIssue.",
     "",
@@ -88,7 +99,9 @@ export function buildFeedbackPrompt(_input: EvaluationInput, analysis: AnalysisR
     "- Do not list multiple reversal meanings.",
     "- Minimize vague phrases like '가능성이 있습니다' and '볼 수 있습니다'.",
     "- Use evidence -> conclusion order.",
+    "- Use question answer -> selected meaning -> card evidence order.",
     "- Focus on the question before the card.",
+    "- Good tarot interpretation is not explaining many card meanings. It is selecting the meaning that best answers the question.",
     "- Do not output markdown headings, tables, or code blocks inside JSON values.",
     "- JSON only.",
     "",
@@ -116,7 +129,7 @@ export function buildFeedbackPrompt(_input: EvaluationInput, analysis: AnalysisR
     "- wrong_note: use thinkingGap, whyUserAnswerIsInsufficient, commonMisreading, recommendedAddition.",
     "- missing_points: use missingPoints and whyUserAnswerIsInsufficient.",
     "- missed_key_points: combine concreteChecks, missingPoints, incorrectPoints as short check points.",
-    "- next_reading_tip: one sentence reading method for next time. Must include one concreteCheck.",
+    "- next_reading_tip: one sentence reading method for next time. It must tell the student to answer the question first.",
     "",
     `Prompt version: ${FEEDBACK_PROMPT_VERSION}`,
     "",
@@ -138,7 +151,7 @@ export function buildFeedbackPrompt(_input: EvaluationInput, analysis: AnalysisR
         missed_key_points: "concreteChecks, missingPoints, incorrectPoints를 짧은 체크 포인트로 정리합니다.",
         differences: "missingPoints, recommendedAddition, whyUserAnswerIsInsufficient를 자연스럽게 작성합니다.",
         wrong_note: "thinkingGap, whyUserAnswerIsInsufficient, commonMisreading, recommendedAddition을 사용해 사고가 어디서 멈췄는지 작성합니다.",
-        next_reading_tip: "질문 -> 카드 의미 -> 질문 적용 -> 현실 적용 순서로 설명하되, 이번 질문의 concreteChecks 중 하나를 반드시 포함합니다.",
+        next_reading_tip: "질문에 대한 답을 먼저 말하고, 그 근거로 선택한 카드 의미와 확인 항목을 붙입니다.",
         promptVersion: FEEDBACK_PROMPT_VERSION,
         selfCheck: {
           directlyAnswersQuestion: "YES",

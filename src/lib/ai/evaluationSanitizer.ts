@@ -42,7 +42,7 @@ export function sanitizeEvaluationForDisplay(evaluation: EvaluationResult): Eval
         }))
         .filter((item) => item.meaning && item.reason)
         .slice(0, 4),
-      reasoning_bridge: sanitizeText(graph?.reasoning_bridge) || "카드의 의미를 질문이 묻는 실제 상황에 연결해 읽습니다.",
+      reasoning_bridge: sanitizeText(graph?.reasoning_bridge) || "질문에 답하기 위해 가장 직접적인 의미를 먼저 선택합니다.",
       counseling_sentence: sanitizeText(graph?.counseling_sentence) || "지금은 결론보다 먼저 확인해야 할 조건을 차분히 점검해보는 것이 좋습니다.",
     },
     strengths: withDefaultList(strengths, ["질문의 실제 고민을 기준으로 답변하려는 방향은 좋았습니다."]),
@@ -54,7 +54,7 @@ export function sanitizeEvaluationForDisplay(evaluation: EvaluationResult): Eval
     ),
     model_answer: withDefaultText(
       sanitizeText(evaluation.model_answer),
-      "이 답변은 카드의 핵심 개념을 질문 상황에 연결하고, 확인할 항목을 함께 제시하는 방식으로 구성하면 좋습니다.",
+      "이 답변은 질문의 핵심에 먼저 답하고, 그 근거로 필요한 확인 항목을 함께 제시하는 방식으로 구성하면 좋습니다.",
     ),
     missed_key_points: missedKeyPoints,
     differences,
@@ -64,7 +64,7 @@ export function sanitizeEvaluationForDisplay(evaluation: EvaluationResult): Eval
     ),
     next_reading_tip: withDefaultText(
       sanitizeText(evaluation.next_reading_tip),
-      "다음에는 카드 키워드 하나를 말한 뒤, 내담자가 확인할 항목 두 가지를 함께 제시하세요.",
+      "다음에는 질문에 대한 답을 먼저 말한 뒤, 내담자가 확인할 항목 두 가지를 함께 제시하세요.",
     ),
   };
 }

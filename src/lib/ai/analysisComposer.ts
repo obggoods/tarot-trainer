@@ -26,7 +26,7 @@ export function composeAnalysisFromGraph(input: ComposeAnalysisInput): AnalysisR
   const grade = score >= 80 ? "correct" : score >= 50 ? "partial" : "incorrect";
   const issue =
     graph.realWorldIssues[0] ??
-    `${input.question.position}에서 카드가 가리키는 실제 상황을 확인해야 합니다.`;
+    `${input.question.position}에서 먼저 확인해야 할 실제 상황을 봐야 합니다.`;
 
   return {
     questionFocus: input.question.question,
@@ -44,7 +44,7 @@ export function composeAnalysisFromGraph(input: ComposeAnalysisInput): AnalysisR
     incorrectPoints: scoreParts.hasHardCertainty ? ["결과를 너무 강하게 단정한 표현이 있습니다."] : [],
     thinkingGap: buildThinkingGap(scoreParts.missingChecks),
     recommendedAddition: scoreParts.missingChecks.slice(0, 3),
-    commonMisreading: "카드 키워드만 말하고 실제 확인 항목을 생략하는 것",
+    commonMisreading: "질문에 먼저 답하지 않고 키워드 설명에서 멈추는 것",
     consultingDirection: buildConsultingDirection(selectedMeaning, checks),
     traditionalSummary: input.meaning.traditional_meaning,
     modelAnswerOutline: [selectedMeaning, ...graph.reasoningPath.slice(1, 3), ...checks.slice(0, 2)].filter(Boolean).join(" -> "),
@@ -106,13 +106,13 @@ export function scoreAnswer(userAnswer: string, questionText: string, graph: Con
 
 function buildSelectedReason(graph: ConceptGraphResolution) {
   const path = graph.reasoningPath.slice(0, 5);
-  return path.length > 1 ? `${path.join(" -> ")} 흐름으로 선택했습니다.` : "카드와 질문에서 가장 직접적으로 드러나는 개념을 선택했습니다.";
+  return path.length > 1 ? `질문에 답하기 위해 ${path.join(" -> ")} 흐름을 선택했습니다.` : "질문에 가장 직접적으로 답하는 개념을 선택했습니다.";
 }
 
 function buildSpecificRisk(checks: string[]) {
   return checks.length >= 2
-    ? `${checks[0]}와 ${checks[1]}을 확인하지 않으면 카드 의미가 실제 판단 기준으로 이어지기 어렵습니다.`
-    : "확인할 항목을 구체화하지 않으면 답변이 카드 일반론에 머물 수 있습니다.";
+    ? `${checks[0]}와 ${checks[1]}을 확인하지 않으면 질문에 대한 답이 실제 판단 기준으로 이어지기 어렵습니다.`
+    : "확인할 항목을 구체화하지 않으면 답변이 질문의 핵심에 닿지 못할 수 있습니다.";
 }
 
 function buildClientAdvice(checks: string[], actions: string[]) {
@@ -120,7 +120,7 @@ function buildClientAdvice(checks: string[], actions: string[]) {
   const actionText = actions.slice(0, 2).join(", ");
   if (checkText && actionText) return `${checkText}를 먼저 확인하고, ${actionText} 쪽으로 다음 행동을 좁혀 보세요.`;
   if (checkText) return `${checkText}를 먼저 확인해 보세요.`;
-  return "카드 의미를 바로 결론으로 말하기보다 실제로 확인할 조건을 먼저 짚어 주세요.";
+  return "카드 설명으로 시작하기보다 질문에 답하기 위해 먼저 확인할 조건을 짚어 주세요.";
 }
 
 function buildCorrectPoints(scoreParts: ReturnType<typeof scoreAnswer>) {
@@ -128,7 +128,7 @@ function buildCorrectPoints(scoreParts: ReturnType<typeof scoreAnswer>) {
   if (scoreParts.conceptHits > 0) points.push("핵심 개념을 답변과 연결하려는 시도가 있습니다.");
   if (scoreParts.checkHits > 0) points.push("확인할 항목을 일부 포함했습니다.");
   if (scoreParts.answersQuestion) points.push("질문의 실제 고민을 따라가려는 방향이 있습니다.");
-  return points.length > 0 ? points : ["카드 의미를 답변으로 옮기려는 시도는 좋았습니다."];
+  return points.length > 0 ? points : ["질문에 답하려는 방향을 잡으려 한 점은 좋았습니다."];
 }
 
 function buildMissingPoints(missingChecks: string[]) {
@@ -143,7 +143,7 @@ function buildInsufficientReason(missingChecks: string[]) {
 
 function buildThinkingGap(missingChecks: string[]) {
   if (missingChecks.length === 0) return "핵심 개념과 확인 항목을 비교적 잘 연결했습니다.";
-  return `카드 의미에서 멈추지 말고 ${missingChecks.slice(0, 2).join(", ")}까지 이어서 말해야 합니다.`;
+  return `키워드 설명에서 멈추지 말고 ${missingChecks.slice(0, 2).join(", ")}까지 이어서 말해야 합니다.`;
 }
 
 function buildConsultingDirection(selectedMeaning: string, checks: string[]) {
