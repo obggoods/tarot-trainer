@@ -14,7 +14,7 @@ This report checks whether the initial Tarot Thinking Knowledge Base is injected
 
 - Correction prompt contains `[THINKING GUIDE]` for the 5 KB cards.
 - Analysis prompt contains the same guide for compatibility.
-- Missing Thinking Guide cards fall back to Graph/meaning data without injecting a fake guide.
+- Full-deck Thinking Guide coverage is present; legacy fallback remains available in code but is no longer expected for registry cards.
 - The prompt contains question-first opening rules.
 - Graph resolver output remains present beside the Thinking Guide.
 - Optional live DeepSeek output is checked for card-first opening patterns.
@@ -34,11 +34,11 @@ This report checks whether the initial Tarot Thinking Knowledge Base is injected
 | Nine of Wands upright / reunion obstacle | PASS | correction, analysis, selectedLogic | PASS / path 6 / checks 10 | SKIPPED | - |
 | Nine of Wands reversed / health warning | PASS | correction, analysis, selectedLogic | PASS / path 5 / checks 10 | SKIPPED | - |
 
-## Fallback Control
+## Coverage Control
 
-- Case: Fallback control / Swords 7
+- Case: Full-deck Thinking Guide coverage
 - Status: PASS
-- Thinking Guide injected: NO
+- Full-deck guide coverage: YES
 - Issues: -
 
 ## DeepSeek Review Notes
@@ -47,4 +47,4 @@ Live DeepSeek sampling was skipped. To sample actual DeepSeek output, run `DEEPS
 
 ## Current Conclusion
 
-The Thinking KB is now prompt-consumable for the initial 5 cards only. It is still a human-review draft, so PASS means the guide is injected and structurally usable, not that the interpretation philosophy is final.
+The Thinking KB is now prompt-consumable across the full 78-card registry. It is still a human-review draft, so PASS means the guide is injected and structurally usable, not that the interpretation philosophy is final.

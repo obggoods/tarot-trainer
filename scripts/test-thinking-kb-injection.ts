@@ -9,6 +9,7 @@ import { resolveConceptGraph } from "../src/lib/tarot/conceptGraphResolver";
 import { getCard, getCardMeaning } from "../src/lib/tarot/getCard";
 import { buildThinkingGuide, formatThinkingGuideForPrompt } from "../src/lib/tarot/thinking/buildThinkingGuide";
 import { hasThinkingGuide } from "../src/lib/tarot/thinking/getThinkingGuide";
+import { rawMeaningsByCardId } from "../src/data/tarot/meanings/allMeanings";
 import type { AnalysisResult, EvaluationInput } from "../src/lib/ai/types";
 import type { TarotCategory, TarotQuestion } from "../src/types/tarot";
 
@@ -68,27 +69,17 @@ const cases: ThinkingInjectionCase[] = [
   buildCase("Nine of Wands reversed / health warning", "wands_09", "reversed", "health", "warning", "건강에서 지금 무리하고 있는 부분은 무엇인가요?", "기운이 빠진 상태입니다."),
 ];
 
-const fallbackControl = buildCase(
-  "Fallback control / Swords 7",
-  "swords_07",
-  "upright",
-  "relationship",
-  "partnership_check",
-  "이 관계에서 반드시 확인해야 할 조건은 무엇인가요?",
-  "조심해야 합니다.",
-);
-
 const liveDeepSeek = process.env.DEEPSEEK_THINKING_LIVE === "true";
 const apiKey = process.env.DEEPSEEK_API_KEY;
 const model = process.env.DEEPSEEK_MODEL ?? "deepseek-chat";
 
 const results = await Promise.all(cases.map(runCase));
-const fallbackResult = runFallbackControl(fallbackControl);
+const coverageResult = runCoverageControl();
 
 printTable(results);
-writeReport(results, fallbackResult);
+writeReport(results, coverageResult);
 
-const failCount = results.filter((result) => result.status === "FAIL").length + (fallbackResult.status === "FAIL" ? 1 : 0);
+const failCount = results.filter((result) => result.status === "FAIL").length + (coverageResult.status === "FAIL" ? 1 : 0);
 if (failCount > 0) process.exit(1);
 
 function buildCase(
@@ -153,48 +144,34 @@ async function runCase(testCase: ThinkingInjectionCase): Promise<CaseResult> {
   return result;
 }
 
-function runFallbackControl(testCase: ThinkingInjectionCase): CaseResult {
-  const input = buildInput(testCase);
-  const graph = resolveConceptGraph({
-    cardId: testCase.card_id,
-    orientation: testCase.orientation,
-    category: testCase.category,
-    position: testCase.position,
-  });
-  const analysis = composeAnalysisFromGraph({ ...input, graph });
-  const correctionPrompt = buildCorrectionPrompt(input, analysis, graph);
-  const analysisPrompt = buildAnalysisPrompt(input);
-  const guideExists = hasThinkingGuide(testCase.card_id, testCase.orientation);
-
+function runCoverageControl(): CaseResult {
+  const allCardIds = Object.keys(rawMeaningsByCardId);
+  const missing = allCardIds.filter((cardId) => !hasThinkingGuide(cardId, "upright") || !hasThinkingGuide(cardId, "reversed"));
   const result: CaseResult = {
-    label: testCase.label,
-    card_id: testCase.card_id,
-    orientation: testCase.orientation,
+    label: "Full-deck Thinking Guide coverage",
+    card_id: "all_cards",
+    orientation: "upright",
     status: "PASS",
     prompt: {
-      correctionHasThinkingGuide: hasInjectedThinkingSection(correctionPrompt),
-      analysisHasThinkingGuide: hasInjectedThinkingSection(analysisPrompt),
+      correctionHasThinkingGuide: missing.length === 0,
+      analysisHasThinkingGuide: missing.length === 0,
       includesFirstQuestion: false,
       includesFirstFocus: false,
       includesSelectedLogic: false,
-      includesQuestionFirstRules: hasQuestionFirstRules(correctionPrompt),
+      includesQuestionFirstRules: true,
     },
     graph: {
-      primaryConcepts: graph.primaryConcepts.map((concept) => concept.name_ko),
-      reasoningPath: graph.reasoningPath,
-      recommendedChecks: graph.recommendedChecks,
-      followsThinkingFlow: graph.reasoningPath.length > 0 && graph.recommendedChecks.length >= 2,
+      primaryConcepts: [],
+      reasoningPath: [],
+      recommendedChecks: [],
+      followsThinkingFlow: true,
     },
-    deepSeek: { status: "SKIPPED", excerpt: "Fallback control does not call DeepSeek." },
+    deepSeek: { status: "SKIPPED", excerpt: "Coverage control does not call DeepSeek." },
     warnings: [],
     failures: [],
   };
 
-  if (guideExists) fail(result, "Fallback control unexpectedly has a Thinking Guide.");
-  if (result.prompt.correctionHasThinkingGuide || result.prompt.analysisHasThinkingGuide) {
-    fail(result, "Thinking Guide block was injected for a non-KB card.");
-  }
-  if (!result.prompt.includesQuestionFirstRules) fail(result, "Question-first prompt rules are missing from fallback control.");
+  if (missing.length > 0) fail(result, `Missing Thinking Guide coverage: ${missing.join(", ")}`);
   finalizeStatus(result);
   return result;
 }
@@ -338,14 +315,14 @@ function printTable(results: CaseResult[]) {
   );
 }
 
-function writeReport(results: CaseResult[], fallbackResult: CaseResult) {
+function writeReport(results: CaseResult[], coverageResult: CaseResult) {
   const reportPath = path.join(process.cwd(), "reports", "thinking-kb-injection-report.md");
   fs.mkdirSync(path.dirname(reportPath), { recursive: true });
-  fs.writeFileSync(reportPath, buildReport(results, fallbackResult), "utf8");
+  fs.writeFileSync(reportPath, buildReport(results, coverageResult), "utf8");
   console.log(`\nReport written: ${reportPath}`);
 }
 
-function buildReport(results: CaseResult[], fallbackResult: CaseResult) {
+function buildReport(results: CaseResult[], coverageResult: CaseResult) {
   const passCount = results.filter((result) => result.status === "PASS").length;
   const warningCount = results.filter((result) => result.status === "WARNING").length;
   const failCount = results.filter((result) => result.status === "FAIL").length;
@@ -368,7 +345,7 @@ function buildReport(results: CaseResult[], fallbackResult: CaseResult) {
     "",
     "- Correction prompt contains `[THINKING GUIDE]` for the 5 KB cards.",
     "- Analysis prompt contains the same guide for compatibility.",
-    "- Missing Thinking Guide cards fall back to Graph/meaning data without injecting a fake guide.",
+    "- Full-deck Thinking Guide coverage is present; legacy fallback remains available in code but is no longer expected for registry cards.",
     "- The prompt contains question-first opening rules.",
     "- Graph resolver output remains present beside the Thinking Guide.",
     "- Optional live DeepSeek output is checked for card-first opening patterns.",
@@ -382,12 +359,12 @@ function buildReport(results: CaseResult[], fallbackResult: CaseResult) {
         `| ${result.label} | ${result.status} | ${formatPromptStatus(result)} | ${formatGraphStatus(result)} | ${formatDeepSeek(result)} | ${formatIssues(result)} |`,
     ),
     "",
-    "## Fallback Control",
+    "## Coverage Control",
     "",
-    `- Case: ${fallbackResult.label}`,
-    `- Status: ${fallbackResult.status}`,
-    `- Thinking Guide injected: ${fallbackResult.prompt.correctionHasThinkingGuide ? "YES" : "NO"}`,
-    `- Issues: ${formatIssues(fallbackResult)}`,
+    `- Case: ${coverageResult.label}`,
+    `- Status: ${coverageResult.status}`,
+    `- Full-deck guide coverage: ${coverageResult.prompt.correctionHasThinkingGuide ? "YES" : "NO"}`,
+    `- Issues: ${formatIssues(coverageResult)}`,
     "",
     "## DeepSeek Review Notes",
     "",
@@ -397,7 +374,7 @@ function buildReport(results: CaseResult[], fallbackResult: CaseResult) {
     "",
     "## Current Conclusion",
     "",
-    "The Thinking KB is now prompt-consumable for the initial 5 cards only. It is still a human-review draft, so PASS means the guide is injected and structurally usable, not that the interpretation philosophy is final.",
+    "The Thinking KB is now prompt-consumable across the full 78-card registry. It is still a human-review draft, so PASS means the guide is injected and structurally usable, not that the interpretation philosophy is final.",
     "",
   ].join("\n");
 }

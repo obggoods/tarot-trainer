@@ -28,8 +28,77 @@ const REQUIRED_MAJOR_CARD_IDS = [
   "major_20_judgement",
   "major_21_world",
 ];
-const ALLOWED_PILOT_SAMPLE_CARD_IDS = ["cups_02", "wands_09"];
-const ALLOWED_CARD_IDS = [...REQUIRED_MAJOR_CARD_IDS, ...ALLOWED_PILOT_SAMPLE_CARD_IDS];
+const REQUIRED_CUPS_CARD_IDS = [
+  "cups_ace",
+  "cups_02",
+  "cups_03",
+  "cups_04",
+  "cups_05",
+  "cups_06",
+  "cups_07",
+  "cups_08",
+  "cups_09",
+  "cups_10",
+  "cups_page",
+  "cups_knight",
+  "cups_queen",
+  "cups_king",
+];
+const REQUIRED_WANDS_CARD_IDS = [
+  "wands_ace",
+  "wands_02",
+  "wands_03",
+  "wands_04",
+  "wands_05",
+  "wands_06",
+  "wands_07",
+  "wands_08",
+  "wands_09",
+  "wands_10",
+  "wands_page",
+  "wands_knight",
+  "wands_queen",
+  "wands_king",
+];
+const REQUIRED_SWORDS_CARD_IDS = [
+  "swords_ace",
+  "swords_02",
+  "swords_03",
+  "swords_04",
+  "swords_05",
+  "swords_06",
+  "swords_07",
+  "swords_08",
+  "swords_09",
+  "swords_10",
+  "swords_page",
+  "swords_knight",
+  "swords_queen",
+  "swords_king",
+];
+const REQUIRED_PENTACLES_CARD_IDS = [
+  "pentacles_ace",
+  "pentacles_02",
+  "pentacles_03",
+  "pentacles_04",
+  "pentacles_05",
+  "pentacles_06",
+  "pentacles_07",
+  "pentacles_08",
+  "pentacles_09",
+  "pentacles_10",
+  "pentacles_page",
+  "pentacles_knight",
+  "pentacles_queen",
+  "pentacles_king",
+];
+const ALLOWED_CARD_IDS = [
+  ...REQUIRED_MAJOR_CARD_IDS,
+  ...REQUIRED_CUPS_CARD_IDS,
+  ...REQUIRED_WANDS_CARD_IDS,
+  ...REQUIRED_SWORDS_CARD_IDS,
+  ...REQUIRED_PENTACLES_CARD_IDS,
+];
 const REQUIRED_SELECTION_KEYS = ["love", "career", "money", "health", "relationship", "selfGrowth"] as const;
 const BANNED_TEXT = ["좋은 카드", "나쁜 카드", "인터넷식", "행운 카드", "불운 카드"];
 
@@ -49,6 +118,10 @@ console.table([
     Version: database.version,
     Cards: Object.keys(database.cards).length,
     "Major Cards": Object.keys(database.cards).filter((cardId) => cardId.startsWith("major_")).length,
+    "Cups Cards": Object.keys(database.cards).filter((cardId) => cardId.startsWith("cups_")).length,
+    "Wands Cards": Object.keys(database.cards).filter((cardId) => cardId.startsWith("wands_")).length,
+    "Swords Cards": Object.keys(database.cards).filter((cardId) => cardId.startsWith("swords_")).length,
+    "Pentacles Cards": Object.keys(database.cards).filter((cardId) => cardId.startsWith("pentacles_")).length,
     Orientations: Object.values(database.cards).reduce((count, entry) => count + 1 + (entry.reversed ? 1 : 0), 0),
     "Prompt Payload": buildThinkingGuide({ cardId: "wands_09", orientation: "upright", category: "love" }) ? "PASS" : "FAIL",
   },
@@ -67,16 +140,47 @@ function validateDatabase() {
 
   const cardIds = Object.keys(database.cards);
   const majorCardIds = cardIds.filter((cardId) => cardId.startsWith("major_"));
+  const cupsCardIds = cardIds.filter((cardId) => cardId.startsWith("cups_"));
+  const wandsCardIds = cardIds.filter((cardId) => cardId.startsWith("wands_"));
+  const swordsCardIds = cardIds.filter((cardId) => cardId.startsWith("swords_"));
+  const pentaclesCardIds = cardIds.filter((cardId) => cardId.startsWith("pentacles_"));
+  if (cardIds.length !== ALLOWED_CARD_IDS.length) {
+    fail(`Full Thinking KB must contain exactly ${ALLOWED_CARD_IDS.length} cards, found ${cardIds.length}.`);
+  }
   if (majorCardIds.length !== REQUIRED_MAJOR_CARD_IDS.length) {
     fail(`Major Phase 1 scope must contain exactly ${REQUIRED_MAJOR_CARD_IDS.length} major cards, found ${majorCardIds.length}.`);
+  }
+  if (cupsCardIds.length !== REQUIRED_CUPS_CARD_IDS.length) {
+    fail(`Cups Phase 2 scope must contain exactly ${REQUIRED_CUPS_CARD_IDS.length} cups cards, found ${cupsCardIds.length}.`);
+  }
+  if (wandsCardIds.length !== REQUIRED_WANDS_CARD_IDS.length) {
+    fail(`Wands Phase 3 scope must contain exactly ${REQUIRED_WANDS_CARD_IDS.length} wands cards, found ${wandsCardIds.length}.`);
+  }
+  if (swordsCardIds.length !== REQUIRED_SWORDS_CARD_IDS.length) {
+    fail(`Swords Phase 3 scope must contain exactly ${REQUIRED_SWORDS_CARD_IDS.length} swords cards, found ${swordsCardIds.length}.`);
+  }
+  if (pentaclesCardIds.length !== REQUIRED_PENTACLES_CARD_IDS.length) {
+    fail(`Pentacles Phase 4 scope must contain exactly ${REQUIRED_PENTACLES_CARD_IDS.length} pentacles cards, found ${pentaclesCardIds.length}.`);
   }
 
   for (const requiredCardId of REQUIRED_MAJOR_CARD_IDS) {
     if (!database.cards[requiredCardId]) fail(`Missing major thinking card: ${requiredCardId}`);
   }
+  for (const requiredCardId of REQUIRED_CUPS_CARD_IDS) {
+    if (!database.cards[requiredCardId]) fail(`Missing cups thinking card: ${requiredCardId}`);
+  }
+  for (const requiredCardId of REQUIRED_WANDS_CARD_IDS) {
+    if (!database.cards[requiredCardId]) fail(`Missing wands thinking card: ${requiredCardId}`);
+  }
+  for (const requiredCardId of REQUIRED_SWORDS_CARD_IDS) {
+    if (!database.cards[requiredCardId]) fail(`Missing swords thinking card: ${requiredCardId}`);
+  }
+  for (const requiredCardId of REQUIRED_PENTACLES_CARD_IDS) {
+    if (!database.cards[requiredCardId]) fail(`Missing pentacles thinking card: ${requiredCardId}`);
+  }
 
   for (const [cardId, entry] of Object.entries(database.cards)) {
-    if (!ALLOWED_CARD_IDS.includes(cardId)) fail(`Unexpected thinking card in Major Phase 1: ${cardId}`);
+    if (!ALLOWED_CARD_IDS.includes(cardId)) fail(`Unexpected thinking card in current phase: ${cardId}`);
     if (!rawMeaningsByCardId[cardId]) fail(`Thinking card does not exist in meaning registry: ${cardId}`);
     if (entry.card_id !== cardId) fail(`${cardId}.card_id must match its object key.`);
     requireText(`${cardId}.name_ko`, entry.name_ko);
