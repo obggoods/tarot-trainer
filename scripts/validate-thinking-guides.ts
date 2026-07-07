@@ -4,7 +4,32 @@ import { buildThinkingGuide, formatThinkingGuideForPrompt } from "../src/lib/tar
 import type { TarotThinkingDatabase, TarotThinkingGuide } from "../src/lib/tarot/thinking/types";
 import type { Orientation, TarotCategory } from "../src/types/tarot";
 
-const EXPECTED_FOUNDATION_CARD_IDS = ["major_00_fool", "major_01_magician", "major_10_wheel_of_fortune", "cups_02", "wands_09"];
+const REQUIRED_MAJOR_CARD_IDS = [
+  "major_00_fool",
+  "major_01_magician",
+  "major_02_high_priestess",
+  "major_03_empress",
+  "major_04_emperor",
+  "major_05_hierophant",
+  "major_06_lovers",
+  "major_07_chariot",
+  "major_08_strength",
+  "major_09_hermit",
+  "major_10_wheel_of_fortune",
+  "major_11_justice",
+  "major_12_hanged_man",
+  "major_13_death",
+  "major_14_temperance",
+  "major_15_devil",
+  "major_16_tower",
+  "major_17_star",
+  "major_18_moon",
+  "major_19_sun",
+  "major_20_judgement",
+  "major_21_world",
+];
+const ALLOWED_PILOT_SAMPLE_CARD_IDS = ["cups_02", "wands_09"];
+const ALLOWED_CARD_IDS = [...REQUIRED_MAJOR_CARD_IDS, ...ALLOWED_PILOT_SAMPLE_CARD_IDS];
 const REQUIRED_SELECTION_KEYS = ["love", "career", "money", "health", "relationship", "selfGrowth"] as const;
 const BANNED_TEXT = ["좋은 카드", "나쁜 카드", "인터넷식", "행운 카드", "불운 카드"];
 
@@ -23,6 +48,7 @@ console.table([
   {
     Version: database.version,
     Cards: Object.keys(database.cards).length,
+    "Major Cards": Object.keys(database.cards).filter((cardId) => cardId.startsWith("major_")).length,
     Orientations: Object.values(database.cards).reduce((count, entry) => count + 1 + (entry.reversed ? 1 : 0), 0),
     "Prompt Payload": buildThinkingGuide({ cardId: "wands_09", orientation: "upright", category: "love" }) ? "PASS" : "FAIL",
   },
@@ -40,16 +66,17 @@ function validateDatabase() {
   requireText("reviewNote", database.reviewNote);
 
   const cardIds = Object.keys(database.cards);
-  if (cardIds.length !== EXPECTED_FOUNDATION_CARD_IDS.length) {
-    fail(`Foundation scope must contain exactly ${EXPECTED_FOUNDATION_CARD_IDS.length} cards, found ${cardIds.length}. Do not expand to 78 cards in v1.`);
+  const majorCardIds = cardIds.filter((cardId) => cardId.startsWith("major_"));
+  if (majorCardIds.length !== REQUIRED_MAJOR_CARD_IDS.length) {
+    fail(`Major Phase 1 scope must contain exactly ${REQUIRED_MAJOR_CARD_IDS.length} major cards, found ${majorCardIds.length}.`);
   }
 
-  for (const expectedCardId of EXPECTED_FOUNDATION_CARD_IDS) {
-    if (!database.cards[expectedCardId]) fail(`Missing foundation thinking card: ${expectedCardId}`);
+  for (const requiredCardId of REQUIRED_MAJOR_CARD_IDS) {
+    if (!database.cards[requiredCardId]) fail(`Missing major thinking card: ${requiredCardId}`);
   }
 
   for (const [cardId, entry] of Object.entries(database.cards)) {
-    if (!EXPECTED_FOUNDATION_CARD_IDS.includes(cardId)) fail(`Unexpected thinking card in v1 foundation: ${cardId}`);
+    if (!ALLOWED_CARD_IDS.includes(cardId)) fail(`Unexpected thinking card in Major Phase 1: ${cardId}`);
     if (!rawMeaningsByCardId[cardId]) fail(`Thinking card does not exist in meaning registry: ${cardId}`);
     if (entry.card_id !== cardId) fail(`${cardId}.card_id must match its object key.`);
     requireText(`${cardId}.name_ko`, entry.name_ko);
